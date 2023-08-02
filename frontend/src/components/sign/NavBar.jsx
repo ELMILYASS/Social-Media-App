@@ -1,29 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function NavBar(props) {
-  const [positions, setPositions] = props.positions;
+  const [
+    positions,
+    setPositions,
+    [positionsSmallScreen, setPositionsSmallScreen],
+  ] = props.positions;
   const [haveAnAccount, setHaveAnAccount] = useState(false);
+
   function handleClick() {
     setPositions({
       signIn: !haveAnAccount ? "-100%" : "0",
-      signUp: !haveAnAccount ? "0" : "100%",
-      signInImage: !haveAnAccount ? "100%" : "0",
+      signUp: !haveAnAccount ? "100%" : "200%",
+
+      signInImage: !haveAnAccount ? "200%" : "100%",
       signUpImage: !haveAnAccount ? "0" : "-100%",
+    });
+    setPositionsSmallScreen({
+      signIn: !haveAnAccount ? "-100%" : "0",
+      signUp: !haveAnAccount ? "0%" : "100%",
     });
     setHaveAnAccount((prev) => !prev);
   }
   return (
-    <div className="p-7  absolute w-full top-0 flex">
-      <h1 className="mr-auto text-xl">
+    <div className="p-7  absolute h-[10%]  z-10 w-full top-0 flex flex-wrap justify-center items-center ">
+      <h1 className="mr-auto text-xl mb-1">
         <span className="text-main font-bold  ">B</span>logging
       </h1>
       <div>
-        <span>
-          {haveAnAccount ? "Already have an account" : "New User?"}
-          <span className="cursor-pointer text-main" onClick={handleClick}>
-            {" "}
-            {haveAnAccount ? "Sign In" : "Sign Up"}
-          </span>
+        {haveAnAccount ? "Already have an account? " : "New User?"}
+        <span className="cursor-pointer text-main" onClick={handleClick}>
+          {" "}
+          {haveAnAccount ? "Sign In" : "Sign Up"}
         </span>
       </div>
     </div>
