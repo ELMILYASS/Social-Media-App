@@ -15,7 +15,7 @@ function NavBar(props) {
   return (
     <div className="p-7  absolute w-full top-0 flex">
       <h1 className="mr-auto text-xl">
-        <span className="text-main font-bold ">B</span>logging
+        <span className="text-main font-bold  ">B</span>logging
       </h1>
       <div>
         <span>

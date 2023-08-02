@@ -16,14 +16,14 @@ function Sign() {
   return (
     <div className="relative flex items-center justify-center h-screen overflow-hidden">
       <Background />
-      <div className="w-[80%] h-[80%] shadow-[0_0_30px_rgb(0,0,0,0.1)] bg-white rounded-md overflow-hidden flex items-center relative ">
+      <div className="w-[80%] h-[80%]  shadow-[0_0_30px_rgb(0,0,0,0.2)] bg-white rounded-md overflow-hidden flex items-center relative ">
         <NavBar positions={[positions, setPositions]} />
 
-        <div className="w-1/2 relative flex items-center   h-[70%]">
+        <div className="md:w-1/2 w-full relative flex items-center   h-[80%]">
           <SignIn position={positions.signIn} />
           <Image position={positions.signUpImage} url={image1} />
         </div>
-        <div className="w-1/2 relative flex items-center h-[70%] ">
+        <div className="md:w-1/2 w-full relative flex items-center h-[80%]">
           <Image position={positions.signInImage} url={image2} />
           <SignUp position={positions.signUp} />
         </div>

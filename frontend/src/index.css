@@ -2,3 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url("https://www.webdew.com/hubfs/webdew-fonts/webdew-font_style.css");
+@import url("https://www.webdew.com/hubfs/webdew-fonts/proxima_nova_bold.woff");
+
+body {
+  font-family: "Poppins", sans-serif;
+}
