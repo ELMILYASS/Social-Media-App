@@ -6,6 +6,7 @@ import { RiLockPasswordFill } from "react-icons/ri";
 import { MdEmail } from "react-icons/md";
 import { FcGoogle } from "react-icons/fc";
 import { GiConfirmed } from "react-icons/gi";
+import handleSign from "./HandleSign";
 function SignUp({ position, positionSmall }) {
   const [userInfo, setUserInfo] = useState({
     email: {
@@ -64,6 +65,7 @@ function SignUp({ position, positionSmall }) {
       }
     }
   }
+  const [isEmailCorrect, setIsEmailCorrect] = useState(true);
   return (
     <div
       className={`absolute   w-full md:w-1/2  duration-[0.3s] md:translate-x-[${position}] translate-x-[${positionSmall}] mt-5  p-8 flex flex-col justify-center text-center `}
@@ -71,6 +73,9 @@ function SignUp({ position, positionSmall }) {
       <div className="mb-5">
         <h1 className="text-2xl font-bold mt-8">Hello friend!</h1>
         <p className="text-sm text-dark">Create your account </p>
+        {!isEmailCorrect && (
+          <p className="text-red-500 text-md mt-2">Email is not correct</p>
+        )}
       </div>
       <form action="">
         <Input
@@ -111,7 +116,13 @@ function SignUp({ position, positionSmall }) {
         />
         <button
           className="bg-main w-full rounded-full text-white cursor-pointer h-10 flex items-center justify-center mb-5"
-          onClick={handleSignUp}
+          onClick={(e) =>
+            handleSign(
+              e,
+              [userInfo, setUserInfo],
+              [isEmailCorrect, setIsEmailCorrect]
+            )
+          }
         >
           <HiUserAdd className="mr-2 text-lg" />
           Sign up

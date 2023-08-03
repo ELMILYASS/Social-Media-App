@@ -4,8 +4,9 @@ import SocialIcon from "./SocialIcon";
 import { BiSolidUser, BiLogIn } from "react-icons/bi";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { FaTwitter, FaFacebookF } from "react-icons/fa";
-import { BsGoogle } from "react-icons/bs";
+
 import { FcGoogle } from "react-icons/fc";
+import handleSign from "./HandleSign";
 function SignIn({ position }) {
   const [userInfo, setUserInfo] = useState({
     email: {
@@ -21,39 +22,7 @@ function SignIn({ position }) {
       iconColor: "dark",
     },
   });
-
-  function handleSignIn(e) {
-    console.log(userInfo);
-    e.preventDefault();
-    for (let field in userInfo) {
-      if (userInfo[field][field] === "") {
-        setUserInfo((prev) => {
-          return {
-            ...prev,
-            [field]: {
-              ...userInfo[field],
-              placeholder: `Please enter your ${field}`,
-              color: "red-500",
-              iconColor: "red-500",
-            },
-          };
-        });
-      } else {
-        setUserInfo((prev) => {
-          return {
-            ...prev,
-            [field]: {
-              ...userInfo[field],
-              placeholder: `${field}`,
-              color: "gray-500",
-              iconColor: "dark",
-            },
-          };
-        });
-      }
-    }
-  }
-
+  const [isEmailCorrect, setIsEmailCorrect] = useState(true);
   return (
     <div
       className={`absolute md:w-1/2  duration-[0.3s] mt-5  text-center p-8  w-full translate-x-[${position}]  flex flex-col justify-center `}
@@ -61,6 +30,9 @@ function SignIn({ position }) {
       <div className="mb-5">
         <h1 className="text-2xl font-bold">Welcome Back!</h1>
         <p className="text-sm text-dark">Sign in to your Account</p>
+        {!isEmailCorrect && (
+          <p className="text-red-500 text-md mt-2">Email is not correct</p>
+        )}
       </div>
       <form action="">
         <div>
@@ -86,7 +58,13 @@ function SignIn({ position }) {
 
         <div className="flex justify-between w-full gap-3 mb-5">
           <button
-            onClick={handleSignIn}
+            onClick={(e) =>
+              handleSign(
+                e,
+                [userInfo, setUserInfo],
+                [isEmailCorrect, setIsEmailCorrect]
+              )
+            }
             className="bg-main w-1/2 rounded-full text-white cursor-pointer h-10 flex items-center justify-center"
           >
             <BiLogIn className="mr-2 text-lg" />
