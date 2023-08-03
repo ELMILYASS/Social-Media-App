@@ -55,4 +55,4 @@ const handleUserAuth = async (req, res) => {
   }
 };
 
-module.exports = handleUserAuth;
+module.exports = {handleUserAuth};

@@ -21,7 +21,7 @@ function Input({ placeholder, Icon, type, info, name, color, iconColor }) {
         type={hidden}
         name={name}
         required={true}
-        value={userInfo.name}
+        value={userInfo[name][name]}
         placeholder={placeholder}
         onChange={(e) => {
           setUserInfo((prev) => {
@@ -34,7 +34,16 @@ function Input({ placeholder, Icon, type, info, name, color, iconColor }) {
             };
           });
         }}
-        onBlur={() => {
+        onBlur={(e) => {
+          setUserInfo((prev) => {
+            return {
+              ...prev,
+              [e.target.name]: {
+                ...prev[e.target.name],
+                [e.target.name]: e.target.value.trim(),
+              },
+            };
+          });
           if (type === "password") {
             setHidden("password");
           }

@@ -23,7 +23,7 @@ function NavBar(props) {
     setHaveAnAccount((prev) => !prev);
   }
   return (
-    <div className="p-7  absolute h-[10%]  z-10 w-full top-0 flex flex-wrap justify-center items-center ">
+    <div className=" h-[10%] px-3 w-full z-10  flex flex-wrap justify-center items-center ">
       <h1 className="mr-auto text-xl mb-1">
         <span className="text-main font-bold  ">B</span>logging
       </h1>

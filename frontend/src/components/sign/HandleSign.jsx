@@ -1,13 +1,13 @@
 export default function handleSign(
   e,
   [userInfo, setUserInfo],
-  [isEmailCorrect, setIsEmailCorrect]
+  [warning, setWarning]
 ) {
   e.preventDefault();
   for (let field in userInfo) {
-    if (userInfo[field][field] === "") {
+    if (userInfo[field][field].trim() === "") {
       if (field == "email") {
-        setIsEmailCorrect(true);
+        setWarning("");
       }
       setUserInfo((prev) => {
         return {
@@ -24,7 +24,7 @@ export default function handleSign(
       if (field == "email") {
         const emailRegex = /^[a-z]+[0-9]+@gmail.com$/g;
         if (!emailRegex.test(userInfo.email.email)) {
-          setIsEmailCorrect(false);
+          setWarning("Email is not correct, Please enter a valid Email");
           setUserInfo((prev) => {
             return {
               ...prev,
@@ -37,7 +37,7 @@ export default function handleSign(
             };
           });
         } else {
-          setIsEmailCorrect(true);
+          setWarning("");
           setUserInfo((prev) => {
             return {
               ...prev,
@@ -65,4 +65,7 @@ export default function handleSign(
       }
     }
   }
+  console.log(
+    userInfo?.confirmPassword?.confirmPassword === userInfo.password.password
+  );
 }

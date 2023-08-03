@@ -21,7 +21,7 @@ function Sign() {
   return (
     <div className="relative flex items-center justify-center h-screen overflow-hidden">
       <Background />
-      <div className="w-[80%] h-[80%]  shadow-[0_0_30px_rgb(0,0,0,0.2)] bg-white rounded-xl overflow-hidden flex items-center relative ">
+      <div className="w-[80%] h-[80%] flex flex-col  justify-center  shadow-[0_0_30px_rgb(0,0,0,0.2)] bg-white rounded-xl overflow-x-hidden overflow-y-auto  relative ">
         <NavBar
           positions={[
             positions,
@@ -29,15 +29,16 @@ function Sign() {
             [positionsSmallScreen, setPositionsSmallScreen],
           ]}
         />
+        <div className=" h-[80%]   flex  items-center relative ">
+          <SignIn position={positions.signIn} />
+          <Image position={positions.signUpImage} url={image1} />
 
-        <SignIn position={positions.signIn} />
-        <Image position={positions.signUpImage} url={image1} />
-
-        <Image position={positions.signInImage} url={image2} />
-        <SignUp
-          position={positions.signUp}
-          positionSmall={positionsSmallScreen.signUp}
-        />
+          <Image position={positions.signInImage} url={image2} />
+          <SignUp
+            position={positions.signUp}
+            positionSmall={positionsSmallScreen.signUp}
+          />
+        </div>
       </div>
     </div>
   );

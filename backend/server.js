@@ -3,12 +3,22 @@ const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 const cors = require("cors");
-const PORT = process.env.PORT | 3006;
 const connectDB = require("./config/dbConnect");
+const verifyJwt = require("./middleware/VerifyJwt");
+const cookieParser = require("cookie-parser");
+const PORT = process.env.PORT | 3006;
+//Connect to db
 connectDB();
+
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
+app.use("/register", require("./routes/register"));
+app.use("/auth", require("./routes/authenticate"));
+app.use("/refresh", require("./routes/refresh"));
+app.use("/logout", require("./routes/logout"));
+app.use(verifyJwt);
 mongoose.connection.once("open", () => {
   console.log("Connected to MongoDB");
   // Start listening for incoming requests once the connection is established

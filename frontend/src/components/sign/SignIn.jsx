@@ -22,17 +22,15 @@ function SignIn({ position }) {
       iconColor: "dark",
     },
   });
-  const [isEmailCorrect, setIsEmailCorrect] = useState(true);
+  const [warning, setWarning] = useState("");
   return (
     <div
-      className={`absolute md:w-1/2  duration-[0.3s] mt-5  text-center p-8  w-full translate-x-[${position}]  flex flex-col justify-center `}
+      className={` md:w-1/2 h-full  duration-[0.3s] mt-5  text-center p-8  w-full translate-x-[${position}]  flex flex-col justify-center `}
     >
       <div className="mb-5">
         <h1 className="text-2xl font-bold">Welcome Back!</h1>
         <p className="text-sm text-dark">Sign in to your Account</p>
-        {!isEmailCorrect && (
-          <p className="text-red-500 text-md mt-2">Email is not correct</p>
-        )}
+        {warning && <p className="text-red-500 text-md mt-2">{warning}</p>}
       </div>
       <form action="">
         <div>
@@ -59,11 +57,7 @@ function SignIn({ position }) {
         <div className="flex justify-between w-full gap-3 mb-5">
           <button
             onClick={(e) =>
-              handleSign(
-                e,
-                [userInfo, setUserInfo],
-                [isEmailCorrect, setIsEmailCorrect]
-              )
+              handleSign(e, [userInfo, setUserInfo], [warning, setWarning])
             }
             className="bg-main w-1/2 rounded-full text-white cursor-pointer h-10 flex items-center justify-center"
           >

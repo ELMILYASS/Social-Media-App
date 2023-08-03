@@ -12,6 +12,15 @@ const handleNewUser = async (req, res) => {
       .status(409)
       .json({ message: "The Email you provided is for another user" });
   }
+  const usernameExist = await User.findOne({ username: username });
+  if (usernameExist) {
+    return res
+      .status(409)
+      .json({
+        message:
+          "The Username you provided is for another user, Try another username",
+      });
+  }
   try {
     const hashedPwd = await bcrypt.hash(password, 10);
     const newUser = await User.create({
@@ -25,4 +34,4 @@ const handleNewUser = async (req, res) => {
   }
 };
 
-module.exports = handleNewUser;
+module.exports = {handleNewUser};

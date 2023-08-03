@@ -34,48 +34,16 @@ function SignUp({ position, positionSmall }) {
       iconColor: "dark",
     },
   });
-  function handleSignUp(e) {
-    console.log(userInfo);
-    e.preventDefault();
-    for (let field in userInfo) {
-      if (userInfo[field][field] === "") {
-        setUserInfo((prev) => {
-          return {
-            ...prev,
-            [field]: {
-              ...userInfo[field],
-              placeholder: `Please enter your ${field}`,
-              color: "red-500",
-              iconColor: "red-500",
-            },
-          };
-        });
-      } else {
-        setUserInfo((prev) => {
-          return {
-            ...prev,
-            [field]: {
-              ...userInfo[field],
-              placeholder: `${field}`,
-              color: "gray-500",
-              iconColor: "dark",
-            },
-          };
-        });
-      }
-    }
-  }
-  const [isEmailCorrect, setIsEmailCorrect] = useState(true);
+
+  const [warning, setWarning] = useState("");
   return (
     <div
-      className={`absolute   w-full md:w-1/2  duration-[0.3s] md:translate-x-[${position}] translate-x-[${positionSmall}] mt-5  p-8 flex flex-col justify-center text-center `}
+      className={`absolute   w-full md:w-1/2 h-full  duration-[0.3s] md:translate-x-[${position}] translate-x-[${positionSmall}] mt-5  px-8 flex flex-col justify-center text-center `}
     >
       <div className="mb-5">
-        <h1 className="text-2xl font-bold mt-8">Hello friend!</h1>
+        <h1 className="text-2xl font-bold">Hello friend!</h1>
         <p className="text-sm text-dark">Create your account </p>
-        {!isEmailCorrect && (
-          <p className="text-red-500 text-md mt-2">Email is not correct</p>
-        )}
+        {warning && <p className="text-red-500 text-md mt-2">{warning}</p>}
       </div>
       <form action="">
         <Input
@@ -117,18 +85,14 @@ function SignUp({ position, positionSmall }) {
         <button
           className="bg-main w-full rounded-full text-white cursor-pointer h-10 flex items-center justify-center mb-5"
           onClick={(e) =>
-            handleSign(
-              e,
-              [userInfo, setUserInfo],
-              [isEmailCorrect, setIsEmailCorrect]
-            )
+            handleSign(e, [userInfo, setUserInfo], [warning, setWarning])
           }
         >
           <HiUserAdd className="mr-2 text-lg" />
           Sign up
         </button>
       </form>
-      <div className="bg-white hover:bg-main duration-[0.3s] w-full rounded-full  hover:text-white  text-dark cursor-pointer h-10 flex items-center shadow-[0_10px_30px_rgb(0,0,0,0.3)] justify-center">
+      <div className="bg-white hover:bg-main duration-[0.3s] w-full rounded-full h-10 hover:text-white  text-dark cursor-pointer  flex items-center shadow-[0_10px_30px_rgb(0,0,0,0.3)] justify-center">
         <FcGoogle className="mr-2 text-lg" />
         <button>Sign up with Google </button>
       </div>
