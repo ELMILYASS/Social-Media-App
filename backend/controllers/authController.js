@@ -11,7 +11,7 @@ const handleUserAuth = async (req, res) => {
   }
   const existentUser = await User.findOne({ email: email }).exec();
   if (!existentUser) {
-    return res.sendStatus(401).json({ message: "No user with this Email" });
+    return res.status(401).json({ message: "No user with this Email" });
   }
   try {
     const match = await bcrypt.compare(password, existentUser.password);
@@ -48,11 +48,11 @@ const handleUserAuth = async (req, res) => {
       //Sending the access token : the front end developer must store the access token on the memory and not in the localStorage or cookies ( accessible with JS (CSRF))
       res.json({ accessToken });
     } else {
-      res.sendStatus(401).json({ message: "Incorrect Password" });
+      res.status(401).json({ message: "Incorrect Password" });
     }
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
 };
 
-module.exports = {handleUserAuth};
+module.exports = { handleUserAuth };

@@ -1,11 +1,20 @@
-export default function handleSign(
+import axios from "axios";
+import endPoint from "../../backendEndPoint";
+
+export let access_token = "vava";
+async function handleSign(
   e,
   [userInfo, setUserInfo],
-  [warning, setWarning]
+  [warning, setWarning],
+  Navigate
 ) {
   e.preventDefault();
+  let sign = true;
+
+  let accessToken = "";
   for (let field in userInfo) {
     if (userInfo[field][field] === "") {
+      sign = false;
       if (field == "email") {
         setWarning("");
       }
@@ -24,6 +33,7 @@ export default function handleSign(
       if (field == "email") {
         const emailRegex = /^[a-z]+[0-9]+@gmail.com$/g;
         if (!emailRegex.test(userInfo.email.email)) {
+          sign = false;
           setWarning("Email is not correct, Please enter a valid Email");
           setUserInfo((prev) => {
             return {
@@ -83,6 +93,7 @@ export default function handleSign(
           };
         });
       } else {
+        sign = false;
         setWarning((prev) =>
           prev ? `${prev} and confirm your password ` : "Confirm your password"
         );
@@ -99,8 +110,36 @@ export default function handleSign(
           };
         });
       }
+    }
+  }
+  if (sign) {
+    if (Object.keys(userInfo).length === 2) {
+      const info = {
+        email: userInfo.email.email,
+        password: userInfo.password.password,
+      };
+      try {
+        const res = await axios.post(`${endPoint}/auth`, info);
+
+        // store access token locally to send it with next requests and redirect user to home page
+
+        localStorage.setItem("accessToken", res.data.accessToken);
+        Navigate("/home");
+      } catch (err) {
+        setWarning(err.response.data.message);
+      }
     } else {
-      console.log("good");
+      const info = {
+        username: userInfo.username.username,
+        email: userInfo.email.email,
+        password: userInfo.password.password,
+      };
+      try {
+        const res = await axios.post(`${endPoint}/register`, info);
+      } catch (err) {
+        setWarning(err.response.data.message);
+      }
     }
   }
 }
+export default handleSign;

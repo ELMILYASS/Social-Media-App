@@ -19,4 +19,4 @@ const employeeSchema = new Schema({
   refreshToken: String,
 });
 
-module.exports = mongoose.model("Employee", employeeSchema);
+module.exports = mongoose.model("Users", employeeSchema);

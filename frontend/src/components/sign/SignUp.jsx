@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Input from "./Input";
 import { BiSolidUser } from "react-icons/bi";
 import { HiUserAdd } from "react-icons/hi";
@@ -7,7 +7,11 @@ import { MdEmail } from "react-icons/md";
 import { FcGoogle } from "react-icons/fc";
 import { GiConfirmed } from "react-icons/gi";
 import handleSign from "./HandleSign";
+import { useNavigate } from "react-router";
+import { AccessTokenContext } from "../../App";
 function SignUp({ position, positionSmall }) {
+  const Navigate = useNavigate();
+
   const [userInfo, setUserInfo] = useState({
     email: {
       email: "",
@@ -94,7 +98,12 @@ function SignUp({ position, positionSmall }) {
         <button
           className="bg-main w-full rounded-full text-white cursor-pointer h-10 flex items-center justify-center mb-5"
           onClick={(e) =>
-            handleSign(e, [userInfo, setUserInfo], [warning, setWarning])
+            handleSign(
+              e,
+              [userInfo, setUserInfo],
+              [warning, setWarning],
+              Navigate
+            )
           }
         >
           <HiUserAdd className="mr-2 text-lg" />

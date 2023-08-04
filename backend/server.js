@@ -18,7 +18,8 @@ app.use("/register", require("./routes/register"));
 app.use("/auth", require("./routes/authenticate"));
 app.use("/refresh", require("./routes/refresh"));
 app.use("/logout", require("./routes/logout"));
-app.use(verifyJwt);
+app.use("/verify", require("./routes/verifyToken")); //to permit frontend to verify if user has always access to the app
+app.use(verifyJwt); //to verify server EndPoints
 mongoose.connection.once("open", () => {
   console.log("Connected to MongoDB");
   // Start listening for incoming requests once the connection is established

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Input from "./Input";
 import SocialIcon from "./SocialIcon";
 import { BiSolidUser, BiLogIn } from "react-icons/bi";
@@ -7,7 +7,10 @@ import { FaTwitter, FaFacebookF } from "react-icons/fa";
 
 import { FcGoogle } from "react-icons/fc";
 import handleSign from "./HandleSign";
-function SignIn({ position }) {
+import { useNavigate } from "react-router";
+function SignIn({ position, value }) {
+  const Navigate = useNavigate();
+
   const [userInfo, setUserInfo] = useState({
     email: {
       email: "",
@@ -58,7 +61,12 @@ function SignIn({ position }) {
         <div className="flex justify-between w-full gap-3 mb-5">
           <button
             onClick={(e) =>
-              handleSign(e, [userInfo, setUserInfo], [warning, setWarning])
+              handleSign(
+                e,
+                [userInfo, setUserInfo],
+                [warning, setWarning],
+                Navigate
+              )
             }
             className="bg-main w-1/2 rounded-full text-white cursor-pointer h-10 flex items-center justify-center"
           >

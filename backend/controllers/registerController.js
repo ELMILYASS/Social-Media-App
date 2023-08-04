@@ -14,12 +14,10 @@ const handleNewUser = async (req, res) => {
   }
   const usernameExist = await User.findOne({ username: username });
   if (usernameExist) {
-    return res
-      .status(409)
-      .json({
-        message:
-          "The Username you provided is for another user, Try another username",
-      });
+    return res.status(409).json({
+      message:
+        "The Username you provided is already used, Try another username",
+    });
   }
   try {
     const hashedPwd = await bcrypt.hash(password, 10);
@@ -28,10 +26,10 @@ const handleNewUser = async (req, res) => {
       username: username,
       password: hashedPwd,
     });
-    return res.status(201).json({ success: `New user ${username} created` });
+    return res.status(201).json({ message: `New user ${username} created` });
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
 };
 
-module.exports = {handleNewUser};
+module.exports = { handleNewUser };
