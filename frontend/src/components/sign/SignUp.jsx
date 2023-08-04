@@ -35,7 +35,7 @@ function SignUp({ position, positionSmall }) {
     },
   });
 
-  const [warning, setWarning] = useState("Email is not correct, Please enter a valid Email and confirm your password");
+  const [warning, setWarning] = useState("");
 
   const Styles = {
     "--position": position,
@@ -45,12 +45,14 @@ function SignUp({ position, positionSmall }) {
   return (
     <div
       style={Styles}
-      className={`absolute  w-full md:w-1/2  duration-[0.3s] translate   p-8 flex flex-col justify-center text-center`}
+      className={`absolute   w-full md:w-1/2  duration-[0.3s] translate   p-8 flex flex-col justify-center text-center`}
     >
       <div className="mb-5">
         <h1 className="text-2xl font-bold ">Hello friend!</h1>
         <p className="text-sm text-dark">Create your account </p>
-        {warning && <p className="text-red-500 text-md mt-2">{warning}</p>}
+        {warning && (
+          <p className="text-red-500 text-md mt-2 text-sm">{warning}</p>
+        )}
       </div>
       <form action="">
         <Input

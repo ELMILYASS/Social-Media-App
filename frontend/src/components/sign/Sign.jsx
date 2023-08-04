@@ -29,16 +29,18 @@ function Sign() {
             [positionsSmallScreen, setPositionsSmallScreen],
           ]}
         />
-        <div className=" h-[90%]  flex  items-center relative overflow-hidden">
-          <SignIn position={positions.signIn} />
-          <Image position={positions.signUpImage} url={image1} />
 
-          <Image position={positions.signInImage} url={image2} />
-          <SignUp
-            position={positions.signUp}
-            positionSmall={positionsSmallScreen.signUp}
-          />
-        </div>
+          <div className=" h-[90%] relative  flex  items-center  overflow-hidden">
+            <SignIn position={positions.signIn} />
+            <Image position={positions.signUpImage} url={image1} />
+
+            <Image position={positions.signInImage} url={image2} />
+            <SignUp
+              position={positions.signUp}
+              positionSmall={positionsSmallScreen.signUp}
+            />
+          </div>
+    
       </div>
     </div>
   );
