@@ -23,13 +23,13 @@ function NavBar(props) {
     setHaveAnAccount((prev) => !prev);
   }
   return (
-    <div className=" h-[10%] px-3 w-full z-10  flex flex-wrap justify-center items-center ">
+    <div className="h-[10%]    p-5 w-full  z-10 flex flex-wrap justify-center items-center ">
       <h1 className="mr-auto text-xl mb-1">
         <span className="text-main font-bold  ">B</span>logging
       </h1>
-      <div>
+      <div className="z-10">
         {haveAnAccount ? "Already have an account? " : "New User?"}
-        <span className="cursor-pointer text-main" onClick={handleClick}>
+        <span className="cursor-pointer text-main " onClick={handleClick}>
           {" "}
           {haveAnAccount ? "Sign In" : "Sign Up"}
         </span>

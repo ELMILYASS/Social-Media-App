@@ -8,12 +8,18 @@ function Input({ placeholder, Icon, type, info, name, color, iconColor }) {
     type === "password" ? "password" : "text"
   );
 
+  const Styles = {
+    "--color": focus ? "var(--main)" : iconColor,
+  };
+  const borderStyles = {
+
+    "--color": focus ? "var(--main)" : color,
+  };
   return (
     <div className="relative  h-[40px]  mb-3">
       <div
-        className={`absolute  top-1/2 translate-y-[-50%] left-3  ${
-          focus ? "text-main" : `text-${iconColor}`
-        }`}
+        style={Styles}
+        className={`absolute  top-1/2 iconColor translate-y-[-50%] left-3`}
       >
         {Icon}
       </div>
@@ -55,9 +61,8 @@ function Input({ placeholder, Icon, type, info, name, color, iconColor }) {
           }
           setFocus(true);
         }}
-        className={`rounded-full border-solid  border-${color}  ${
-          focus ? "border-main" : `border-${color}`
-        }  border-[2px] py-3 pl-8 pr-3 outline-none h-full w-full`}
+        style={borderStyles}
+        className={`rounded-full border-solid  borderColor border-[2px] py-3 pl-8 pr-3 outline-none h-full w-full`}
       />
     </div>
   );

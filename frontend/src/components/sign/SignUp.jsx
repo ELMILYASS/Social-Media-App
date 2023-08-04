@@ -12,36 +12,43 @@ function SignUp({ position, positionSmall }) {
     email: {
       email: "",
       placeholder: "Email",
-      color: "gray-500",
-      iconColor: "dark",
+      color: "#ccc",
+      iconColor: "var(--dark)",
     },
     password: {
       password: "",
       placeholder: "Password",
-      color: "gray-500",
-      iconColor: "dark",
+      color: "#ccc",
+      iconColor: "var(--dark)",
     },
     username: {
       username: "",
       placeholder: "Username",
-      color: "gray-500",
-      iconColor: "dark",
+      color: "#ccc",
+      iconColor: "var(--dark)",
     },
     confirmPassword: {
       confirmPassword: "",
-      placeholder: "Confirm password",
-      color: "gray-500",
-      iconColor: "dark",
+      placeholder: "Confirm your password",
+      color: "#ccc",
+      iconColor: "var(--dark)",
     },
   });
 
-  const [warning, setWarning] = useState("");
+  const [warning, setWarning] = useState("Email is not correct, Please enter a valid Email and confirm your password");
+
+  const Styles = {
+    "--position": position,
+    "--positionSmall": positionSmall,
+  };
+
   return (
     <div
-      className={`absolute   w-full md:w-1/2 h-full  duration-[0.3s] md:translate-x-[${position}] translate-x-[${positionSmall}] mt-5  px-8 flex flex-col justify-center text-center `}
+      style={Styles}
+      className={`absolute  w-full md:w-1/2  duration-[0.3s] translate   p-8 flex flex-col justify-center text-center`}
     >
       <div className="mb-5">
-        <h1 className="text-2xl font-bold">Hello friend!</h1>
+        <h1 className="text-2xl font-bold ">Hello friend!</h1>
         <p className="text-sm text-dark">Create your account </p>
         {warning && <p className="text-red-500 text-md mt-2">{warning}</p>}
       </div>
@@ -92,7 +99,7 @@ function SignUp({ position, positionSmall }) {
           Sign up
         </button>
       </form>
-      <div className="bg-white hover:bg-main duration-[0.3s] w-full rounded-full h-10 hover:text-white  text-dark cursor-pointer  flex items-center shadow-[0_10px_30px_rgb(0,0,0,0.3)] justify-center">
+      <div className="bg-white hover:bg-main duration-[0.3s] w-full rounded-full  hover:text-white  text-dark cursor-pointer h-10 flex items-center shadow-[0_10px_30px_rgb(0,0,0,0.3)] justify-center">
         <FcGoogle className="mr-2 text-lg" />
         <button>Sign up with Google </button>
       </div>

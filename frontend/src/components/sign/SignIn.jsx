@@ -12,20 +12,21 @@ function SignIn({ position }) {
     email: {
       email: "",
       placeholder: "Email",
-      color: "gray-500",
-      iconColor: "dark",
+      color: "#ccc",
+      iconColor: "var(--dark)",
     },
     password: {
       password: "",
       placeholder: "Password",
-      color: "gray-500",
-      iconColor: "dark",
+      color: "#ccc",
+      iconColor: "var(--dark)",
     },
   });
   const [warning, setWarning] = useState("");
   return (
     <div
-      className={` md:w-1/2 h-full  duration-[0.3s] mt-5  text-center p-8  w-full translate-x-[${position}]  flex flex-col justify-center `}
+      style={{ transform: `translateX(${position})` }}
+      className={`absolute md:w-1/2   duration-[0.3s]   text-center p-8  w-full   flex flex-col justify-center`}
     >
       <div className="mb-5">
         <h1 className="text-2xl font-bold">Welcome Back!</h1>

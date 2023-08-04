@@ -5,7 +5,7 @@ export default function handleSign(
 ) {
   e.preventDefault();
   for (let field in userInfo) {
-    if (userInfo[field][field].trim() === "") {
+    if (userInfo[field][field] === "") {
       if (field == "email") {
         setWarning("");
       }
@@ -15,8 +15,8 @@ export default function handleSign(
           [field]: {
             ...userInfo[field],
             placeholder: `Please enter your ${field}`,
-            color: "red-500",
-            iconColor: "red-500",
+            color: "red",
+            iconColor: "red",
           },
         };
       });
@@ -31,8 +31,8 @@ export default function handleSign(
               [field]: {
                 ...userInfo[field],
                 placeholder: `${field}`,
-                color: "red-500",
-                iconColor: "red-500",
+                color: "red",
+                iconColor: "red",
               },
             };
           });
@@ -44,8 +44,8 @@ export default function handleSign(
               [field]: {
                 ...userInfo[field],
                 placeholder: `${field}`,
-                color: "gray-500",
-                iconColor: "dark",
+                color: "#ccc",
+                iconColor: "var(--dark)",
               },
             };
           });
@@ -57,15 +57,50 @@ export default function handleSign(
             [field]: {
               ...userInfo[field],
               placeholder: `${field}`,
-              color: "gray-500",
-              iconColor: "dark",
+              color: "#ccc",
+              iconColor: "var(--dark)",
             },
           };
         });
       }
     }
   }
-  console.log(
-    userInfo?.confirmPassword?.confirmPassword === userInfo.password.password
-  );
+
+  if (userInfo.password.password) {
+    if (userInfo?.confirmPassword?.confirmPassword) {
+      if (
+        userInfo.confirmPassword.confirmPassword === userInfo.password.password
+      ) {
+        setUserInfo((prev) => {
+          return {
+            ...prev,
+            [userInfo.confirmPassword]: {
+              ...userInfo[userInfo.confirmPassword],
+              placeholder: `${"Confirm Password"}`,
+              color: "#ccc",
+              iconColor: "var(--dark)",
+            },
+          };
+        });
+      } else {
+        setWarning((prev) =>
+          prev ? `${prev} and confirm your password ` : "Confirm your password"
+        );
+
+        setUserInfo((prev) => {
+          return {
+            ...prev,
+            confirmPassword: {
+              ...userInfo.confirmPassword,
+              placeholder: `${"Confirm Password"}`,
+              color: "red",
+              iconColor: "red",
+            },
+          };
+        });
+      }
+    } else {
+      console.log("good");
+    }
+  }
 }

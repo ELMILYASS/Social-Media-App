@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --main: #6534d9;
+  --dark: #31344f;
+}
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+@media (min-width: 768px) {
+  .translate {
+    transform: translateX(var(--position));
+  }
+}
+
+@media (max-width: 768px) {
+  .translate {
+    transform: translateX(var(--positionSmall));
+  }
+}
+
+.iconColor {
+  color: var(--color);
+}
+
+.borderColor {
+  border-color: var(--color);
+
+}
