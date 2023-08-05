@@ -1,7 +1,11 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const employeeSchema = new Schema({
+const userSchema = new Schema({
+  userId: {
+    type: mongoose.Types.ObjectId,
+    auto: true,
+  },
   username: {
     type: String,
     required: true,
@@ -16,7 +20,11 @@ const employeeSchema = new Schema({
     type: String,
     required: true,
   },
+  friends: {
+    type: Array,
+    default: [],
+  },
   refreshToken: String,
 });
 
-module.exports = mongoose.model("Users", employeeSchema);
+module.exports = mongoose.model("Users", userSchema);
