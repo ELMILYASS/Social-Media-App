@@ -6,7 +6,7 @@ import { RiLockPasswordFill } from "react-icons/ri";
 import { MdEmail } from "react-icons/md";
 import { FcGoogle } from "react-icons/fc";
 import { GiConfirmed } from "react-icons/gi";
-import handleSign from "./HandleSign";
+import handleSign from "../../controllers/HandleSign";
 import { useNavigate } from "react-router";
 import { AccessTokenContext } from "../../App";
 function SignUp({ position, positionSmall }) {

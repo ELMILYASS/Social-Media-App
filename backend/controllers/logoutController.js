@@ -10,7 +10,7 @@ const handleLogout = async (req, res) => {
   if (!foundUser) {
     //There is a cookie but no client so we must delete the cookie from the browser
     res.clearCookie("jwt", {
-      httpOnly: true,
+      // httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
     });
     return res.sendStatus(204);
@@ -20,11 +20,11 @@ const handleLogout = async (req, res) => {
   const result = await foundUser.save();
 
   res.clearCookie("jwt", {
-    httpOnly: true,
-    secure: true,
-    sameSite: "None",
+    // httpOnly: true,
+    // secure: true,
+    // sameSite: "None",
   });
   res.sendStatus(204);
 };
 
-module.exports = {handleLogout};
+module.exports = { handleLogout };

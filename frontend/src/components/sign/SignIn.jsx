@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import Input from "./Input";
 import SocialIcon from "./SocialIcon";
 import { BiSolidUser, BiLogIn } from "react-icons/bi";
@@ -6,7 +6,7 @@ import { RiLockPasswordFill } from "react-icons/ri";
 import { FaTwitter, FaFacebookF } from "react-icons/fa";
 
 import { FcGoogle } from "react-icons/fc";
-import handleSign from "./HandleSign";
+import handleSign from "../../controllers/HandleSign";
 import { useNavigate } from "react-router";
 function SignIn({ position, value }) {
   const Navigate = useNavigate();

@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const VerifyJwt = require("../middleware/VerifyJwt");
-router.get("/", VerifyJwt);
+
+router.get("/", (req, res) => {
+  res.json({ message: "Access permitted" });
+});
 
 module.exports = router;

@@ -1,5 +1,5 @@
 import axios from "axios";
-import endPoint from "../../backendEndPoint";
+import endPoint from "../backendEndPoint";
 
 export let access_token = "vava";
 async function handleSign(
@@ -119,11 +119,14 @@ async function handleSign(
         password: userInfo.password.password,
       };
       try {
-        const res = await axios.post(`${endPoint}/auth`, info);
+        const res = await axios.post(`${endPoint}/auth`, info, {
+          withCredentials: true,
+        });
 
         // store access token locally to send it with next requests and redirect user to home page
 
         localStorage.setItem("accessToken", res.data.accessToken);
+        localStorage.setItem("email", info.email);
         Navigate("/home");
       } catch (err) {
         setWarning(err.response.data.message);
@@ -136,6 +139,13 @@ async function handleSign(
       };
       try {
         const res = await axios.post(`${endPoint}/register`, info);
+        const res2 = await axios.post(`${endPoint}/auth`, info, {
+          withCredentials: true,
+        });
+
+        localStorage.setItem("accessToken", res2.data.accessToken);
+        localStorage.setItem("email", info.email);
+        Navigate("/home");
       } catch (err) {
         setWarning(err.response.data.message);
       }
