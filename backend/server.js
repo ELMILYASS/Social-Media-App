@@ -8,24 +8,24 @@ const verifyJwt = require("./middleware/VerifyJwt");
 const corsOptions = require("./config/corsOptions");
 const cookieParser = require("cookie-parser");
 const { graphqlHTTP } = require("express-graphql");
-const schema = require("./controllers/usersController");
+const schema = require("./controllers/appController");
 const PORT = process.env.PORT | 3006;
 //Connect to db
 connectDB();
 app.use(cookieParser());
 app.use(express.json());
-// app.use(cors(corsOptions));
-// app.get("/", (req, res) => {
-//   res.clearCookie("jwt");
-//   res.send("cookie cleared");
-// });
-// app.use("/register", require("./routes/register"));
-// app.use("/auth", require("./routes/authenticate"));
-// app.use("/refresh", require("./routes/refresh"));
-// app.use("/logout", require("./routes/logout"));
+app.use(cors(corsOptions));
+app.get("/", (req, res) => {
+  res.clearCookie("jwt");
+  res.send("cookie cleared");
+});
+app.use("/register", require("./routes/register"));
+app.use("/auth", require("./routes/authenticate"));
+app.use("/refresh", require("./routes/refresh"));
+app.use("/logout", require("./routes/logout"));
 
-// app.use(verifyJwt); //to verify server EndPoints
-// app.use("/verify", require("./routes/verifyToken")); //to permit frontend to verify if user has always access to the app
+app.use(verifyJwt); //to verify server EndPoints
+app.use("/verify", require("./routes/verifyToken")); //to permit frontend to verify if user has always access to the app
 app.use(
   "/graphql",
   graphqlHTTP({

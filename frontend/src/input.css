@@ -1,10 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+* {
+  box-sizing: border-box;
+}
 :root {
   --main: #6534d9;
   --dark: #31344f;
+  --second: #9b7ce6;
 }
 body {
   font-family: "Poppins", sans-serif;
@@ -28,5 +31,13 @@ body {
 
 .borderColor {
   border-color: var(--color);
+}
 
+.barElement:hover .content {
+  display: block;
+}
+
+.active {
+  background-color: var(--main);
+  border-color: var(--second);
 }
