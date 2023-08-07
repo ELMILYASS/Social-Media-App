@@ -8,6 +8,7 @@
   --main: #6534d9;
   --dark: #31344f;
   --second: #9b7ce6;
+  --gray: #5d5d5d;
 }
 body {
   font-family: "Poppins", sans-serif;
@@ -33,11 +34,56 @@ body {
   border-color: var(--color);
 }
 
-.barElement:hover .content {
-  display: block;
+@media (min-width: 420px) {
+  .barElement:hover .content {
+    display: block;
+  }
 }
 
 .active {
   background-color: var(--main);
   border-color: var(--second);
+}
+
+@media (min-width: 640px) {
+  .Small {
+    display: none;
+  }
+}
+
+.section {
+  width: calc(100% - 90px);
+}
+@media (max-width: 640px) {
+  .section {
+    width: 100%;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 4px;
+  background-color: #f5f5f5;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background-color: var(--main);
+  border-radius: 4px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--dark);
+}
+
+.textarea::-webkit-scrollbar {
+  width: 5px;
+  height: 4px;
+  background-color: #f5f5f5;
+}
+
+.stories::-webkit-scrollbar {
+  height: 4px;
+  background-color: #f5f5f5;
 }
