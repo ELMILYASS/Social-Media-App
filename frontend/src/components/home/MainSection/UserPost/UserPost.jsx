@@ -1,5 +1,5 @@
 import React from "react";
-import img from "../pexels-pixabay-220453.jpg";
+import img from "../../../Images/pexels-pixabay-220453.jpg";
 import {
   AiOutlineCamera,
   AiOutlineVideoCamera,

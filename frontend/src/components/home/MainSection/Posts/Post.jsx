@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import img from "../pexels-pixabay-220453.jpg";
+import img from "../../../Images/pexels-pixabay-220453.jpg";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { RiSaveLine, RiSaveFill } from "react-icons/ri";
 import { BiShare, BiSolidShare } from "react-icons/bi";
 import PostBar from "./PostBar";
 import InteractBar from "./InteractBar";
+import Comments from "./Comments";
 function Post({ text, imgs }) {
   const [isTruncated, setIsTruncated] = useState(false);
   const paragraphRef = useRef(null);
@@ -14,6 +15,7 @@ function Post({ text, imgs }) {
   }
   const BarStyles = {
     opacity: displayPostBar ? "1" : "0",
+    zIndex: displayPostBar ? "10" : "-1",
   };
   useEffect(() => {
     if (paragraphRef?.current?.clientHeight > 100) {
@@ -65,6 +67,8 @@ function Post({ text, imgs }) {
       />
     );
   });
+  const [displayComments, setDisplayComments] = useState(false);
+
   return (
     <div className="relative">
       <div className="flex mb-4 ">
@@ -84,7 +88,7 @@ function Post({ text, imgs }) {
 
       <div
         style={BarStyles}
-        className="absolute w-[130px] h-[130px] duration-[0.3s]  px-5 flex flex-col items-center justify-center max-[400px]:w-[70%] rounded-xl gap-6 bg-main top-5 right-3 "
+        className="absolute   h-[130px] duration-[0.3s]  px-5 flex flex-col items-center justify-center max-[400px]:w-[70%] rounded-xl gap-6 bg-main top-5 right-3 "
       >
         <PostBar
           Icon={<RiSaveLine />}
@@ -98,26 +102,36 @@ function Post({ text, imgs }) {
         />
       </div>
 
-      {text.trim().length > 0 && (
-        <>
-          <p
-            ref={paragraphRef}
-            style={{
-              maxHeight: isTruncated ? "50px" : "none",
-              overflow: "hidden",
-            }}
-          >
-            {text}
-          </p>
-          <p className="text-blue-500 ">
-            {isTruncated && (
-              <button onClick={toggleTruncate}>Lire la suite</button>
-            )}
-          </p>
-        </>
+      {!displayComments ? (
+        <div className="relative">
+          {text.trim().length > 0 && (
+            <>
+              <p
+                ref={paragraphRef}
+                style={{
+                  maxHeight: isTruncated ? "50px" : "none",
+                  overflow: "hidden",
+                }}
+              >
+                {text}
+              </p>
+              <p className="text-blue-500 ">
+                {isTruncated && (
+                  <button onClick={toggleTruncate}>Lire la suite</button>
+                )}
+              </p>
+            </>
+          )}
+          {styles && (
+            <div className={` ${styles} mt-4 gap-5 w-full select-none `}>
+              {images}
+            </div>
+          )}
+        </div>
+      ) : (
+        <Comments displayed={displayComments} />
       )}
-      {styles && <div className={` ${styles} mt-4 gap-5 w-full`}>{images}</div>}
-      <InteractBar />
+      <InteractBar comments={[displayComments, setDisplayComments]} />
     </div>
   );
 }

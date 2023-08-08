@@ -5,7 +5,7 @@ import Posts from "./Posts/Posts";
 import { BsSearch } from "react-icons/bs";
 function MainSection() {
   return (
-    <div className="bg-backgroundGray section sm:ml-[90px]  sm:p-6 p-4 flex flex-col gap-2 ">
+    <div className="bg-backgroundGray section sm:ml-[90px]  sm:p-6 p-4 flex flex-col gap-2 relative">
       <div className="flex w-full justify-between   mb-[10px]  max-[500px]:flex-col max-[500px]:gap-2">
         <h1 className=" text-2xl mb-1 ">
           <span className="text-main font-bold  ">B</span>logging
