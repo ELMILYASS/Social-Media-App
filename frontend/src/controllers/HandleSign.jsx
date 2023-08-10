@@ -11,7 +11,6 @@ async function handleSign(
   e.preventDefault();
   let sign = true;
 
-  let accessToken = "";
   for (let field in userInfo) {
     if (userInfo[field][field] === "") {
       sign = false;
@@ -113,6 +112,7 @@ async function handleSign(
     }
   }
   if (sign) {
+    //handle singin
     if (Object.keys(userInfo).length === 2) {
       const info = {
         email: userInfo.email.email,
@@ -131,7 +131,9 @@ async function handleSign(
       } catch (err) {
         setWarning(err.response.data.message);
       }
-    } else {
+    }
+    // handle sign up
+    else {
       const info = {
         username: userInfo.username.username,
         email: userInfo.email.email,

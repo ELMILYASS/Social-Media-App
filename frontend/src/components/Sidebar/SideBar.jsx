@@ -1,13 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import BarElement from "./BarElement";
 import { CgProfile } from "react-icons/cg";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { AiOutlineHome, AiOutlineMessage } from "react-icons/ai";
 import { FiSettings, FiLogOut } from "react-icons/fi";
-function SideBar() {
-  const [clicked, setClicked] = useState("Home");
+import handleLogout from "../../controllers/HandleLogout";
+import { useNavigate } from "react-router";
+
+function SideBar({ click }) {
+  const Navigate = useNavigate();
+  const [displayed, setDisplayed] = click;
   function navigate(e, content) {
-    setClicked(content);
+    if (content === "LogOut") {
+      handleLogout();
+      Navigate("/");
+    } else {
+      setDisplayed(content);
+      if (content !== "home") {
+        Navigate(`/home/${content}`);
+      } else {
+        Navigate("/home");
+      }
+    }
   }
 
   return (
@@ -15,41 +29,42 @@ function SideBar() {
       <div className=" flex sm:flex-col  w-[140px] gap-5 max-sm:items-center max-sm:w-screen  justify-center    h-full  max-sm:px-5 ">
         <BarElement
           Icon={<AiOutlineHome />}
-          content={"Home"}
+          content={"home"}
           navigate={navigate}
-          currentPage={[clicked, setClicked]}
+          currentPage={[displayed, setDisplayed]}
         />
         <BarElement
           Icon={<AiOutlineMessage />}
-          content={"Chat"}
+          content={"chat"}
           navigate={navigate}
-          currentPage={[clicked, setClicked]}
+          currentPage={[displayed, setDisplayed]}
         />
         <BarElement
           Icon={<CgProfile />}
-          content={"Profile"}
+          content={"profile"}
           navigate={navigate}
-          currentPage={[clicked, setClicked]}
+          currentPage={[displayed, setDisplayed]}
         />
+
         <BarElement
           Icon={<IoMdNotificationsOutline />}
-          content={"Notification"}
+          content={"notification"}
           navigate={navigate}
-          currentPage={[clicked, setClicked]}
+          currentPage={[displayed, setDisplayed]}
         />
-        <BarElement
+        {/* <BarElement
           Icon={<FiSettings />}
           content={"Settings"}
           navigate={navigate}
-          currentPage={[clicked, setClicked]}
-        />
+          currentPage={[displayed, setDisplayed]}
+        /> */}
 
         <BarElement
           Icon={<FiLogOut />}
           content={"LogOut"}
           navigate={navigate}
           info={"Small"}
-          currentPage={[clicked, setClicked]}
+          currentPage={[displayed, setDisplayed]}
         />
       </div>
       <div className="w-[140px]  max-sm:w-screen max-sm:hidden">
@@ -57,7 +72,7 @@ function SideBar() {
           Icon={<FiLogOut />}
           content={"LogOut"}
           navigate={navigate}
-          currentPage={[clicked, setClicked]}
+          currentPage={[displayed, setDisplayed]}
         />
       </div>
     </div>

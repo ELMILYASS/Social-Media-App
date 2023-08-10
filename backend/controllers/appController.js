@@ -21,6 +21,10 @@ const UserType = new GraphQLObjectType({
     password: { type: new GraphQLNonNull(GraphQLString) },
     refreshToken: { type: GraphQLString },
     friends: { type: new GraphQLList(UserType) },
+    dateOfBirth: { type: GraphQLString },
+    country: { type: GraphQLString },
+    city: { type: GraphQLString },
+    description: { type: GraphQLString },
   }),
 });
 

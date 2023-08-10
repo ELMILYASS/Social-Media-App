@@ -3,6 +3,7 @@ import Stories from "./Stories/Stories";
 import Post from "./UserPost/UserPost";
 import Posts from "./Posts/Posts";
 import { BsSearch } from "react-icons/bs";
+
 function MainSection() {
   return (
     <div className="bg-backgroundGray section sm:ml-[90px]  sm:p-6 p-4 flex flex-col gap-2 relative">

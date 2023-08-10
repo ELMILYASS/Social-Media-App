@@ -8,7 +8,7 @@ import { FcGoogle } from "react-icons/fc";
 import { GiConfirmed } from "react-icons/gi";
 import handleSign from "../../controllers/HandleSign";
 import { useNavigate } from "react-router";
-import { AccessTokenContext } from "../../App";
+
 function SignUp({ position, positionSmall }) {
   const Navigate = useNavigate();
 

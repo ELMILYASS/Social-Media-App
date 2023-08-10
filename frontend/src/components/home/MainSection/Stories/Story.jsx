@@ -13,7 +13,7 @@ function Story({ addPost, displayStory }) {
   return (
     <div
       onClick={story}
-      className="shrink-0 w-[65px] p-[2px] border-solid border-main border-[2px]   h-[65px] cursor-pointer rounded-full overflow-hidden  "
+      className="shrink-0 w-[65px] p-[3px] bg-white border-solid border-main border-[2px]   h-[65px] cursor-pointer rounded-full overflow-hidden  "
     >
       <img
         src={addPost ? addpost : img}

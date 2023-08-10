@@ -3,6 +3,7 @@ const User = require("../model/User");
 
 const handleNewUser = async (req, res) => {
   const { username, email, password } = req.body;
+
   if (!username || !email || !password) {
     return res.status(400).json({ message: "All fields are required !!!" });
   }
@@ -26,7 +27,9 @@ const handleNewUser = async (req, res) => {
       username: username,
       password: hashedPwd,
     });
-    return res.status(201).json({ message: `New user ${username} created` });
+    return res
+      .status(201)
+      .json({ message: `New user ${username} created`, user: newUser });
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }

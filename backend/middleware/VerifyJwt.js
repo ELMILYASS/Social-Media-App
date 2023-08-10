@@ -13,7 +13,7 @@ const verifyJwt = (req, res, next) => {
 
       return res.sendStatus(403);
     }
-    console.log("success");
+
     req.email = decoded.UserInfo.email;
 
     next();

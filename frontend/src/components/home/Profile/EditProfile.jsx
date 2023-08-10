@@ -1,0 +1,366 @@
+import React, { useContext, useEffect, useState } from "react";
+import { AiOutlineEdit, AiOutlineLeft } from "react-icons/ai";
+import { useNavigate } from "react-router";
+import img from "../../Images/pexels-pixabay-220453.jpg";
+import Input from "../../sign/Input";
+import { BsCalendarDate, BsCardImage } from "react-icons/bs";
+import { MdEmail, MdOutlineDescription } from "react-icons/md";
+import { LiaCitySolid } from "react-icons/lia";
+import { BiSolidUser } from "react-icons/bi";
+import { RiLockPasswordFill } from "react-icons/ri";
+import { UserContext } from "../../../App";
+function EditProfile() {
+  const [user, setUser] = useContext(UserContext);
+  const navigate = useNavigate();
+  const [userInfo, setUserInfo] = useState({
+    email: {
+      email: user?.email,
+      placeholder: "Email",
+      color: "#ccc",
+      iconColor: "var(--dark)",
+    },
+    password: {
+      password: "",
+      placeholder: "Type your password",
+      color: "#ccc",
+      iconColor: "var(--dark)",
+    },
+    username: {
+      username: user?.username,
+      placeholder: "Username",
+      color: "#ccc",
+      iconColor: "var(--dark)",
+    },
+    dateOfBirth: {
+      dateOfBirth: user?.dateOfBirth,
+      placeholder: "Date of Birth",
+      color: "#ccc",
+      iconColor: "var(--dark)",
+    },
+    country: {
+      country: user?.country,
+      placeholder: "Country",
+      color: "#ccc",
+      iconColor: "var(--dark)",
+    },
+    city: {
+      city: user?.city,
+      placeholder: "City",
+      color: "#ccc",
+      iconColor: "var(--dark)",
+    },
+    description: {
+      description: user?.description,
+      placeholder: "Description",
+      color: "#ccc",
+      iconColor: "var(--dark)",
+    },
+  });
+  console.log(userInfo.username);
+  useEffect(() => {
+    setUserInfo({
+      email: {
+        email: user?.email,
+        placeholder: "Email",
+        color: "#ccc",
+        iconColor: "var(--dark)",
+      },
+      password: {
+        password: "",
+        placeholder: "Type your new password",
+        color: "#ccc",
+        iconColor: "var(--dark)",
+      },
+      username: {
+        username: user?.username,
+        placeholder: "Username",
+        color: "#ccc",
+        iconColor: "var(--dark)",
+      },
+      dateOfBirth: {
+        dateOfBirth: user?.dateOfBirth,
+        placeholder: "Date of Birth",
+        color: "#ccc",
+        iconColor: "var(--dark)",
+      },
+      country: {
+        country: user?.country,
+        placeholder: "Country",
+        color: "#ccc",
+        iconColor: "var(--dark)",
+      },
+      city: {
+        city: user?.city,
+        placeholder: "City",
+        color: "#ccc",
+        iconColor: "var(--dark)",
+      },
+      description: {
+        description: user?.description,
+        placeholder: "Write a brief description about you ",
+        color: "#ccc",
+        iconColor: "var(--dark)",
+      },
+    });
+  }, [user?.email]);
+  const [warning, setWarning] = useState("");
+
+  function handleEditProfile(e) {
+    e.preventDefault();
+    const emailRegex = /^[a-z]+[0-9]+@gmail.com$/g;
+    if (userInfo.email.email === "") {
+      setWarning((prev) =>
+        prev === "" ? "Email is required" : "Email and email are required"
+      );
+    }
+
+    if (userInfo.username.username === "") {
+      setWarning((prev) =>
+        prev === "" ? "Username is required" : "Email and username are required"
+      );
+    }
+
+    if (userInfo.username.username === "" && userInfo.email.email === "") {
+      setWarning((prev) => "Email and username are required"),
+        setUserInfo((prev) => {
+          return {
+            ...prev,
+            email: {
+              email: userInfo.email.email,
+              placeholder: `Please enter an email`,
+              color: "red",
+              iconColor: "red",
+            },
+
+            username: {
+              username: userInfo.username.username,
+              placeholder: `Please enter a username`,
+              color: "red",
+              iconColor: "red",
+            },
+          };
+        });
+    } else {
+      if (userInfo.username.username === "") {
+        if (!emailRegex.test(userInfo.email.email)) {
+          setWarning((prev) => "Username is required and Email is not valid"),
+            setUserInfo((prev) => {
+              return {
+                ...prev,
+                email: {
+                  ...userInfo.email,
+                  placeholder: `Please enter a valid email`,
+                  color: "red",
+                  iconColor: "red",
+                },
+                username: {
+                  ...userInfo.username,
+                  placeholder: `Please enter a username`,
+                  color: "red",
+                  iconColor: "red",
+                },
+              };
+            });
+        } else {
+          setWarning((prev) => "Username is required"),
+            setUserInfo((prev) => {
+              return {
+                ...prev,
+                email: {
+                  ...userInfo.email,
+
+                  color: "#ccc",
+                  iconColor: "var(--dark)",
+                },
+                username: {
+                  ...userInfo.username,
+                  placeholder: `Please enter a username`,
+                  color: "red",
+                  iconColor: "red",
+                },
+              };
+            });
+        }
+      } else {
+        if (userInfo.email.email === "") {
+          setWarning((prev) => "Email is required"),
+            setUserInfo((prev) => {
+              return {
+                ...prev,
+                email: {
+                  ...userInfo.email,
+                  placeholder: `Please enter an email`,
+                  color: "red",
+                  iconColor: "red",
+                },
+                username: {
+                  ...userInfo.username,
+
+                  color: "#ccc",
+                  iconColor: "var(--dark)",
+                },
+              };
+            });
+        } else {
+          if (!emailRegex.test(userInfo.email.email)) {
+            setWarning((prev) => "Email is not valid"),
+              setUserInfo((prev) => {
+                return {
+                  ...prev,
+                  email: {
+                    ...userInfo.email,
+                    placeholder: `Please enter a valid email`,
+                    color: "red",
+                    iconColor: "red",
+                  },
+                  username: {
+                    ...userInfo.username,
+
+                    color: "#ccc",
+                    iconColor: "var(--dark)",
+                  },
+                };
+              });
+          } else {
+            setWarning((prev) => ""),
+              setUserInfo((prev) => {
+                return {
+                  ...prev,
+                  email: {
+                    ...userInfo.email,
+
+                    color: "#ccc",
+                    iconColor: "var(--dark)",
+                  },
+                  username: {
+                    ...userInfo.username,
+
+                    color: "#ccc",
+                    iconColor: "var(--dark)",
+                  },
+                };
+              });
+          }
+        }
+      }
+    }
+  }
+
+  return (
+    <div className="section sm:ml-[90px]  sectionHeight flex flex-col justify-evenly gap-1 sm:gap-6 sm:px-10 px-4 py-2 overflow-auto">
+      <div className="flex flex-col gap-3">
+        <div className="relative text-center text-xl ">
+          <div
+            className="absolute z-50 cursor-pointer top-1/2 translate-y-[-50%]"
+            onClick={() => navigate("/home/profile")}
+          >
+            <AiOutlineLeft />
+          </div>
+          <div className="text-main font-medium">Edit Profile</div>
+        </div>
+
+        <div className=" relative w-fit  mx-auto">
+          <div className="h-[140px] rounded-full bg-white border-solid border-main border-[1px]  p-[2px] w-[140px] overflow-hidden max-[400px]:w-[120px] max-[400px]:h-[120px]">
+            <img
+              src={img}
+              alt="Profile Image"
+              className="object-cover w-full h-full rounded-full duration-[0.3s]  hover:scale-110"
+            />
+            <label htmlFor="imageUpload" className="cursor-pointer">
+              <BsCardImage
+                className="absolute bottom-3 text-2xl right-2"
+                color="var(--main)"
+              />
+            </label>
+          </div>
+        </div>
+
+        <input type="file" id="imageUpload" className="hidden" />
+      </div>
+      {warning && <div className="text-red-500  text-center">{warning}</div>}
+      <form className="flex flex-col  sm:px-10">
+        <Input
+          type="text"
+          name="email"
+          color={userInfo.email.color}
+          placeholder={userInfo.email.placeholder}
+          iconColor={userInfo.email.iconColor}
+          info={[userInfo, setUserInfo]}
+          Icon={<MdEmail />}
+        />
+        <Input
+          type="text"
+          name="username"
+          color={userInfo.username.color}
+          placeholder={userInfo.username.placeholder}
+          iconColor={userInfo.username.iconColor}
+          info={[userInfo, setUserInfo]}
+          Icon={<BiSolidUser />}
+        />
+        <Input
+          type="password"
+          name="password"
+          color={userInfo.password.color}
+          placeholder={userInfo.password.placeholder}
+          iconColor={userInfo.password.iconColor}
+          info={[userInfo, setUserInfo]}
+          Icon={<RiLockPasswordFill />}
+        />{" "}
+        <Input
+          type="text"
+          name="description"
+          color={userInfo.description.color}
+          placeholder={userInfo.description.placeholder}
+          iconColor={userInfo.description.iconColor}
+          info={[userInfo, setUserInfo]}
+          Icon={<MdOutlineDescription />}
+        />
+        <Input
+          type="date"
+          name="dateOfBirth"
+          color={userInfo.dateOfBirth.color}
+          placeholder={userInfo.dateOfBirth.placeholder}
+          iconColor={userInfo.dateOfBirth.iconColor}
+          info={[userInfo, setUserInfo]}
+          Icon={<BsCalendarDate />}
+        />
+        <Input
+          type="text"
+          name="country"
+          color={userInfo.country.color}
+          placeholder={userInfo.country.placeholder}
+          iconColor={userInfo.country.iconColor}
+          info={[userInfo, setUserInfo]}
+          Icon={<LiaCitySolid />}
+        />
+        {userInfo.country.country &&
+          userInfo.country.country !== "Select Country" && (
+            <Input
+              type="text"
+              name="city"
+              color={userInfo.city.color}
+              placeholder={userInfo.city.placeholder}
+              iconColor={userInfo.city.iconColor}
+              info={[userInfo, setUserInfo]}
+              Icon={<LiaCitySolid />}
+            />
+          )}
+        <button
+          className="bg-main w-full rounded-full text-white cursor-pointer h-10 text-[18px] flex items-center justify-center mb-5"
+          onClick={handleEditProfile}
+        >
+          <AiOutlineEdit className="mr-2 text-xl" />
+          Save changes
+        </button>
+      </form>
+    </div>
+  );
+}
+
+export default EditProfile;
+
+/*
+<div>
+
+</div>
+*/

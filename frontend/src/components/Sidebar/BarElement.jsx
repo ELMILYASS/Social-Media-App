@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
 function BarElement({ Icon, content, navigate, currentPage, info }) {
-  const [clicked, setClicked] = currentPage;
+  const [displayed, setDisplayed] = currentPage;
   const styles = {
-    backgroundColor: content === clicked ? "var(--main)" : "var(--second)",
+    backgroundColor: content === displayed ? "var(--main)" : "var(--second)",
 
-    color: content === clicked ? "white" : "var(--dark)",
+    color: content === displayed ? "white" : "var(--dark)",
   };
   return (
     <div
