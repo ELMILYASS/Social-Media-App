@@ -7,7 +7,7 @@ const {
   GraphQLNonNull,
   GraphQLID,
 } = require("graphql");
-
+const bcrypt = require("bcrypt");
 const User = require("../model/User");
 const Post = require("../model/Posts");
 
@@ -172,7 +172,35 @@ const RootMutationType = new GraphQLObjectType({
         return User.create(newUser);
       },
     },
+    updateUser: {
+      type: UserType,
+      description: "Update a user",
+      args: {
+        userId: { type: new GraphQLNonNull(GraphQLID) },
+        username: { type: new GraphQLNonNull(GraphQLString) },
+        email: { type: new GraphQLNonNull(GraphQLString) },
+        password: { type: GraphQLString },
+        description: { type: GraphQLString },
+        country: { type: GraphQLString },
+        city: { type: GraphQLString },
+      },
+      resolve: async (parent, args) => {
+        let user = await User.findOne({ userId: args.userId });
 
+        user.username = args.username;
+        user.email = args.email;
+        user.description = args.description;
+        user.country = args.country;
+        user.city = args.city;
+        console.log(user);
+        if (args.password) {
+          user.password = await bcrypt.hash(args.password, 10);
+        }
+
+        const userUpdated = await user.save();
+        return userUpdated;
+      },
+    },
     deletePost: {
       type: GraphQLString,
       description: "Delete a post",

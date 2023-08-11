@@ -9,8 +9,14 @@ import { LiaCitySolid } from "react-icons/lia";
 import { BiSolidUser } from "react-icons/bi";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { UserContext } from "../../../App";
+import sendRequest from "../../Request";
 function EditProfile() {
   const [user, setUser] = useContext(UserContext);
+  const [saved, setSaved] = useState(false);
+  const styles = {
+    opacity: saved ? "1" : "0",
+    zIndex: saved ? "1" : "-1",
+  };
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({
     email: {
@@ -56,7 +62,7 @@ function EditProfile() {
       iconColor: "var(--dark)",
     },
   });
-  console.log(userInfo.username);
+
   useEffect(() => {
     setUserInfo({
       email: {
@@ -107,6 +113,7 @@ function EditProfile() {
 
   function handleEditProfile(e) {
     e.preventDefault();
+    let correctInfo = true;
     const emailRegex = /^[a-z]+[0-9]+@gmail.com$/g;
     if (userInfo.email.email === "") {
       setWarning((prev) =>
@@ -241,13 +248,84 @@ function EditProfile() {
                 };
               });
           }
+
+          const updatedUser = {
+            email: userInfo.email.email,
+            password: userInfo.password.password,
+            description: userInfo.description.description || "",
+            username: userInfo.username.username,
+            country: userInfo.country.country || "",
+            city:
+              userInfo.country.country !== "Select Country"
+                ? userInfo.city.city
+                  ? userInfo.city.city
+                  : ""
+                : "",
+          };
+          const query = `
+          mutation updateUser(
+            $userId: ID!,
+            $username: String!,
+            $email: String!,
+            $password: String,
+            $description: String,
+            $country: String,
+            $city: String
+          ) {
+            updateUser(
+              userId: $userId,
+              username: $username,
+              email: $email,
+              password: $password,
+              description: $description,
+              country: $country,
+              city: $city
+            ) {
+              userId
+              email
+              dateOfBirth
+              country
+              city
+              description
+              friends {
+                userId
+                email
+                dateOfBirth
+                country
+                city
+                username
+              }
+              username
+            }
+          }
+        `;
+
+          try {
+            sendRequest(query, {
+              userId: user.userId,
+              username: userInfo.username.username,
+              email: userInfo.email.email,
+              country: userInfo.country.country,
+              city: userInfo.city.city,
+              password: userInfo.password.password,
+              description: userInfo.description.description,
+            }).then((data) => {
+              setSaved(true);
+              setTimeout(() => {
+                setSaved(false);
+              }, 1000);
+              setUser(data.data.data.updateUser);
+            });
+          } catch (err) {
+            console.log(err);
+          }
         }
       }
     }
   }
 
   return (
-    <div className="section sm:ml-[90px]  sectionHeight flex flex-col justify-evenly gap-1 sm:gap-6 sm:px-10 px-4 py-2 overflow-auto">
+    <div className="section sm:ml-[90px]  sectionHeight flex flex-col justify-evenly  sm:px-10 px-4 py-1 overflow-auto">
       <div className="flex flex-col gap-3">
         <div className="relative text-center text-xl ">
           <div
@@ -278,6 +356,9 @@ function EditProfile() {
         <input type="file" id="imageUpload" className="hidden" />
       </div>
       {warning && <div className="text-red-500  text-center">{warning}</div>}
+      <div style={styles} className="text-main text-center duration-[0.3s]">
+        Saved Well
+      </div>
       <form className="flex flex-col  sm:px-10">
         <Input
           type="text"

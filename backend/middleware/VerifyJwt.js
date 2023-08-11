@@ -9,7 +9,7 @@ const verifyJwt = (req, res, next) => {
   const token = authHeader.split(" ")[1]; //or  authHeader.slice(7)
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
     if (err) {
-      console.log(err);
+      console.log(err.message);
 
       return res.sendStatus(403);
     }

@@ -15,7 +15,6 @@ function RequiredAuth() {
 
   const [connected, setConnected] = useState(false);
   const testUserPermission = async () => {
-    
     const accessToken = localStorage.getItem("accessToken");
     const email = localStorage.getItem("email");
 
@@ -27,29 +26,6 @@ function RequiredAuth() {
           },
         });
         setConnected(true);
-        // const query = `query getUser($email : String){
-        //   user(email: $email){
-        //     userId
-        //     email
-        //     dateOfBirth
-        //     country
-        //     city
-        //     friends{
-        //       userId
-        //       email
-        //       dateOfBirth
-        //       country
-        //       city
-        //       username
-        //     }
-        //     username
-
-        //   }
-        // }`;
-
-        // sendRequest(query, { email: localStorage.getItem("email") }).then(
-        //   (data) => setUser(data.data.data.user)
-        // );
 
         if (location.pathname === "/") {
           navigate("/home");
@@ -89,6 +65,7 @@ function RequiredAuth() {
         dateOfBirth
         country
         city
+        description
         friends{
           userId
           email
@@ -96,6 +73,7 @@ function RequiredAuth() {
           country
           city
           username
+          description
         }
         username
         

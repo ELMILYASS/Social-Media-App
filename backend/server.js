@@ -23,9 +23,6 @@ app.use("/register", require("./routes/register"));
 app.use("/auth", require("./routes/authenticate"));
 app.use("/refresh", require("./routes/refresh"));
 app.use("/logout", require("./routes/logout"));
-
-app.use(verifyJwt); //to verify server EndPoints
-app.use("/verify", require("./routes/verifyToken")); //to permit frontend to verify if user has always access to the app
 app.use(
   "/graphql",
   graphqlHTTP({
@@ -33,6 +30,8 @@ app.use(
     graphiql: true,
   })
 );
+app.use(verifyJwt); //to verify server EndPoints
+app.use("/verify", require("./routes/verifyToken")); //to permit frontend to verify if user has always access to the app
 
 mongoose.connection.once("open", () => {
   console.log("Connected to MongoDB");

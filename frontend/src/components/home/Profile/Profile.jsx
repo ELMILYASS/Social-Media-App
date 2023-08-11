@@ -12,8 +12,6 @@ function Profile() {
   const Navigate = useNavigate();
   const [user, setUser] = useContext(UserContext);
 
-  console.log(user);
-
   return (
     <div className=" section sm:ml-[90px] min-h-[100vh]   sm:p-6 p-4 flex flex-col gap-5 items-center">
       <div className=" flex flex-col items-center gap-1">
@@ -32,13 +30,15 @@ function Profile() {
             <div className="text-dark">{user.description}</div>
           )}
 
-          {user?.country && user?.city && (
-            <>
-              <GoLocation className="text-xl" />
+          {user?.country !== "Select Country" &&
+            user?.country &&
+            user?.city && (
+              <div className="flex gap-1 justify-center">
+                <GoLocation className="text-xl" />
 
-              <div> {`${user.country} ${user.city}`}</div>
-            </>
-          )}
+                <div> {`${user.country} ${user.city}`}</div>
+              </div>
+            )}
           <div className="flex justify-center items-center text-dark gap-1"></div>
         </div>
       </div>
