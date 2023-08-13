@@ -3,7 +3,7 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import endPoint from "../backendEndPoint";
 import axios from "axios";
 import Sign from "../components/sign/Sign";
-import sendRequest from "../components/Request";
+import { sendRequest } from "../components/Request";
 import { UserContext } from "../App";
 
 function RequiredAuth() {
@@ -11,7 +11,7 @@ function RequiredAuth() {
   const location = useLocation();
   const [isSignPage, setIsSignPage] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useContext(UserContext);
+  const [user, setUser] = useContext(UserContext).user;
 
   const [connected, setConnected] = useState(false);
   const testUserPermission = async () => {
@@ -65,6 +65,7 @@ function RequiredAuth() {
         dateOfBirth
         country
         city
+        image
         description
         friends{
           userId
@@ -74,6 +75,7 @@ function RequiredAuth() {
           city
           username
           description
+          image
         }
         username
         

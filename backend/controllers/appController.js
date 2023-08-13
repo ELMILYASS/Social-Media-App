@@ -10,7 +10,8 @@ const {
 const bcrypt = require("bcrypt");
 const User = require("../model/User");
 const Post = require("../model/Posts");
-
+const fileExtLimiter = require("../middleware/fileExtLimiter");
+const fileSizeLimiter = require("../middleware/fileSizeLimiter");
 const UserType = new GraphQLObjectType({
   name: "User",
   description: "This represents a user",
@@ -25,6 +26,7 @@ const UserType = new GraphQLObjectType({
     country: { type: GraphQLString },
     city: { type: GraphQLString },
     description: { type: GraphQLString },
+    image: { type: GraphQLString },
   }),
 });
 
@@ -34,8 +36,8 @@ const PostType = new GraphQLObjectType({
   fields: () => ({
     postId: { type: new GraphQLNonNull(GraphQLID) },
     content: { type: GraphQLString },
-    image: { type: GraphQLString },
-    video: { type: GraphQLString },
+    image: { type: new GraphQLList(GraphQLString) },
+    video: { type: new GraphQLList(GraphQLString) },
     createdAt: { type: new GraphQLNonNull(GraphQLString) },
     updatedAt: { type: GraphQLString },
     userId: { type: new GraphQLNonNull(GraphQLID) },
@@ -70,7 +72,6 @@ const CommentType = new GraphQLObjectType({
     userId: { type: GraphQLID },
     content: { type: GraphQLString },
     image: { type: GraphQLString },
-    video: { type: GraphQLString },
     createdAt: { type: GraphQLString },
     user: {
       type: UserType,
@@ -84,12 +85,14 @@ const CommentType = new GraphQLObjectType({
 const RootQueryType = new GraphQLObjectType({
   name: "Query",
   description: "Root Query",
+
   fields: () => ({
     users: {
-      type: new GraphQLList(UserType), // a List of BookType
+      type: new GraphQLList(UserType),
       description: "List of All users",
       resolve: () => User.find(),
     },
+
     posts: {
       type: new GraphQLList(PostType),
       description: "List of all posts",
@@ -132,29 +135,6 @@ const RootMutationType = new GraphQLObjectType({
   name: "Mutation",
   description: "Root Mutation",
   fields: () => ({
-    addPost: {
-      type: PostType,
-      description: "Add a post",
-      args: {
-        content: { type: GraphQLString },
-        image: { type: GraphQLString },
-        video: { type: GraphQLString },
-        userId: { type: new GraphQLNonNull(GraphQLID) },
-      },
-      resolve: (parent, args) => {
-        const newPost = {
-          content: args?.content,
-          image: args?.image,
-          video: args?.video,
-          userId: args.userId,
-          createdAt: new Date().toString(),
-          updatedAt: null,
-          likes: [],
-          comments: [],
-        };
-        return Post.create(newPost);
-      },
-    },
     addUser: {
       type: UserType,
       description: "Add a user",
@@ -170,6 +150,31 @@ const RootMutationType = new GraphQLObjectType({
           password: args.password,
         };
         return User.create(newUser);
+      },
+    },
+
+    updateUserImage: {
+      type: GraphQLString,
+      description: "Update the user image",
+      args: {
+        userId: { type: new GraphQLNonNull(GraphQLID) },
+        image: { type: GraphQLString },
+      },
+      resolve: async (parent, args) => {
+        let user = await User.findOne({ userId: args.userId });
+
+        user.username = args.username;
+        user.email = args.email;
+        user.description = args.description;
+        user.country = args.country;
+        user.city = args.city;
+        console.log(user);
+        if (args.password) {
+          user.password = await bcrypt.hash(args.password, 10);
+        }
+
+        const userUpdated = await user.save();
+        return userUpdated;
       },
     },
     updateUser: {

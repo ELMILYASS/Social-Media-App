@@ -15,6 +15,7 @@ function Home() {
       <Routes>
         <Route path="/" element={<MainSection />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/profile/:username" element={<Profile />} />
         <Route path="/editprofile" element={<EditProfile />} />
       </Routes>
     </div>

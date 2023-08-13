@@ -29,6 +29,7 @@ const userSchema = new Schema({
   country: String,
   city: String,
   description: String,
+  image: String,
 });
 
 module.exports = mongoose.model("Users", userSchema);

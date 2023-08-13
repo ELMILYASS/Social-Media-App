@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AiOutlineEdit, AiOutlineLeft } from "react-icons/ai";
 import { useNavigate } from "react-router";
-import img from "../../Images/pexels-pixabay-220453.jpg";
+
 import Input from "../../sign/Input";
 import { BsCalendarDate, BsCardImage } from "react-icons/bs";
 import { MdEmail, MdOutlineDescription } from "react-icons/md";
@@ -9,9 +9,11 @@ import { LiaCitySolid } from "react-icons/lia";
 import { BiSolidUser } from "react-icons/bi";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { UserContext } from "../../../App";
-import sendRequest from "../../Request";
+import { sendRequest, sendAxiosRequest } from "../../Request";
+import axios from "axios";
 function EditProfile() {
-  const [user, setUser] = useContext(UserContext);
+  const [user, setUser] = useContext(UserContext).user;
+  const [imageURL, setImageURL] = useContext(UserContext).image;
   const [saved, setSaved] = useState(false);
   const styles = {
     opacity: saved ? "1" : "0",
@@ -110,7 +112,7 @@ function EditProfile() {
     });
   }, [user?.email]);
   const [warning, setWarning] = useState("");
-
+  const [Imagewarning, setImageWarning] = useState("");
   function handleEditProfile(e) {
     e.preventDefault();
     let correctInfo = true;
@@ -324,6 +326,21 @@ function EditProfile() {
     }
   }
 
+  async function changeImage(e) {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append(file.name, file);
+    formData.append("userId", user.userId);
+    try {
+      const res = await sendAxiosRequest("POST", "profileImage", formData);
+      console.log(res.data);
+      setImageWarning("");
+
+      setImageURL(URL.createObjectURL(file));
+    } catch (err) {
+      setImageWarning(err.response.data.message);
+    }
+  }
   return (
     <div className="section sm:ml-[90px]  sectionHeight flex flex-col justify-evenly  sm:px-10 px-4 py-1 overflow-auto">
       <div className="flex flex-col gap-3">
@@ -340,7 +357,7 @@ function EditProfile() {
         <div className=" relative w-fit  mx-auto">
           <div className="h-[140px] rounded-full bg-white border-solid border-main border-[1px]  p-[2px] w-[140px] overflow-hidden max-[400px]:w-[120px] max-[400px]:h-[120px]">
             <img
-              src={img}
+              src={imageURL}
               alt="Profile Image"
               className="object-cover w-full h-full rounded-full duration-[0.3s]  hover:scale-110"
             />
@@ -353,9 +370,18 @@ function EditProfile() {
           </div>
         </div>
 
-        <input type="file" id="imageUpload" className="hidden" />
+        <input
+          type="file"
+          id="imageUpload"
+          className="hidden"
+          name="file"
+          onChange={changeImage}
+        />
       </div>
       {warning && <div className="text-red-500  text-center">{warning}</div>}
+      {Imagewarning && (
+        <div className="text-red-500  text-center">{Imagewarning}</div>
+      )}
       <div style={styles} className="text-main text-center duration-[0.3s]">
         Saved Well
       </div>

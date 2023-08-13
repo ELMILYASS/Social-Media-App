@@ -11,9 +11,13 @@ const postSchema = new Schema({
     type: mongoose.Types.ObjectId,
     required: true,
   },
-  content: String, // Contenu textuel de la publication (optional)
-  image: String, // URL de l'image associée à la publication (optional)
-  video: String,
+  content: String,
+  images: {
+    type: [String],
+  },
+  videos: {
+    type: [String],
+  },
 
   likes: {
     type: [
