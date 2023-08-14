@@ -28,8 +28,20 @@ const userSchema = new Schema({
   dateOfBirth: String,
   country: String,
   city: String,
+  sentInvitations: {
+    type: Array,
+    default: [],
+  },
+  receivedInvitations: {
+    type: Array,
+    default: [],
+  },
   description: String,
-  image: String,
+  image: {
+    type: String,
+    default: "",
+  },
+  socketIoId: String,
 });
 
 module.exports = mongoose.model("Users", userSchema);

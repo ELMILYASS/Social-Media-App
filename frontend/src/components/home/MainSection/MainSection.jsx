@@ -35,16 +35,11 @@ function MainSection() {
     for (let i = 0; i < users.length; i++) {
       const u = users[i];
 
-      if (u?.image) {
-        const image = await getUserProfileImage(u.userId);
-        usersList.push(
-          <SearchedUser username={u.username} userId={u.userId} image={image} />
-        );
-      } else {
-        usersList.push(
-          <SearchedUser username={u.username} userId={u.userId} />
-        );
-      }
+      const image = await getUserProfileImage(u.userId);
+
+      usersList.push(
+        <SearchedUser username={u.username} userId={u.userId} image={image} />
+      );
     }
 
     setFoundUsers(usersList);

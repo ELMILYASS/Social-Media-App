@@ -6,12 +6,18 @@ import { AiOutlineHome, AiOutlineMessage } from "react-icons/ai";
 import { FiSettings, FiLogOut } from "react-icons/fi";
 import handleLogout from "../../controllers/HandleLogout";
 import { useNavigate } from "react-router";
+import { UserContext } from "../../App";
 
 function SideBar({ click }) {
   const Navigate = useNavigate();
+  const [socket, setSocket] = useContext(UserContext).socket;
   const [displayed, setDisplayed] = click;
+  const [connected, setConnected] = useContext(UserContext).connected;
   function navigate(e, content) {
     if (content === "LogOut") {
+      socket.disconnect();
+      setConnected(false);
+      setSocket(null);
       handleLogout();
       Navigate("/");
     } else {
@@ -48,7 +54,7 @@ function SideBar({ click }) {
 
         <BarElement
           Icon={<IoMdNotificationsOutline />}
-          content={"notification"}
+          content={"notifications"}
           navigate={navigate}
           currentPage={[displayed, setDisplayed]}
         />

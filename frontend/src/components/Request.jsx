@@ -82,7 +82,6 @@ async function send(method, url, body) {
 async function sendAxiosRequest(method, url, body) {
   try {
     const res = await send(method, url, body);
-
     return res;
   } catch (err) {
     if (err.response.status === 413 || err.response.status === 402) {
@@ -95,9 +94,10 @@ async function sendAxiosRequest(method, url, body) {
 
         localStorage.setItem("accessToken", res.data.accessToken);
         const result = await send(method, url, body);
-
+        console.log("im heere");
         return result;
       } catch (err) {
+        console.log("im heere2");
         if (err.response.status === 413 || err.response.status === 402) {
           throw err;
         } else {

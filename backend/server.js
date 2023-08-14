@@ -1,17 +1,23 @@
 require("dotenv").config();
 const express = require("express");
+const http = require("http");
+const socketIo = require("socket.io");
 const mongoose = require("mongoose");
-const app = express();
 const fileUpload = require("express-fileupload");
 const cors = require("cors");
 const connectDB = require("./config/dbConnect");
 const verifyJwt = require("./middleware/VerifyJwt");
 const corsOptions = require("./config/corsOptions");
+const { sendInvitation } = require("./controllers/InvitationController");
 const cookieParser = require("cookie-parser");
 const { graphqlHTTP } = require("express-graphql");
 const schema = require("./controllers/appController");
 const path = require("path");
+const app = express();
+const server = http.createServer(app);
+
 const PORT = process.env.PORT | 3006;
+
 //Connect to db
 connectDB();
 app.use(cookieParser());
@@ -25,6 +31,7 @@ app.use("/logout", require("./routes/logout"));
 
 app.use(verifyJwt); //to verify server EndPoints
 app.use("/verify", require("./routes/verifyToken")); //to permit frontend to verify if user has always access to the app
+
 app.use(
   "/graphql",
   graphqlHTTP({
@@ -32,13 +39,32 @@ app.use(
     graphiql: true,
   })
 );
+
 app.use("/profileImage", require("./routes/profileImage"));
 app.use("/post", require("./routes/post"));
 mongoose.connection.once("open", () => {
   console.log("Connected to MongoDB");
   // Start listening for incoming requests once the connection is established
-  app.listen(PORT, () => {
+  server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
+  });
+  const io = socketIo(server, {
+    cors: {
+      origin: "http://localhost:3000",
+    },
+  });
+
+  io.on("connection", (socket) => {
+    console.log("A user connected with id: ", socket.id);
+    socket.on("send-invitation", async (senderId, receiverId) => {
+      // console.log(senderId);
+      // console.log(receiverId);
+      const res = await sendInvitation(senderId, receiverId);
+      console.log(res);
+    });
+    socket.on("disconnect", () => {
+      console.log("A user disconnected");
+    });
   });
 });
 

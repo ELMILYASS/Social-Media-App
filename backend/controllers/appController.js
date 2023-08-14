@@ -10,8 +10,7 @@ const {
 const bcrypt = require("bcrypt");
 const User = require("../model/User");
 const Post = require("../model/Posts");
-const fileExtLimiter = require("../middleware/fileExtLimiter");
-const fileSizeLimiter = require("../middleware/fileSizeLimiter");
+
 const UserType = new GraphQLObjectType({
   name: "User",
   description: "This represents a user",
@@ -27,6 +26,28 @@ const UserType = new GraphQLObjectType({
     city: { type: GraphQLString },
     description: { type: GraphQLString },
     image: { type: GraphQLString },
+    socketIoId: { type: GraphQLString },
+    sentInvitations: { type: new GraphQLList(GraphQLID) },
+    receivedInvitations: { type: new GraphQLList(GraphQLID) },
+
+    invitedUsers: {
+      type: new GraphQLList(UserType),
+      resolve: (user) => {
+        const users = user.sentInvitations.map((u) => {
+          return User.findOne({ userId: u }).exec();
+        });
+        return users;
+      },
+    },
+    ReceivedInvitationsUsers: {
+      type: new GraphQLList(UserType),
+      resolve: (user) => {
+        const users = user.receivedInvitations.map((u) => {
+          return User.findOne({ userId: u }).exec();
+        });
+        return users;
+      },
+    },
   }),
 });
 
@@ -90,7 +111,10 @@ const RootQueryType = new GraphQLObjectType({
     users: {
       type: new GraphQLList(UserType),
       description: "List of All users",
-      resolve: () => User.find(),
+      resolve: async () => {
+        const users = await User.find();
+        return users;
+      },
     },
 
     posts: {
@@ -103,8 +127,7 @@ const RootQueryType = new GraphQLObjectType({
         if (args.userId) {
           console.log(args.userId);
           const res = await Post.find({ userId: args.userId });
-          console.log(res);
-          console.log();
+
           return res;
         }
 
@@ -152,31 +175,6 @@ const RootMutationType = new GraphQLObjectType({
         return User.create(newUser);
       },
     },
-
-    updateUserImage: {
-      type: GraphQLString,
-      description: "Update the user image",
-      args: {
-        userId: { type: new GraphQLNonNull(GraphQLID) },
-        image: { type: GraphQLString },
-      },
-      resolve: async (parent, args) => {
-        let user = await User.findOne({ userId: args.userId });
-
-        user.username = args.username;
-        user.email = args.email;
-        user.description = args.description;
-        user.country = args.country;
-        user.city = args.city;
-        console.log(user);
-        if (args.password) {
-          user.password = await bcrypt.hash(args.password, 10);
-        }
-
-        const userUpdated = await user.save();
-        return userUpdated;
-      },
-    },
     updateUser: {
       type: UserType,
       description: "Update a user",
@@ -189,6 +187,7 @@ const RootMutationType = new GraphQLObjectType({
         country: { type: GraphQLString },
         city: { type: GraphQLString },
       },
+
       resolve: async (parent, args) => {
         let user = await User.findOne({ userId: args.userId });
 
@@ -197,10 +196,40 @@ const RootMutationType = new GraphQLObjectType({
         user.description = args.description;
         user.country = args.country;
         user.city = args.city;
-        console.log(user);
         if (args.password) {
           user.password = await bcrypt.hash(args.password, 10);
         }
+
+        const userUpdated = await user.save();
+        return userUpdated;
+      },
+    },
+    // sendInvitation:{
+    //   type:GraphQLString ,
+    //   description: "Sending an invitation",
+    //   args: {
+
+    //   },
+    //   resolve: async (parent, args) => {
+    //     let user = await User.findOne({ email: args.email });
+
+    //     user.socketIoId = args.socketIoId;
+
+    //     const userUpdated = await user.save();
+    //     return userUpdated;
+    //   },
+    // },
+    updateUserSocketId: {
+      type: UserType,
+      description: "Update a user",
+      args: {
+        email: { type: new GraphQLNonNull(GraphQLString) },
+        socketIoId: { type: GraphQLString },
+      },
+      resolve: async (parent, args) => {
+        let user = await User.findOne({ email: args.email });
+
+        user.socketIoId = args.socketIoId;
 
         const userUpdated = await user.save();
         return userUpdated;

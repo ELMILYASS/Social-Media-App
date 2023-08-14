@@ -20,4 +20,10 @@
 // res.then((data) => console.log(data)); // result is 0 or undefined because pr doesn't throw an error
 // // function resolve()
 
-console.log("ilas".startsWith(" "));
+// console.log("ilas".startsWith(" "));
+
+// const array = undefined;
+
+// const p = array.map((e) => console.log(e));
+
+// console.log(p);

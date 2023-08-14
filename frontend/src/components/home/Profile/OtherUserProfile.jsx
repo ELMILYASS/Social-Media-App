@@ -1,37 +1,43 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import img from "../../Images/pexels-pixabay-220453.jpg";
-import { GoLocation } from "react-icons/go";
+
 import ProfileInfo from "./ProfileInfo";
 import EditAddButton from "./EditAddButton";
-import { AiOutlineEdit, AiOutlineUserAdd } from "react-icons/ai";
+import { AiOutlineEdit, AiOutlineLeft, AiOutlineUserAdd } from "react-icons/ai";
 import Post from "../MainSection/Posts/Post";
 import {
   getUserByUsername,
   getUserProfileImage,
 } from "../../../controllers/User";
-import { UserContext } from "../../../App";
-import AddFriend from "../Friends/AddFriend";
 
-function Profile() {
+function OtherUserProfile() {
   const Navigate = useNavigate();
+  const { username } = useParams();
 
-  const [friendsNumber, setFriendsNumber] = useState();
-  const [friends, setFriends] = useState();
+  const [user, setUser] = useState();
+  const [imageURL, setImageURL] = useState();
 
-  const [user, setUser] = useContext(UserContext).user;
-  const [imageURL, setImageURL] = useContext(UserContext).image;
+  useEffect(() => {
+    const fetchUserData = async (username) => {
+      const userData = await getUserByUsername(username);
+      setUser(userData);
+      const image = await getUserProfileImage(userData.userId);
+      setImageURL(image);
+    };
+    if (username) {
+      fetchUserData(username);
+    }
+  }, []);
 
-  const [addFriend, setAddFriend] = useState(false);
-  const styles = {
-    width: addFriend ? "80%" : "0",
-    height: addFriend ? "80vh" : "0",
-    zIndex: addFriend ? "30" : "-2",
-    opacity: addFriend ? "1" : "0",
-  };
   return (
     <div className=" section sm:ml-[90px] min-h-[100vh]   sm:p-6 p-4 flex flex-col gap-5 items-center">
-      <AddFriend style={styles} setAddFriend={setAddFriend} />
+      <div className="  text-xl ">
+        <div className=" z-50 cursor-pointer " onClick={() => Navigate(-1)}>
+          <AiOutlineLeft />
+        </div>
+      </div>
+
       <div className=" flex flex-col items-center gap-1">
         <div className="h-[140px] rounded-full bg-white border-solid border-main border-[1px]  p-[2px] w-[140px] overflow-hidden max-[400px]:w-[120px] max-[400px]:h-[120px]">
           <img
@@ -52,7 +58,7 @@ function Profile() {
             user?.country &&
             user?.city && (
               <div className="flex gap-1 justify-center">
-                <GoLocation className="text-xl" />
+                <GoLocatio className="text-xl" />
 
                 <div> {`${user.country} ${user.city}`}</div>
               </div>
@@ -66,12 +72,10 @@ function Profile() {
         <ProfileInfo number={90} content={"likes"} />
       </div>
       <div className="flex flex-wrap gap-4 justify-center ">
-        <EditAddButton Icon={<AiOutlineEdit />} content={"Edit profile"} />
-
         <EditAddButton
           Icon={<AiOutlineUserAdd />}
-          content={"Add friends"}
-          setAddFriend={setAddFriend}
+          content={"Send Invitation"}
+          userId={user?.userId}
         />
       </div>
       <div>
@@ -97,4 +101,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default OtherUserProfile;

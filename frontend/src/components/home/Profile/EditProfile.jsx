@@ -14,6 +14,7 @@ import axios from "axios";
 function EditProfile() {
   const [user, setUser] = useContext(UserContext).user;
   const [imageURL, setImageURL] = useContext(UserContext).image;
+  console.log("imageurl is : ", imageURL);
   const [saved, setSaved] = useState(false);
   const styles = {
     opacity: saved ? "1" : "0",
@@ -288,6 +289,8 @@ function EditProfile() {
               dateOfBirth
               country
               city
+              invitedUsers
+              ReceivedInvitationsUsers
               description
               friends {
                 userId
@@ -296,8 +299,12 @@ function EditProfile() {
                 country
                 city
                 username
+                image
+                socketIoId
               }
               username
+              image
+              socketIoId
             }
           }
         `;
@@ -328,12 +335,15 @@ function EditProfile() {
 
   async function changeImage(e) {
     const file = e.target.files[0];
+    console.log("file is ;", file);
     const formData = new FormData();
     formData.append(file.name, file);
+    console.log(user.userId);
     formData.append("userId", user.userId);
+    console.log(formData);
     try {
       const res = await sendAxiosRequest("POST", "profileImage", formData);
-      console.log(res.data);
+      console.log(res);
       setImageWarning("");
 
       setImageURL(URL.createObjectURL(file));

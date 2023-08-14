@@ -13,9 +13,10 @@ const handleRefreshToken = async (req, res) => {
   const refreshToken = cookies.jwt;
 
   const foundUser = await User.findOne({ refreshToken: refreshToken }).exec();
+
   if (!foundUser) res.status(403).json({ message: "Unauthorized" });
   jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
-    if (err || decoded.email !== foundUser.email)
+    if (err || decoded.email !== foundUser?.email)
       return res
         .status(403)
         .json({ message: "Unauthorized Invalid refresh Token" });

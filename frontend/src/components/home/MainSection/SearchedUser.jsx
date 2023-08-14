@@ -6,8 +6,7 @@ function SearchedUser({ username, userId, image }) {
   function displayUserProfile() {
     Navigate("/home/profile/" + username);
   }
-  console.log("image from here", image);
-
+  console.log("image from here ", image);
   return (
     <div
       onClick={displayUserProfile}

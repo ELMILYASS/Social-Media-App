@@ -3,8 +3,10 @@ const path = require("path");
 
 // upload user image
 const updateImage = async (req, res) => {
+  console.log("server ");
   const userId = req.body.userId;
   const file = req.files;
+
   try {
     const user = await User.findOne({ userId: userId }).exec();
     Object.keys(file).forEach((key) => {
@@ -35,15 +37,22 @@ const getImage = async (req, res) => {
   const userId = req.params.userId;
 
   const user = await User.findOne({ userId: userId }).exec();
+
   const imageFileName = user.image;
-  const imagePath = path.join(
-    __dirname,
-    "..",
-    "files",
-    "profileImages",
-    imageFileName
-  );
-  res.sendFile(imagePath);
+
+  if (imageFileName) {
+    const imagePath = path.join(
+      __dirname,
+      "..",
+      "files",
+      "profileImages",
+      imageFileName
+    );
+
+    return res.sendFile(imagePath);
+  }
+ 
+  return res.json({ message: "User doesn't have a profile image" });
 };
 
 module.exports = { updateImage, getImage };

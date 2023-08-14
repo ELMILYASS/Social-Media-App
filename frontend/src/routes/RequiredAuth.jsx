@@ -5,15 +5,17 @@ import axios from "axios";
 import Sign from "../components/sign/Sign";
 import { sendRequest } from "../components/Request";
 import { UserContext } from "../App";
+import { io } from "socket.io-client";
 
 function RequiredAuth() {
+  console.log("from required auth");
   const navigate = useNavigate();
   const location = useLocation();
   const [isSignPage, setIsSignPage] = useState(false);
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useContext(UserContext).user;
-
-  const [connected, setConnected] = useState(false);
+  const [socket, setSocket] = useContext(UserContext).socket;
+  const [connected, setConnected] = useContext(UserContext).connected;
   const testUserPermission = async () => {
     const accessToken = localStorage.getItem("accessToken");
     const email = localStorage.getItem("email");
@@ -25,6 +27,7 @@ function RequiredAuth() {
             Authorization: `Bearer ${accessToken}`,
           },
         });
+
         setConnected(true);
 
         if (location.pathname === "/") {
@@ -46,6 +49,7 @@ function RequiredAuth() {
           }
         } catch (err) {
           setConnected(false);
+          setSocket(null);
           console.log(err);
           setIsSignPage(true);
           // navigate("/")
@@ -54,6 +58,7 @@ function RequiredAuth() {
     } else {
       setConnected(false);
       setIsSignPage(true);
+      setSocket(null);
     }
     setLoading(true);
   };
@@ -66,6 +71,8 @@ function RequiredAuth() {
         country
         city
         image
+        invitedUsers
+        ReceivedInvitationsUsers
         description
         friends{
           userId
@@ -76,6 +83,7 @@ function RequiredAuth() {
           username
           description
           image
+      
         }
         username
         
@@ -86,13 +94,77 @@ function RequiredAuth() {
       setUser(data.data.data.user)
     );
   }
+  function updateSocketIoId(socketIoId) {
+    console.log("socket id is :,", socketIoId);
+    const query = `
+          mutation updateUserSocketId(
+           
+            $email: String!,
+            $socketIoId: String,
+           
+          ) {
+            updateUserSocketId(
+              email: $email,
+              socketIoId: $socketIoId
+            ) {
+              userId
+              email
+              dateOfBirth
+              country
+              city
+              socketIoId
+              image
+              description
+              friends{
+                userId
+                email
+                dateOfBirth
+                country
+                city
+                username
+                description
+                image
+                socketIoId
+            
+              }
+              username
+            }
+          }
+        `;
+
+    try {
+      sendRequest(query, {
+        email: localStorage.getItem("email"),
+        socketIoId: socketIoId,
+      }).then((data) => {
+        setUser(data.data.data.updateUserSocketId);
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   useEffect(() => {
     testUserPermission(); //must be called each time we change the route that is why we did not need to use a dependency array
   });
   useEffect(() => {
     if (connected) {
       getUser();
+      const newSocket = io(`${endPoint}`);
+      newSocket.on("connect", () => {
+        setSocket(newSocket);
+        updateSocketIoId(newSocket.id);
+      });
+
+      // return () => {
+      //   console.log("here");
+      //   // Disconnect and clean up socket when the component unmounts
+      //   newSocket.disconnect();
+      //   setSocket(null);
+      // };
     } else {
+      updateSocketIoId("");
+      setSocket(null);
       setUser(null);
     }
   }, [connected]);

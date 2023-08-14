@@ -1,4 +1,5 @@
 import { sendRequest, sendAxiosRequest } from "../components/Request";
+import defaultImage from "../images/default profile image.jpg";
 export async function getUserByUsername(username) {
   const query = `query getUser($username : String){
         user(username: $username){
@@ -35,9 +36,15 @@ export async function getUserByUsername(username) {
 export async function getUserProfileImage(userId) {
   try {
     const res = await sendAxiosRequest("GET", `profileimage/${userId}`);
+    console.log("response from ", res);
     const fileImage = res.data;
-    const image = URL.createObjectURL(fileImage);
-    return image;
+    console.log(fileImage);
+    if (fileImage.type !== "application/json") {
+      const image = URL.createObjectURL(fileImage);
+      return image;
+    } else {
+      return defaultImage;
+    }
   } catch (err) {
     console.log(err);
   }

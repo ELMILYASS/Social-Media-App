@@ -11,6 +11,7 @@ module.exports = {
         gray: "#5d5d5d",
       },
       shadow: "shadow-[0_10px_30px_rgb(0,0,0,0.2)]",
+     
     },
   },
   plugins: [],

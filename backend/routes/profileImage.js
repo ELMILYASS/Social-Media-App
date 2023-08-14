@@ -6,7 +6,7 @@ const router = express.Router();
 const profileImageController = require("../controllers/profileImageController");
 router.post(
   "/",
-  fileUpload({ createParentPath: true }),
+
   fileExtLimiter([".png", ".jpg", ".jpeg"]),
   fileSizeLimiter,
   profileImageController.updateImage
@@ -14,7 +14,6 @@ router.post(
 
 router.get(
   "/:userId",
-  fileUpload({ createParentPath: true }),
 
   profileImageController.getImage
 );
