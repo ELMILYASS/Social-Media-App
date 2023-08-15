@@ -20,7 +20,7 @@ const UserType = new GraphQLObjectType({
     email: { type: new GraphQLNonNull(GraphQLString) },
     password: { type: new GraphQLNonNull(GraphQLString) },
     refreshToken: { type: GraphQLString },
-    friends: { type: new GraphQLList(UserType) },
+    friends: { type: new GraphQLList(GraphQLID) },
     dateOfBirth: { type: GraphQLString },
     country: { type: GraphQLString },
     city: { type: GraphQLString },
@@ -30,24 +30,30 @@ const UserType = new GraphQLObjectType({
     sentInvitations: { type: new GraphQLList(GraphQLID) },
     receivedInvitations: { type: new GraphQLList(GraphQLID) },
 
-    invitedUsers: {
-      type: new GraphQLList(UserType),
-      resolve: (user) => {
-        const users = user.sentInvitations.map((u) => {
-          return User.findOne({ userId: u }).exec();
-        });
-        return users;
-      },
-    },
-    ReceivedInvitationsUsers: {
-      type: new GraphQLList(UserType),
-      resolve: (user) => {
-        const users = user.receivedInvitations.map((u) => {
-          return User.findOne({ userId: u }).exec();
-        });
-        return users;
-      },
-    },
+    // invitedUsers: {
+    //   type: new GraphQLList(UserType),
+    //   resolve: async (user) => {
+    //     let users = [];
+    //     for (id of user.sentInvitations) {
+    //       const u = await User.findOne({ userId: id }).exec();
+    //       users.push(u);
+    //     }
+
+    //     return users;
+    //   },
+    // },
+    // ReceivedInvitationsUsers: {
+    //   type: new GraphQLList(UserType),
+    //   resolve: async (user) => {
+    //     let users = [];
+    //     for (id of user.receivedInvitations) {
+    //       const u = await User.findOne({ userId: id }).exec();
+    //       users.push(u);
+    //     }
+
+    //     return users;
+    //   },
+    // },
   }),
 });
 
@@ -140,6 +146,7 @@ const RootQueryType = new GraphQLObjectType({
       description: "A Single User",
       args: {
         //possible args for the query
+        userId: { type: GraphQLID },
         username: { type: GraphQLString },
         email: { type: GraphQLString }, // can be email or username
       },
@@ -147,8 +154,10 @@ const RootQueryType = new GraphQLObjectType({
         if (args.email) {
           return User.findOne({ email: args.email }).exec();
         }
+        if (args.username)
+          return User.findOne({ username: args.username }).exec();
 
-        return User.findOne({ username: args.username }).exec();
+        if (args.userId) return User.findOne({ userId: args.userId }).exec();
       },
     },
   }),

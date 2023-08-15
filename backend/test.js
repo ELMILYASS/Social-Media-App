@@ -27,3 +27,13 @@
 // const p = array.map((e) => console.log(e));
 
 // console.log(p);
+
+// let array = ["ilyass", "ilyass2"];
+
+// console.log(array.re)
+
+let array = [];
+
+for (e of array) {
+  console.log(e);
+}

@@ -8,7 +8,11 @@ const cors = require("cors");
 const connectDB = require("./config/dbConnect");
 const verifyJwt = require("./middleware/VerifyJwt");
 const corsOptions = require("./config/corsOptions");
-const { sendInvitation } = require("./controllers/InvitationController");
+const {
+  sendInvitation,
+  deleteInvitation,
+  acceptInvitation,
+} = require("./controllers/InvitationController");
 const cookieParser = require("cookie-parser");
 const { graphqlHTTP } = require("express-graphql");
 const schema = require("./controllers/appController");
@@ -59,9 +63,55 @@ mongoose.connection.once("open", () => {
     socket.on("send-invitation", async (senderId, receiverId) => {
       // console.log(senderId);
       // console.log(receiverId);
-      const res = await sendInvitation(senderId, receiverId);
-      console.log(res);
+      try {
+        const res = await sendInvitation(senderId, receiverId);
+        socket.emit("server-response", res);
+      } catch (err) {
+        console.log(err);
+        socket.emit("error", err.message);
+      }
     });
+    socket.on(
+      "send-notification-toReceiver",
+      (sender, receiver, receiverSocketId) => {
+        io.to(receiverSocketId).emit("new-invitation", sender, receiver);
+      }
+    );
+    socket.on("delete-invitation", async (senderId, receiverId) => {
+      // console.log(senderId);
+      // console.log(receiverId);
+      try {
+        const res = await deleteInvitation(senderId, receiverId);
+        socket.emit("server-response", res);
+      } catch (err) {
+        console.log(err);
+        socket.emit("error", err.message);
+      }
+    });
+    socket.on(
+      "send-DeleteNotification-toReceiver",
+      (sender, receiver, receiverSocketId) => {
+        io.to(receiverSocketId).emit("deleted-invitation", sender, receiver);
+      }
+    );
+    socket.on("accept-invitation", async (senderId, receiverId) => {
+      // console.log(senderId);
+      // console.log(receiverId);
+      try {
+        await deleteInvitation(senderId, receiverId);
+        const res = await acceptInvitation(senderId, receiverId);
+        socket.emit("server-response", res);
+      } catch (err) {
+        console.log(err);
+        socket.emit("error", err.message);
+      }
+    });
+    socket.on(
+      "send-AcceptedNotification-toSender",
+      (sender, receiver, senderSocketId) => {
+        io.to(senderSocketId).emit("accepted-invitation", sender, receiver);
+      }
+    );
     socket.on("disconnect", () => {
       console.log("A user disconnected");
     });

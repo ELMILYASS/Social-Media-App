@@ -4,20 +4,64 @@ const sendInvitation = async (senderId, receiverId) => {
   try {
     const sender = await User.findOne({ userId: senderId }).exec();
     const receiver = await User.findOne({ userId: receiverId }).exec();
-   
+
     sender.sentInvitations.push(receiverId);
-    console.log("new lkust ",sender.sentInvitations)
     receiver.receivedInvitations.push(senderId);
     await sender.save();
     await receiver.save();
     return {
       status: "Invitation sent successfully",
       receiverSocketId: receiver.socketIoId,
+      senderUser: sender,
+      receiverUser: receiver,
     };
   } catch (err) {
-    console.log(err);
-    return err.message;
+    throw err;
   }
 };
 
-module.exports = { sendInvitation };
+const deleteInvitation = async (senderId, receiverId) => {
+  try {
+    const sender = await User.findOne({ userId: senderId }).exec();
+    const receiver = await User.findOne({ userId: receiverId }).exec();
+
+    sender.sentInvitations = sender.sentInvitations.filter(
+      (id) => id !== receiverId
+    );
+    receiver.receivedInvitations = receiver.receivedInvitations.filter(
+      (id) => id !== senderId
+    );
+    await sender.save();
+    await receiver.save();
+    return {
+      status: "Invitation deleted successfully",
+      receiverSocketId: receiver.socketIoId,
+      senderUser: sender,
+      receiverUser: receiver,
+    };
+  } catch (err) {
+    throw err;
+  }
+};
+
+const acceptInvitation = async (senderId, receiverId) => {
+  try {
+    const sender = await User.findOne({ userId: senderId }).exec();
+    const receiver = await User.findOne({ userId: receiverId }).exec();
+
+    sender.friends.push(receiverId);
+    receiver.friends.push(senderId);
+    await sender.save();
+    await receiver.save();
+    return {
+      status: "Invitation accepted successfully",
+      senderSocketId: sender.socketIoId,
+      senderUser: sender,
+      receiverUser: receiver,
+    };
+  } catch (err) {
+    throw err;
+  }
+};
+
+module.exports = { sendInvitation, deleteInvitation, acceptInvitation };

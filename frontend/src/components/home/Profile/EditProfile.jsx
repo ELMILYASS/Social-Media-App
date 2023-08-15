@@ -289,19 +289,11 @@ function EditProfile() {
               dateOfBirth
               country
               city
-              invitedUsers
-              ReceivedInvitationsUsers
+      
+              sentInvitations
+              receivedInvitations
               description
-              friends {
-                userId
-                email
-                dateOfBirth
-                country
-                city
-                username
-                image
-                socketIoId
-              }
+              friends 
               username
               image
               socketIoId

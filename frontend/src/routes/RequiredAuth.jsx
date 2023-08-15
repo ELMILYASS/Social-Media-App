@@ -8,7 +8,6 @@ import { UserContext } from "../App";
 import { io } from "socket.io-client";
 
 function RequiredAuth() {
-  console.log("from required auth");
   const navigate = useNavigate();
   const location = useLocation();
   const [isSignPage, setIsSignPage] = useState(false);
@@ -71,20 +70,11 @@ function RequiredAuth() {
         country
         city
         image
-        invitedUsers
-        ReceivedInvitationsUsers
+  
+        sentInvitations
+        receivedInvitations
         description
-        friends{
-          userId
-          email
-          dateOfBirth
-          country
-          city
-          username
-          description
-          image
-      
-        }
+        friends
         username
         
       }
@@ -95,7 +85,7 @@ function RequiredAuth() {
     );
   }
   function updateSocketIoId(socketIoId) {
-    console.log("socket id is :,", socketIoId);
+    // console.log("socket id is :,", socketIoId);
     const query = `
           mutation updateUserSocketId(
            
@@ -115,18 +105,10 @@ function RequiredAuth() {
               socketIoId
               image
               description
-              friends{
-                userId
-                email
-                dateOfBirth
-                country
-                city
-                username
-                description
-                image
-                socketIoId
-            
-              }
+           
+              sentInvitations
+              receivedInvitations
+              friends
               username
             }
           }

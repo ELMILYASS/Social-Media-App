@@ -97,3 +97,13 @@ body {
     min-height: 100vh;
   }
 }
+/* Friends component Height */
+.Height {
+  height: calc(100vh - 60px);
+}
+
+@media (min-width: 640px) {
+  .Height {
+    height: 100vh;
+  }
+}

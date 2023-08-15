@@ -10,16 +10,7 @@ export async function getUserByUsername(username) {
           city
           image
           description
-          friends{
-            userId
-            email
-            dateOfBirth
-            country
-            city
-            username
-            description
-            image
-          }
+          friends
           username
           
         }
@@ -27,6 +18,31 @@ export async function getUserByUsername(username) {
 
   try {
     const res = await sendRequest(query, { username: username });
+    return res.data.data.user;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function getUserById(userId) {
+  const query = `query getUser($userId : ID!){
+        user(userId: $userId){
+          userId
+          email
+          dateOfBirth
+          country
+          city
+          image
+          description
+          friends
+          username
+          socketIoId
+        }
+      }`;
+
+  try {
+    const res = await sendRequest(query, { userId: userId });
+
     return res.data.data.user;
   } catch (err) {
     console.log(err);

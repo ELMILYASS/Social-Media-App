@@ -10,18 +10,19 @@ import {
   getUserByUsername,
   getUserProfileImage,
 } from "../../../controllers/User";
+import { UserContext } from "../../../App";
 
 function OtherUserProfile() {
   const Navigate = useNavigate();
   const { username } = useParams();
-
-  const [user, setUser] = useState();
+  const [user, setUser] = useContext(UserContext).user;
+  const [userInfo, setUserInfo] = useState();
   const [imageURL, setImageURL] = useState();
 
   useEffect(() => {
     const fetchUserData = async (username) => {
       const userData = await getUserByUsername(username);
-      setUser(userData);
+      setUserInfo(userData);
       const image = await getUserProfileImage(userData.userId);
       setImageURL(image);
     };
@@ -32,7 +33,7 @@ function OtherUserProfile() {
 
   return (
     <div className=" section sm:ml-[90px] min-h-[100vh]   sm:p-6 p-4 flex flex-col gap-5 items-center">
-      <div className="  text-xl ">
+      <div className="  text-xl w-full ">
         <div className=" z-50 cursor-pointer " onClick={() => Navigate(-1)}>
           <AiOutlineLeft />
         </div>
@@ -48,19 +49,19 @@ function OtherUserProfile() {
         </div>
         <div className="text-center">
           <div className="text-xl text-main">
-            {user?.username || "Username"}
+            {userInfo?.username || "Username"}
           </div>
-          {user?.description && (
+          {userInfo?.description && (
             <div className="text-dark">{user.description}</div>
           )}
 
-          {user?.country !== "Select Country" &&
-            user?.country &&
-            user?.city && (
+          {userInfo?.country !== "Select Country" &&
+            userInfo?.country &&
+            userInfo?.city && (
               <div className="flex gap-1 justify-center">
                 <GoLocatio className="text-xl" />
 
-                <div> {`${user.country} ${user.city}`}</div>
+                <div> {`${userInfo.country} ${userInfo.city}`}</div>
               </div>
             )}
           <div className="flex justify-center items-center text-dark gap-1"></div>
@@ -72,11 +73,27 @@ function OtherUserProfile() {
         <ProfileInfo number={90} content={"likes"} />
       </div>
       <div className="flex flex-wrap gap-4 justify-center ">
-        <EditAddButton
-          Icon={<AiOutlineUserAdd />}
-          content={"Send Invitation"}
-          userId={user?.userId}
-        />
+        {user?.friends.includes(userInfo?.userId) ? (
+          "Friend"
+        ) : user?.sentInvitations.includes(userInfo?.userId) ? (
+          <EditAddButton
+            Icon={<AiOutlineUserAdd />}
+            content={"Delete Invitation"}
+            userId={userInfo?.userId}
+          />
+        ) : user?.receivedInvitations.includes(userInfo?.userId) ? (
+          <EditAddButton
+            Icon={<AiOutlineUserAdd />}
+            content={"Accept Invitation"}
+            userId={userInfo?.userId}
+          />
+        ) : (
+          <EditAddButton
+            Icon={<AiOutlineUserAdd />}
+            content={"Send Invitation"}
+            userId={userInfo?.userId}
+          />
+        )}
       </div>
       <div>
         <div className="text-center text-xl text-dark border-solid border-gray pb-2 border-b-[1px] mb-5">

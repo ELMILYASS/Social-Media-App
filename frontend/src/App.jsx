@@ -17,8 +17,30 @@ function App() {
   const [socket, setSocket] = useState(null);
   const [imageURL, setImageURL] = useState("");
   console.log("user is ", user);
+  // console.log("socket is ", socket);
   useEffect(() => {
-    console.log(user);
+    socket?.on("accepted-invitation", (sender, receiver) => {
+      setUser(sender);
+      console.log(
+        receiver.username,
+        " has accepted the invitation that you sent to him"
+      );
+    });
+    socket?.on("error", (error) => console.log(error));
+
+    socket?.on("deleted-invitation", (sender, receiver) => {
+      setUser(receiver);
+      console.log(
+        sender.username,
+        " has deleted the invitation that he sent to you"
+      );
+    });
+    socket?.on("new-invitation", (sender, receiver) => {
+      setUser(receiver);
+      console.log("You have received a new Invitation from ", sender.username);
+    });
+  }, [socket]);
+  useEffect(() => {
     async function uploadImage(userId) {
       const file = await sendAxiosRequest("GET", `profileimage/${userId}`);
       return file;

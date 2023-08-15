@@ -5,6 +5,11 @@ import { BsPersonAdd, BsSearch } from "react-icons/bs";
 import { UserContext } from "../../../App";
 import { sendRequest } from "../../Request";
 import { getUserProfileImage } from "../../../controllers/User";
+import { GrValidate } from "react-icons/gr";
+import {
+  acceptInvitation,
+  sendInvitation,
+} from "../../../controllers/Invitation";
 
 function AddFriend({ style, setAddFriend }) {
   const [user, setUser] = useContext(UserContext).user;
@@ -12,7 +17,8 @@ function AddFriend({ style, setAddFriend }) {
   const [searchedUsers, setSearchedUsers] = useState([]);
   const [foundUsers, setFoundUsers] = useState([]);
   const [inputValue, setInputValue] = useState();
-  console.log(foundUsers);
+  const [socket, setSocket] = useContext(UserContext).socket;
+  console.log("found users", foundUsers);
   useEffect(() => {
     const query = `query{
         users{
@@ -26,31 +32,51 @@ function AddFriend({ style, setAddFriend }) {
     );
   }, []);
 
+  const [clicked, setClicked] = useState(false);
+  console.log(clicked);
   async function displayUsers(users) {
     const usersList = [];
 
     for (let i = 0; i < users.length; i++) {
       const u = users[i];
 
-      if (u?.image) {
-        const image = await getUserProfileImage(u.userId);
-        usersList.push(
-          <div className="relative">
-            <SearchedUser
-              username={u.username}
-              userId={u.userId}
-              image={image}
-            />
-            <div className="cursor-pointer">
-              <BsPersonAdd className="absolute right-4 top-1/2 translate-y-[-50%] text-2xl text-main" />
-            </div>
+      const image = await getUserProfileImage(u.userId);
+      usersList.push(
+        <div className="relative  " userId={u.userId}>
+          <SearchedUser username={u.username} userId={u.userId} image={image} />
+          <div className="cursor-pointer">
+            {user.receivedInvitations.includes(u.userId) ? (
+              <div
+                onClick={() => {
+                  acceptInvitation(socket, setUser, u.userId, user.userId);
+                  setFoundUsers(
+                    foundUsers.filter((u) => u.props.userId !== u.userId)
+                  );
+                }}
+              >
+                <GrValidate className="absolute right-4 top-1/2 translate-y-[-50%] text-2xl text-main" />
+              </div>
+            ) : (
+              <div
+                onClick={() => {
+                  sendInvitation(socket, setUser, user.userId, u.userId);
+                  setFoundUsers(
+                    foundUsers.filter((u) => u.props.userId !== u.userId)
+                  );
+                }}
+              >
+                <BsPersonAdd className="absolute right-4 top-1/2 translate-y-[-50%] text-2xl text-main" />
+              </div>
+            )}
           </div>
-        );
-      } else {
-        usersList.push(
-          <SearchedUser username={u.username} userId={u.userId} />
-        );
-      }
+
+          {user.receivedInvitations.includes(u.userId) && (
+            <div className="absolute w-full bottom-0 text-center">
+              He already sent you an invitation
+            </div>
+          )}
+        </div>
+      );
     }
 
     setFoundUsers(usersList);
@@ -60,7 +86,10 @@ function AddFriend({ style, setAddFriend }) {
     setInputValue(e.target.value);
     const displayedUsers = users.filter(
       (u) =>
-        u.username.startsWith(e.target.value || " ") && u.userId !== user.userId
+        u.username.startsWith(e.target.value || " ") &&
+        u.userId !== user.userId &&
+        !user.friends.includes(u.userId) &&
+        !user.sentInvitations.includes(u.userId)
     );
 
     setSearchedUsers(displayedUsers);
