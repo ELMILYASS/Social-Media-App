@@ -117,7 +117,7 @@ function Input({ placeholder, Icon, type, info, name, color, iconColor }) {
               setFocus(true);
             }}
             style={borderStyles}
-            className={`rounded-full border-solid  borderColor border-[2px]  pl-8 pr-3 outline-none h-[40px] w-full `}
+            className={`rounded-full border-solid  borderColor border-[1px]  pl-8 pr-3 outline-none h-[40px] w-full `}
           >
             <option>Select Country</option>
             {countries.map((country, index) => (
@@ -167,7 +167,7 @@ function Input({ placeholder, Icon, type, info, name, color, iconColor }) {
             setFocus(true);
           }}
           style={borderStyles}
-          className={`rounded-full border-solid  borderColor border-[2px]  pl-8 pr-3 outline-none h-full w-full`}
+          className={`rounded-full border-solid  borderColor border-[1px]  pl-8 pr-3 outline-none h-full w-full`}
         />
       )}
     </div>

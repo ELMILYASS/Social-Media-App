@@ -35,9 +35,16 @@ function App() {
         " has deleted the invitation that he sent to you"
       );
     });
+
     socket?.on("new-invitation", (sender, receiver) => {
       setUser(receiver);
       console.log("You have received a new Invitation from ", sender.username);
+    });
+    socket?.on("deletion-friend", (sender, receiver) => {
+      console.log("sender( who delete )", sender);
+      console.log("receiver", receiver);
+      setUser(receiver);
+      console.log(`${sender.username} has deleted you from his friends `);
     });
   }, [socket]);
   useEffect(() => {

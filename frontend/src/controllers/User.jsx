@@ -52,9 +52,9 @@ export async function getUserById(userId) {
 export async function getUserProfileImage(userId) {
   try {
     const res = await sendAxiosRequest("GET", `profileimage/${userId}`);
-    console.log("response from ", res);
+
     const fileImage = res.data;
-    console.log(fileImage);
+
     if (fileImage.type !== "application/json") {
       const image = URL.createObjectURL(fileImage);
       return image;
@@ -65,3 +65,38 @@ export async function getUserProfileImage(userId) {
     console.log(err);
   }
 }
+
+export async function getUserPosts(userId) {
+  const query = `
+  query getPosts($userId: ID!) {
+    posts(userId: $userId) {
+      postId
+      content
+      images
+      videos
+      createdAt
+      updatedAt
+      userId
+      likes {
+        userId
+        emoji
+      }
+      comments {
+        userId
+        content
+        image
+        createdAt
+      }
+    }
+  }
+`;
+
+  try {
+    const res = await sendRequest(query, { userId, userId });
+    console.log("response is ", res);
+    return res.data.data.posts;
+  } catch (err) {
+    console.log(err);
+  }
+}
+

@@ -3,12 +3,9 @@ import { BsSearch } from "react-icons/bs";
 import SearchedUser from "../MainSection/SearchedUser";
 import { UserContext } from "../../../App";
 import { getUserById, getUserProfileImage } from "../../../controllers/User";
-import { AiOutlineUserDelete } from "react-icons/ai";
-import { deleteFriend } from "../../../controllers/Invitation";
 
-function MyFriends() {
+function UserFriends({ userData }) {
   const [user, setUser] = useContext(UserContext).user;
-  const [socket, setSocket] = useContext(UserContext).socket;
   const [users, setUsers] = useState([]);
   const [searchedUsers, setSearchedUsers] = useState([]);
   const [foundUsers, setFoundUsers] = useState([]);
@@ -23,32 +20,19 @@ function MyFriends() {
       const image = await getUserProfileImage(User.userId);
 
       array.push(
-        <div className="relative ">
-          <SearchedUser
-            username={User.username}
-            userId={User.userId}
-            image={image}
-          />
-
-          <div
-            className="cursor-pointer"
-            onClick={() =>
-              deleteFriend(socket, setUser, user.userId, User.userId)
-            }
-          >
-            <AiOutlineUserDelete className="absolute right-4 top-1/2 translate-y-[-50%] text-2xl text-main" />
-          </div>
-        </div>
+        <SearchedUser
+          userId={User.userId}
+          username={User.username}
+          image={image}
+        />
       );
     }
 
     setUsers(array);
   }
   useEffect(() => {
-    console.log("rendering");
-
-    getFriends(user);
-  }, [user]);
+    getFriends(userData);
+  }, [userData, user]);
 
   // console.log("user from friends is ", user);
 
@@ -58,23 +42,25 @@ function MyFriends() {
     for (let i = 0; i < users.length; i++) {
       const u = users[i];
 
-      const image = await getUserProfileImage(u.props.userId);
-      usersList.push(
-        <div className="relative ">
-          <SearchedUser
-            username={u.props.username}
-            userId={u.props.userId}
-            image={image}
-          />
-
-          <div
-            className="cursor-pointer"
-            onClick={() => deleteFriend(socket, setUser, user.userId, u.userId)}
-          >
-            <AiOutlineUserDelete className="absolute right-4 top-1/2 translate-y-[-50%] text-2xl text-main" />
+      if (u.props?.image) {
+        const image = await getUserProfileImage(u.props.userId);
+        usersList.push(
+          <div className="relative">
+            <SearchedUser
+              username={u.props.username}
+              userId={u.props.userId}
+              image={image}
+            />
+            {/* <div className="cursor-pointer">
+              <BsPersonAdd className="absolute right-4 top-1/2 translate-y-[-50%] text-2xl text-main" />
+            </div> */}
           </div>
-        </div>
-      );
+        );
+      } else {
+        usersList.push(
+          <SearchedUser username={u.username} userId={u.userId} />
+        );
+      }
     }
 
     setFoundUsers(usersList);
@@ -97,7 +83,9 @@ function MyFriends() {
   return (
     <div className=" p-5 h-full overflow-hidden">
       <div className="h-[15%]">
-        <div className="text-center text-xl text-dark">My Friends</div>
+        <div className="text-center text-xl text-dark">
+          {userData?.username}'s Friends
+        </div>
         <div className=" relative border-b-[1px] border-b-solid border-b-dark">
           <input
             type="text"
@@ -128,4 +116,4 @@ function MyFriends() {
   );
 }
 
-export default MyFriends;
+export default UserFriends;

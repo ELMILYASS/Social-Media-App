@@ -20,9 +20,9 @@ function Sign() {
   });
 
   return (
-    <div className="relative flex items-center justify-center h-screen overflow-hidden">
+    <div className="relative flex items-center justify-center h-screen  overflow-hidden">
       <Background />
-      <div className="w-[80%] h-[80%] shadow-[0_0_30px_rgb(0,0,0,0.2)] bg-white rounded-xl ">
+      <div className="w-[80%] h-[80%] hover:shadow-[0_0_30px_rgb(0,0,0,0.1)] duration-[0.3s] border-[1px] border-gray bg-white rounded-xl">
         <NavBar
           positions={[
             positions,
@@ -31,7 +31,7 @@ function Sign() {
           ]}
         />
 
-        <div className=" h-[90%] relative  flex  items-center  overflow-hidden">
+        <div className=" h-[90%] relative   flex  items-center  overflow-hidden ">
           <SignIn position={positions.signIn} />
           <Image position={positions.signUpImage} url={image1} />
 

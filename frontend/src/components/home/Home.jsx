@@ -16,7 +16,7 @@ function Home() {
   const [socket] = useContext(UserContext).socket;
 
   return (
-    <div className="min-h-[100vh] bg-backgroundGray">
+    <div className="min-h-[100vh] ">
       <SideBar click={[displayed, setDisplayed]} />
 
       <Routes>

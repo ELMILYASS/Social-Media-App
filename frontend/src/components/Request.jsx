@@ -2,6 +2,7 @@ const url = "http://localhost:3006/graphql";
 import endPoint from "../backendEndPoint";
 import axios from "axios";
 async function sendRequest(query, variables) {
+
   try {
     const res = await axios.post(
       url,
@@ -36,9 +37,10 @@ async function sendRequest(query, variables) {
           },
         }
       );
+     
       return result;
     } catch (err) {
-      console.log(err.message);
+      console.log(err);
     }
   }
 }
@@ -94,10 +96,9 @@ async function sendAxiosRequest(method, url, body) {
 
         localStorage.setItem("accessToken", res.data.accessToken);
         const result = await send(method, url, body);
-        console.log("im heere");
+
         return result;
       } catch (err) {
-        console.log("im heere2");
         if (err.response.status === 413 || err.response.status === 402) {
           throw err;
         } else {

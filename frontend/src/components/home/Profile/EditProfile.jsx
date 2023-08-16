@@ -25,43 +25,43 @@ function EditProfile() {
     email: {
       email: user?.email,
       placeholder: "Email",
-      color: "#ccc",
+      color: "var(--gray)",
       iconColor: "var(--dark)",
     },
     password: {
       password: "",
       placeholder: "Type your password",
-      color: "#ccc",
+      color: "var(--gray)",
       iconColor: "var(--dark)",
     },
     username: {
       username: user?.username,
       placeholder: "Username",
-      color: "#ccc",
+      color: "var(--gray)",
       iconColor: "var(--dark)",
     },
     dateOfBirth: {
       dateOfBirth: user?.dateOfBirth,
       placeholder: "Date of Birth",
-      color: "#ccc",
+      color: "var(--gray)",
       iconColor: "var(--dark)",
     },
     country: {
       country: user?.country,
       placeholder: "Country",
-      color: "#ccc",
+      color: "var(--gray)",
       iconColor: "var(--dark)",
     },
     city: {
       city: user?.city,
       placeholder: "City",
-      color: "#ccc",
+      color: "var(--gray)",
       iconColor: "var(--dark)",
     },
     description: {
       description: user?.description,
       placeholder: "Description",
-      color: "#ccc",
+      color: "var(--gray)",
       iconColor: "var(--dark)",
     },
   });
@@ -71,43 +71,43 @@ function EditProfile() {
       email: {
         email: user?.email,
         placeholder: "Email",
-        color: "#ccc",
+        color: "var(--gray)",
         iconColor: "var(--dark)",
       },
       password: {
         password: "",
         placeholder: "Type your new password",
-        color: "#ccc",
+        color: "var(--gray)",
         iconColor: "var(--dark)",
       },
       username: {
         username: user?.username,
         placeholder: "Username",
-        color: "#ccc",
+        color: "var(--gray)",
         iconColor: "var(--dark)",
       },
       dateOfBirth: {
         dateOfBirth: user?.dateOfBirth,
         placeholder: "Date of Birth",
-        color: "#ccc",
+        color: "var(--gray)",
         iconColor: "var(--dark)",
       },
       country: {
         country: user?.country,
         placeholder: "Country",
-        color: "#ccc",
+        color: "var(--gray)",
         iconColor: "var(--dark)",
       },
       city: {
         city: user?.city,
         placeholder: "City",
-        color: "#ccc",
+        color: "var(--gray)",
         iconColor: "var(--dark)",
       },
       description: {
         description: user?.description,
         placeholder: "Write a brief description about you ",
-        color: "#ccc",
+        color: "var(--gray)",
         iconColor: "var(--dark)",
       },
     });
@@ -179,7 +179,7 @@ function EditProfile() {
                 email: {
                   ...userInfo.email,
 
-                  color: "#ccc",
+                  color: "var(--gray)",
                   iconColor: "var(--dark)",
                 },
                 username: {
@@ -206,7 +206,7 @@ function EditProfile() {
                 username: {
                   ...userInfo.username,
 
-                  color: "#ccc",
+                  color: "var(--gray)",
                   iconColor: "var(--dark)",
                 },
               };
@@ -226,7 +226,7 @@ function EditProfile() {
                   username: {
                     ...userInfo.username,
 
-                    color: "#ccc",
+                    color: "var(--gray)",
                     iconColor: "var(--dark)",
                   },
                 };
@@ -239,13 +239,13 @@ function EditProfile() {
                   email: {
                     ...userInfo.email,
 
-                    color: "#ccc",
+                    color: "var(--gray)",
                     iconColor: "var(--dark)",
                   },
                   username: {
                     ...userInfo.username,
 
-                    color: "#ccc",
+                    color: "var(--gray)",
                     iconColor: "var(--dark)",
                   },
                 };

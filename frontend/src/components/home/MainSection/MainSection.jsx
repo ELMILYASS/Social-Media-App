@@ -62,12 +62,12 @@ function MainSection() {
   }
 
   return (
-    <div className="bg-backgroundGray section sm:ml-[90px]  sm:p-6 p-4 flex flex-col gap-2 relative">
+    <div className=" section sm:ml-[90px]  sm:p-6 p-4 flex flex-col gap-2 relative">
       <div className="flex w-full justify-between relative mb-[10px]   max-[500px]:flex-col max-[500px]:gap-2">
         <h1 className=" text-2xl mb-1 ">
           <span className="text-main font-bold  ">B</span>logging
         </h1>
-        <div className="relative w-[300px] max-[500px]:w-full">
+        <div className="relative w-[300px] max-[500px]:w-full border-[1px] border-gray hover:shadow-[0_0px_30px_rgb(0,0,0,0.1)] duration-[0.3s] rounded-xl ">
           <input
             type="text"
             onFocus={() => setSearching(true)}

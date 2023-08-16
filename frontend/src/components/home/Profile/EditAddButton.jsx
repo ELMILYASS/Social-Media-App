@@ -5,6 +5,7 @@ import {
   acceptInvitation,
   deleteInvitation,
   sendInvitation,
+  deleteFriend,
 } from "../../../controllers/Invitation";
 
 function EditAddButton({ Icon, content, setAddFriend, userId }) {
@@ -20,20 +21,23 @@ function EditAddButton({ Icon, content, setAddFriend, userId }) {
       setAddFriend(true);
     }
     if (content === "Send Invitation") {
-      sendInvitation(socket,setUser,user.userId, userId);
+      sendInvitation(socket, setUser, user.userId, userId);
     }
     if (content === "Delete Invitation") {
-      deleteInvitation(socket,setUser,user.userId, userId);
+      deleteInvitation(socket, setUser, user.userId, userId);
     }
     if (content === "Accept Invitation") {
-      acceptInvitation(socket,setUser,userId, user.userId);
+      acceptInvitation(socket, setUser, userId, user.userId);
+    }
+    if (content === "Friend") {
+      deleteFriend(socket, setUser, user.userId, userId);
     }
   }
 
   return (
     <div
       onClick={handleClick}
-      className="flex text-white bg-main gap-1 p-3 cursor-pointer  rounded-xl items-center"
+      className="flex  border-[1px] border-gray text-main gap-1 p-3 hover:bg-main hover:text-white duration-[0.3s] cursor-pointer  rounded-xl items-center"
     >
       <div className="text-xl">{Icon}</div>
       <div className="">{content}</div>

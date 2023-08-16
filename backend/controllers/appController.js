@@ -63,8 +63,8 @@ const PostType = new GraphQLObjectType({
   fields: () => ({
     postId: { type: new GraphQLNonNull(GraphQLID) },
     content: { type: GraphQLString },
-    image: { type: new GraphQLList(GraphQLString) },
-    video: { type: new GraphQLList(GraphQLString) },
+    images: { type: new GraphQLList(GraphQLString) },
+    videos: { type: new GraphQLList(GraphQLString) },
     createdAt: { type: new GraphQLNonNull(GraphQLString) },
     updatedAt: { type: GraphQLString },
     userId: { type: new GraphQLNonNull(GraphQLID) },
@@ -137,7 +137,7 @@ const RootQueryType = new GraphQLObjectType({
           return res;
         }
 
-        return Post.find();
+        return await Post.find();
       },
     },
 

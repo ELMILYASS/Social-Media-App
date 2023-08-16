@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import defaultImage from "../../../../src/images/default profile image.jpg";
 import { useNavigate } from "react-router";
+import { UserContext } from "../../../App";
 function SearchedUser({ username, userId, image }) {
   const Navigate = useNavigate();
+  const [user, setUser] = useContext(UserContext).user;
   function displayUserProfile() {
-    Navigate("/home/profile/" + username);
+    if (username === user.username) {
+      Navigate("/home/profile/");
+    } else {
+      Navigate("/home/profile/" + username);
+    }
   }
 
   return (

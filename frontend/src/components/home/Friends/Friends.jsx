@@ -52,14 +52,14 @@ function Friends() {
         <div className="text-main font-medium mx-auto">Friends</div>
       </div>
       <div className="flex overflow-x-auto gap-5 h-full snap-x justify-between pb-3">
-        <div className=" w-full min-[720px]:w-[450px] bg-white shadow rounded-xl overflow-y-auto shrink-0 h-full snap-center">
+        <div className=" w-full min-[720px]:w-[450px] bg-white shadow rounded-xl border-[1px] border-gray overflow-y-auto shrink-0 h-full snap-center">
           <MyFriends />
         </div>
 
-        <div className=" w-full min-[720px]:w-[450px] bg-white shadow rounded-xl overflow-y-auto shrink-0 h-full snap-center">
+        <div className=" w-full min-[720px]:w-[450px] bg-white shadow rounded-xl overflow-y-auto border-[1px] border-gray shrink-0 h-full snap-center">
           <Invitations />
         </div>
-        <div className=" w-full min-[720px]:w-[450px] bg-white shadow rounded-xl overflow-y-auto shrink-0 h-full snap-center">
+        <div className=" w-full min-[720px]:w-[450px] bg-white shadow rounded-xl overflow-y-auto shrink-0 border-[1px] border-gray h-full snap-center">
           <ReceivedInvitations />
         </div>
       </div>

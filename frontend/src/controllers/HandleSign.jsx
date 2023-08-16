@@ -53,7 +53,7 @@ async function handleSign(
               [field]: {
                 ...userInfo[field],
                 placeholder: `${field}`,
-                color: "#ccc",
+                color: "var(--gray)",
                 iconColor: "var(--dark)",
               },
             };
@@ -66,7 +66,7 @@ async function handleSign(
             [field]: {
               ...userInfo[field],
               placeholder: `${field}`,
-              color: "#ccc",
+              color: "var(--gray)",
               iconColor: "var(--dark)",
             },
           };
@@ -86,7 +86,7 @@ async function handleSign(
             [userInfo.confirmPassword]: {
               ...userInfo[userInfo.confirmPassword],
               placeholder: `${"Confirm Password"}`,
-              color: "#ccc",
+              color: "var(--gray)",
               iconColor: "var(--dark)",
             },
           };

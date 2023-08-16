@@ -3,9 +3,12 @@ import { BsSearch } from "react-icons/bs";
 import SearchedUser from "../MainSection/SearchedUser";
 import { UserContext } from "../../../App";
 import { getUserById, getUserProfileImage } from "../../../controllers/User";
+import { MdDownloadDone } from "react-icons/md";
+import { acceptInvitation } from "../../../controllers/Invitation";
 
 function ReceivedInvitations() {
   const [user, setUser] = useContext(UserContext).user;
+  const [socket, setSocket] = useContext(UserContext).socket;
   const [users, setUsers] = useState([]);
   const [searchedUsers, setSearchedUsers] = useState([]);
   const [foundUsers, setFoundUsers] = useState([]);
@@ -14,25 +17,35 @@ function ReceivedInvitations() {
   //   console.log("user is ", user);
 
   useEffect(() => {
-    async function getInvitations() {
+    async function getReceivedInvitations() {
       let array = [];
       for (const i of user?.receivedInvitations) {
         const User = await getUserById(i);
         const image = await getUserProfileImage(User.userId);
-
+        // acceptInvitation(socket, setUser, userId, user.userId);
         array.push(
-          <SearchedUser
-            userId={User.userId}
-            username={User.username}
-            image={image}
-          />
+          <div className="relative">
+            <SearchedUser
+              userId={User.userId}
+              username={User.username}
+              image={image}
+            />
+            <div
+              className="cursor-pointer"
+              onClick={() =>
+                acceptInvitation(socket, setUser, User.userId, user.userId)
+              }
+            >
+              <MdDownloadDone className="absolute right-4 top-1/2 translate-y-[-50%] text-2xl text-main" />
+            </div>
+          </div>
         );
       }
 
       setUsers(array);
     }
 
-    getInvitations();
+    getReceivedInvitations();
   }, [user]);
 
   // console.log("user from friends is ", user);
@@ -48,13 +61,18 @@ function ReceivedInvitations() {
         usersList.push(
           <div className="relative">
             <SearchedUser
+              userId={u.props.Id}
               username={u.props.username}
-              userId={u.props.userId}
               image={image}
             />
-            {/* <div className="cursor-pointer">
-              <BsPersonAdd className="absolute right-4 top-1/2 translate-y-[-50%] text-2xl text-main" />
-            </div> */}
+            <div
+              className="cursor-pointer"
+              onClick={() =>
+                acceptInvitation(socket, setUser, u.props.userId, user.userId)
+              }
+            >
+              <MdDownloadDone className="absolute right-4 top-1/2 translate-y-[-50%] text-2xl text-main" />
+            </div>
           </div>
         );
       } else {
@@ -84,7 +102,9 @@ function ReceivedInvitations() {
   return (
     <div className=" p-5 h-full overflow-hidden">
       <div className="h-[15%]">
-        <div className="text-center text-xl text-dark">Received Invitations</div>
+        <div className="text-center text-xl text-dark">
+          Received Invitations
+        </div>
         <div className=" relative border-b-[1px] border-b-solid border-b-dark">
           <input
             type="text"

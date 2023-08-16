@@ -3,7 +3,7 @@ import React, { useState } from "react";
 function BarElement({ Icon, content, navigate, currentPage, info }) {
   const [displayed, setDisplayed] = currentPage;
   const styles = {
-    backgroundColor: content === displayed ? "var(--main)" : "var(--second)",
+    backgroundColor: content === displayed ? "var(--main)" : "",
 
     color: content === displayed ? "white" : "var(--dark)",
   };

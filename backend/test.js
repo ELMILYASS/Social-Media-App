@@ -32,8 +32,19 @@
 
 // console.log(array.re)
 
-let array = [];
+// let array = [];
 
-for (e of array) {
-  console.log(e);
-}
+// for (e of array) {
+//   console.log(e);
+// }
+
+// let array = [];
+
+// console.log(
+//   array.reduce((prev, current) => {
+//     console.log("prev", prev);
+//     console.log("current", current);
+//     console.log("result ", prev + current?.id);
+//     return prev + current.id;
+//   }, 0)
+// );

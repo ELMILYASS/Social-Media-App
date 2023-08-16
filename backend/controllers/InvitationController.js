@@ -64,4 +64,23 @@ const acceptInvitation = async (senderId, receiverId) => {
   }
 };
 
-module.exports = { sendInvitation, deleteInvitation, acceptInvitation };
+const deleteFriend = async (senderId, receiverId) => {
+  const sender = await User.findOne({ userId: senderId }).exec();
+  const receiver = await User.findOne({ userId: receiverId }).exec();
+  sender.friends = sender.friends.filter((id) => id !== receiverId);
+  receiver.friends = receiver.friends.filter((id) => id !== senderId);
+  await sender.save();
+  await receiver.save();
+  return {
+    status: "Friend deleted successfully",
+    receiverSocketId: receiver.socketIoId,
+    senderUser: sender,
+    receiverUser: receiver,
+  };
+};
+module.exports = {
+  sendInvitation,
+  deleteInvitation,
+  acceptInvitation,
+  deleteFriend,
+};

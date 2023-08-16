@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import img from "../../../Images/pexels-pixabay-220453.jpg";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { RiSaveLine, RiSaveFill } from "react-icons/ri";
@@ -6,9 +6,12 @@ import { BiShare, BiSolidShare } from "react-icons/bi";
 import PostBar from "./PostBar";
 import InteractBar from "./InteractBar";
 import Comments from "./Comments";
-function Post({ text, imgs }) {
+import { UserContext } from "../../../../App";
+function Post({ text, imgs, userId }) {
   const [isTruncated, setIsTruncated] = useState(false);
   const paragraphRef = useRef(null);
+  const [user, setUser] = useContext(UserContext).user;
+  const [socket, setSocket] = useContext(UserContext).socket;
   const [displayPostBar, setDisplayPostBar] = useState(false);
   function displayBar() {
     setDisplayPostBar(!displayPostBar);
@@ -79,7 +82,7 @@ function Post({ text, imgs }) {
         />
         <div className="mr-auto">
           <p className="font-medium">Courtney Herny</p>
-          <p className="text-sm text-gray">20 min ago</p>
+          <p className="text-sm text-grayText">20 min ago</p>
         </div>
         <div className="cursor-pointer" onClick={displayBar}>
           <BsThreeDotsVertical />

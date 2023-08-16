@@ -49,7 +49,7 @@ function SignUp({ position, positionSmall }) {
   return (
     <div
       style={Styles}
-      className={`absolute   w-full md:w-1/2  duration-[0.3s] translate   p-8 flex flex-col justify-center text-center`}
+      className={`absolute h-full overflow-y-auto  w-full md:w-1/2  duration-[0.3s] translate   p-8 flex flex-col  text-center`}
     >
       <div className="mb-5">
         <h1 className="text-2xl font-bold ">Hello friend!</h1>

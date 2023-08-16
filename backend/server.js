@@ -12,6 +12,7 @@ const {
   sendInvitation,
   deleteInvitation,
   acceptInvitation,
+  deleteFriend,
 } = require("./controllers/InvitationController");
 const cookieParser = require("cookie-parser");
 const { graphqlHTTP } = require("express-graphql");
@@ -110,6 +111,24 @@ mongoose.connection.once("open", () => {
       "send-AcceptedNotification-toSender",
       (sender, receiver, senderSocketId) => {
         io.to(senderSocketId).emit("accepted-invitation", sender, receiver);
+      }
+    );
+
+    socket.on("deleteFriend", async (senderId, receiverId) => {
+      try {
+        const res = await deleteFriend(senderId, receiverId);
+        console.log(res);
+        socket.emit("server-response", res);
+      } catch (err) {
+        console.log(err);
+        socket.emit("error", err.message);
+      }
+    });
+
+    socket.on(
+      "send-DeletedFriend-toReceiver",
+      (sender, receiver, receiverSocketId) => {
+        io.to(receiverSocketId).emit("deletion-friend", sender, receiver);
       }
     );
     socket.on("disconnect", () => {

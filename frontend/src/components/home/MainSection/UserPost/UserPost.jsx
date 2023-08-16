@@ -113,7 +113,7 @@ function Post() {
   }
 
   return (
-    <div className="bg-white  shadow-[0_10px_30px_rgb(0,0,0,0.2)] p-4 min-h-[150px] w-full rounded-xl">
+    <div className="bg-white  border-[1px] border-gray hover:shadow-[0_10px_30px_rgb(0,0,0,0.2)] duration-[0.3s] p-4 min-h-[150px] w-full rounded-xl">
       {warning && (
         <div className="text-center py-1 max-h-[120px] text-red-700 overflow-auto">
           {warning}{" "}

@@ -33,7 +33,6 @@ function AddFriend({ style, setAddFriend }) {
   }, []);
 
   const [clicked, setClicked] = useState(false);
-  console.log(clicked);
   async function displayUsers(users) {
     const usersList = [];
 
@@ -103,7 +102,7 @@ function AddFriend({ style, setAddFriend }) {
   return (
     <div
       style={style}
-      className="w-[80%] h-[90vh] duration-[0.3s]  bg-white shadow border-solid rounded-xl border-second border-[2px] fixed top-1/2 sm:ml-[45px]  left-1/2 translate-y-[-50%] translate-x-[-50%] p-3 flex flex-col gap-3"
+      className="w-[80%] h-[90vh] duration-[0.3s]  bg-white  border-solid rounded-xl border-main border-[1px] fixed top-1/2 sm:ml-[45px]  left-1/2 translate-y-[-50%] translate-x-[-50%] p-3 flex flex-col gap-3"
     >
       <div
         className="flex justify-end  cursor-pointer"
@@ -117,7 +116,7 @@ function AddFriend({ style, setAddFriend }) {
           // onFocus={() => setSearching(true)}
           value={inputValue}
           //  onBlur={() => setSearching(false)}
-          className="outline-none w-full border-second border-[1px] h-[36px]   pl-2  pr-9  rounded-xl shadow"
+          className="outline-none w-full border-b-gray border-b-[1px] h-[36px]   pl-2  pr-9  shadow"
           placeholder="Search for a user ..."
           onChange={handleSearch}
         />
