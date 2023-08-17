@@ -3,12 +3,10 @@ const express = require("express");
 // const fileExtLimiter = require("../middleware/fileExtLimiter");
 // const fileSizeLimiter = require("../middleware/fileSizeLimiter");
 const postController = require("../controllers/postController");
-const fileUpload = require("express-fileupload");
 const router = express.Router();
 
-router.post(
-  "/",
-  postController.addPost
-);
+router.post("/", postController.addPost);
+
+router.get("/:postId", postController.getPostImages);
 
 module.exports = router;

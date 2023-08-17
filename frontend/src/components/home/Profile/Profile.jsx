@@ -6,6 +6,7 @@ import ProfileInfo from "./ProfileInfo";
 import EditAddButton from "./EditAddButton";
 import { AiOutlineEdit, AiOutlineUserAdd } from "react-icons/ai";
 import Post from "../MainSection/Posts/Post";
+import JSZip from "jszip";
 import {
   getUserByUsername,
   getUserPosts,
@@ -13,19 +14,24 @@ import {
 } from "../../../controllers/User";
 import { UserContext } from "../../../App";
 import AddFriend from "../Friends/AddFriend";
+import { getPostImages } from "../../../controllers/PostController";
 
-function Profile() {
+function Profile({ setDisplayed }) {
   const Navigate = useNavigate();
-
+  useEffect(() => {
+    setDisplayed("profile");
+  }, []);
   const [friendsNumber, setFriendsNumber] = useState();
 
   const [interactionsNumber, setInteractionsNumber] = useState();
   const [friends, setFriends] = useState();
   const [posts, setPosts] = useState([]);
+
   const [user, setUser] = useContext(UserContext).user;
   const [imageURL, setImageURL] = useContext(UserContext).image;
-  console.log("posts", posts);
+
   const [addFriend, setAddFriend] = useState(false);
+  console.log("posts are", posts);
   const styles = {
     width: addFriend ? "80%" : "0",
     height: addFriend ? "80vh" : "0",
@@ -35,14 +41,25 @@ function Profile() {
 
   useEffect(() => {
     async function getPosts() {
-      const res = await getUserPosts(user?.userId);
+      let res = await getUserPosts(user?.userId);
+
+      for (let i = 0; i < res.length; i++) {
+        const images = await getPostImages(res[i].postId);
+
+        res[i].images = images || [];
+        res[i].createdAt = new Date(Number(res[i]?.createdAt));
+      }
+
+      //sort posts
+
+      res = res.sort((postA, postB) => postB.createdAt - postA.createdAt);
 
       setInteractionsNumber(
         res.reduce((prev, current) => {
-          console.log(current);
           return prev + current.likes.length;
         }, 0)
       );
+
       setPosts(res);
     }
 
@@ -96,33 +113,27 @@ function Profile() {
           setAddFriend={setAddFriend}
         />
       </div>
-      <div>
-        <div className="text-center text-xl text-black border-solid border-gray pb-2 border-b-[1px] mb-5">
-          Posts
-        </div>
-        <div className="bg-white rounded-xl p-5 max-sm:mb-16 flex flex-col gap-5">
-          {posts ? (
-            <Post
-              text={
-                "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil nesciunt repudiandae accusantium eos, cum inventore, ipsam eveniet quis et, veniam illum cupiditate quibusdam perferendis tempora. Cupiditate architecto nihil consequuntur nesciunt. "
-              }
-              imgs={[img]}
-            />
+      <div className="w-full">
+        <div className="text-center text-xl text-black border-solid border-gray pb-2 border-b-[1px] mb-5"></div>
+        <div className="bg-white rounded-xl p-5 max-sm:mb-16 flex flex-col gap-5 ">
+          {posts.length > 0 ? (
+            [
+              ...posts.map((post, index) => {
+                return (
+                  <Post
+                    text={post?.content}
+                    imgs={post.images}
+                    userId={user.userId}
+                    createdAt={post.createdAt}
+                    postId={post.postId}
+                    likes={post.likes}
+                  />
+                );
+              }),
+            ]
           ) : (
-            <div>No posts yet </div>
+            <div>No posts yet</div>
           )}
-          {/* <Post
-            text={
-              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil nesciunt repudiandae accusantium eos, cum inventore, ipsam eveniet quis et, veniam illum cupiditate quibusdam perferendis tempora. Cupiditate architecto nihil consequuntur nesciunt. "
-            }
-            imgs={[img]}
-          /> */}
-          {/* <Post
-            text={
-              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil nesciunt repudiandae accusantium eos, cum inventore, ipsam eveniet quis et, veniam illum cupiditate quibusdam perferendis tempora. Cupiditate architecto nihil consequuntur nesciunt. "
-            }
-            imgs={[img]}
-          /> */}
         </div>
       </div>
     </div>

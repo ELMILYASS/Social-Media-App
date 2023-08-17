@@ -2,7 +2,6 @@ const url = "http://localhost:3006/graphql";
 import endPoint from "../backendEndPoint";
 import axios from "axios";
 async function sendRequest(query, variables) {
-
   try {
     const res = await axios.post(
       url,
@@ -37,7 +36,7 @@ async function sendRequest(query, variables) {
           },
         }
       );
-     
+
       return result;
     } catch (err) {
       console.log(err);

@@ -15,6 +15,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [connected, setConnected] = useState(false);
   const [socket, setSocket] = useState(null);
+  const [changeAddPost, setChangeAddPost] = useState(false);
   const [imageURL, setImageURL] = useState("");
   console.log("user is ", user);
   // console.log("socket is ", socket);
@@ -46,12 +47,19 @@ function App() {
       setUser(receiver);
       console.log(`${sender.username} has deleted you from his friends `);
     });
+    socket?.on("post-added", (username) => {
+      setChangeAddPost((prev) => !prev);
+      console.log(`${username} has added a new Post`);
+    });
+    socket?.on("interaction-added", (object) => {
+      setChangeAddPost((prev) => !prev);
+      console.log(object);
+    });
   }, [socket]);
   useEffect(() => {
     async function uploadImage(userId) {
       const file = await sendAxiosRequest("GET", `profileimage/${userId}`);
       return file;
-      // setImageURL(URL.createObjectURL(file));
     }
     if (user?.image) {
       uploadImage(user.userId).then((data) =>
@@ -69,6 +77,7 @@ function App() {
         image: [imageURL, setImageURL],
         socket: [socket, setSocket],
         connected: [connected, setConnected],
+        changedAddedPost: [changeAddPost, setChangeAddPost],
       }}
     >
       <Router>
@@ -81,65 +90,6 @@ function App() {
       </Router>
     </UserContext.Provider>
   );
-
-  // <h1
-  //   onClick={async () => {
-  //     try {
-  //       const res = await axios.get("http://localhost:3006/", {
-  //         name: "ilyass",
-  //       });
-  //       console.log(res);
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //     console.log("here");
-  //   }}
-  // >
-  //   // click //
-  // </h1>
-  // <div>
-  //   <form
-  //     onSubmit={async (e) => {
-  //       e.preventDefault();
-  //       if (!selectedFiles) {
-  //         console.log("No file selected.");
-  //         return;
-  //       }
-  //       const formData = new FormData();
-  //       //formData.append("file", selectedFile); for one file
-  //       Object.keys(selectedFiles).forEach((key) => {
-  //         formData.append(
-  //           selectedFiles.item(key).name,
-  //           selectedFiles.item(key)
-  //         );
-  //       });
-  //       const res = await axios.post(
-  //         "http://localhost:3006/upload",
-  //         formData
-  //       );
-  //       console.log(res);
-  //     }}
-  //   >
-  //     <input type="file" onChange={handleChange} name="file" multiple />
-  //     <button>Submit</button>
-  //   </form>
-
-  //   <button
-  //     onClick={async () => {
-  //       const res = await axios.get("http://localhost:3006/files", {
-  //         responseType: "blob", // Set the response type to blob
-  //       });
-  //       const blob = res.data;
-  //       const imageURL = URL.createObjectURL(blob);
-  //       console.log(imageURL);
-  //       setImageURL(imageURL);
-  //     }}
-  //   >
-  //     Get file
-  //   </button>
-  //   <img src={imageURL} alt="" />
-  // </div>
-  // );
 }
 
 export default App;

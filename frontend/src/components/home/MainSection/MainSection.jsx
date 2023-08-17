@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import Stories from "./Stories/Stories";
-import Post from "./UserPost/UserPost";
+import UserPost from "./UserPost/UserPost";
 import Posts from "./Posts/Posts";
 import { BsSearch } from "react-icons/bs";
 import SearchedUser from "./SearchedUser";
@@ -9,13 +9,20 @@ import { sendRequest, sendAxiosRequest } from "../../Request";
 import { noProfileImage } from "../../../images/default profile image.jpg";
 import { UserContext } from "../../../App";
 import { getUserProfileImage } from "../../../controllers/User";
+import {
+  getFriendsPosts,
+  getPostImages,
+} from "../../../controllers/PostController";
 function MainSection() {
   const [user, setUser] = useContext(UserContext).user;
   const [users, setUsers] = useState();
   const [searchedUsers, setSearchedUsers] = useState([]);
   const [foundUsers, setFoundUsers] = useState([]);
   const [searching, setSearching] = useState(false);
+  const [changeAddPost, setChangeAddPost] =
+    useContext(UserContext).changedAddedPost;
   const [inputValue, setInputValue] = useState();
+  const [posts, setPosts] = useState([]);
   if (!users) {
     const query = `query{
                     users{
@@ -61,6 +68,25 @@ function MainSection() {
     }
   }
 
+  useEffect(() => {
+    async function getPosts() {
+      let Posts = await getFriendsPosts(user.userId);
+      for (let i = 0; i < Posts.length; i++) {
+        const images = await getPostImages(Posts[i].postId);
+
+        Posts[i].images = images || [];
+        Posts[i].createdAt = new Date(Number(Posts[i]?.createdAt));
+      }
+
+      //sort posts
+
+      Posts = Posts.sort((postA, postB) => postB.createdAt - postA.createdAt);
+
+      setPosts(Posts);
+    }
+    getPosts();
+  }, [user, changeAddPost]);
+
   return (
     <div className=" section sm:ml-[90px]  sm:p-6 p-4 flex flex-col gap-2 relative">
       <div className="flex w-full justify-between relative mb-[10px]   max-[500px]:flex-col max-[500px]:gap-2">
@@ -89,8 +115,8 @@ function MainSection() {
         )}
       </div>
       <Stories />
-      <Post />
-      <Posts />
+      <UserPost />
+      <Posts posts={posts} />
     </div>
   );
 }

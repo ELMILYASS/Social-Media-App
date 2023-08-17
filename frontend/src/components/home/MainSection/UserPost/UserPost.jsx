@@ -11,8 +11,9 @@ import { UserContext } from "../../../../App";
 import { sendAxiosRequest } from "../../../Request";
 import File from "./File";
 
-function Post() {
+function UserPost() {
   const [user, setUser] = useContext(UserContext).user;
+  const [socket, setSocket] = useContext(UserContext).socket;
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [files, setFiles] = useState([]);
   const [imageURL, setImageURL] = useContext(UserContext).image;
@@ -21,6 +22,8 @@ function Post() {
   const [shared, setShared] = useState(false);
   const [notAllowedFiles, setNotAllowedFiles] = useState([]);
   const [textContent, setTextContent] = useState("");
+  const [changeAddPost, setChangeAddPost] =
+    useContext(UserContext).changedAddedPost;
   function changeContent(e) {
     setTextContent(e.target.value);
   }
@@ -64,7 +67,6 @@ function Post() {
     const content = textContent;
 
     const images = files;
-    console.log(images);
 
     // const videos = e.target.videos.files;
 
@@ -85,6 +87,7 @@ function Post() {
       console.log(res);
       setWarning("");
       setShared(true);
+      setChangeAddPost((prev) => !prev);
       setTimeout(() => {
         setSaved(true);
       }, 50);
@@ -100,6 +103,8 @@ function Post() {
         setFiles([]);
         setUploadedFiles([]);
       }, 1500);
+
+      socket.emit("add-post", user.userId);
     } catch (err) {
       if (err.response.status === 402) {
         const notAllowedFiles = err.response.data.notAllowedFiles;
@@ -212,4 +217,4 @@ function Post() {
   );
 }
 
-export default Post;
+export default UserPost;

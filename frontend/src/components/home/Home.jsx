@@ -25,8 +25,11 @@ function Home() {
           path="/h"
           element={<h1 onClick={sendEvent}>Click to send event</h1>}
         /> */}
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/profile" element={<Profile />} />
+
+        <Route
+          path="/profile"
+          element={<Profile setDisplayed={setDisplayed} />}
+        />
         <Route path="/profile/:username" element={<OtherUserProfile />} />
         <Route path="/editprofile" element={<EditProfile />} />
         <Route path="/notifications" element={<Notifications />} />

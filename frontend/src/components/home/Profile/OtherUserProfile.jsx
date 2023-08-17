@@ -41,7 +41,7 @@ function OtherUserProfile() {
       const res = await getUserPosts(userInfo?.userId);
 
       setInteractionsNumber(
-        res.reduce((prev, current) => {
+        res?.reduce((prev, current) => {
           return prev + current.likes.length;
         }, 0)
       );
@@ -105,7 +105,7 @@ function OtherUserProfile() {
       </div>
       <div className="flex px-6  max-w-full justify-center gap-7  rounded-xl  bg-main text-white border-[1px] border-dark hover:bg-dark duration-[0.3s] hover:shadow-[0_0px_30px_rgb(0,0,0,0.1)]">
         <ProfileInfo
-          number={posts.length}
+          number={posts?.length}
           content={"posts"}
           userInfo={userInfo}
         />
@@ -167,7 +167,7 @@ function OtherUserProfile() {
         <div className="text-center text-xl text-dark border-solid border-gray pb-2 border-b-[1px] mb-5">
           Posts
         </div>
-        <div className="bg-white rounded-xl p-5 max-sm:mb-16 flex flex-col gap-5">
+        {/* <div className="bg-white rounded-xl p-5 max-sm:mb-16 flex flex-col gap-5">
           <Post
             text={
               "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil nesciunt repudiandae accusantium eos, cum inventore, ipsam eveniet quis et, veniam illum cupiditate quibusdam perferendis tempora. Cupiditate architecto nihil consequuntur nesciunt. "
@@ -180,7 +180,7 @@ function OtherUserProfile() {
             }
             imgs={[img]}
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );

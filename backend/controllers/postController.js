@@ -1,7 +1,12 @@
 const Post = require("../model/Posts");
+const User = require("../model/User");
 const path = require("path");
+const fs = require("fs");
+const zip = require("express-zip");
 const fileSizeLimiter = require("../middleware/fileSizeLimiter");
 const fileExtLimiter = require("../middleware/fileExtLimiter");
+const fsPromises = require("fs").promises;
+const archiver = require("archiver");
 // upload user image
 const addPost = async (req, res) => {
   const info = req.body;
@@ -79,4 +84,72 @@ const addPost = async (req, res) => {
   }
 };
 
-module.exports = { addPost };
+const getPostImages = async (req, res) => {
+  const postId = req.params.postId;
+  const filesDir = path.join(__dirname, "..", "files", "posts", `${postId}`);
+  if (fs.existsSync(filesDir)) {
+    try {
+      const files = await fsPromises.readdir(filesDir);
+
+      if (files.length === 0) {
+        return res.status(404).send("No images found for this post");
+      }
+
+      const archiveName = `${postId}.zip`;
+      console.log("files", files);
+      res.attachment(archiveName);
+
+      const archive = archiver("zip", { zlib: { level: 9 } });
+      archive.pipe(res);
+
+      files.forEach((file) => {
+        const filePath = path.join(filesDir, file);
+        archive.append(fs.createReadStream(filePath), { name: file });
+      });
+
+      archive.finalize();
+    } catch (err) {
+      console.error("Error reading files directory:", err.message);
+      res
+        .status(500)
+        .json({ status: "error", message: "Error reading files directory" });
+    }
+  } else {
+    res.send("No images for that post");
+  }
+};
+
+const postAdded = async (senderId) => {
+  const sender = await User.findOne({ userId: senderId }).exec();
+
+  let socketIds = [];
+  for (const friendId of sender.friends) {
+    const user = await User.findOne({ userId: friendId }).exec();
+    console.log("friend", user);
+    socketIds.push(user.socketIoId);
+  }
+  console.log(socketIds);
+  return { socketIds, sender };
+};
+
+const interactionAdded = async (senderId, postId) => {
+  const sender = await User.findOne({ userId: senderId }).exec();
+  const post = await Post.findOne({ postId: postId }).exec();
+  const postOwner = await User.findOne({ userId: post.userId }).exec();
+  let socketIds = [];
+
+  for (const friendId of sender.friends) {
+    console.log(friendId, postOwner.friends, sender.friends);
+    console.log(postOwner.friends.includes(friendId));
+    if (postOwner.friends.includes(friendId)) {
+      const user = await User.findOne({ userId: friendId }).exec();
+      socketIds.push(user.socketIoId);
+    }
+  }
+  if (postOwner.userId !== senderId) {
+    if (postOwner.socketIoId) socketIds.push(postOwner.socketIoId);
+  }
+  console.log({ socketIds, postOwner: postOwner.username });
+  return { socketIds, postOwner: postOwner.username , senderUsername:sender.username };
+};
+module.exports = { addPost, getPostImages, postAdded, interactionAdded };

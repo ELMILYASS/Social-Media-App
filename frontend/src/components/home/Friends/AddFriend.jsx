@@ -18,7 +18,6 @@ function AddFriend({ style, setAddFriend }) {
   const [foundUsers, setFoundUsers] = useState([]);
   const [inputValue, setInputValue] = useState();
   const [socket, setSocket] = useContext(UserContext).socket;
-  console.log("found users", foundUsers);
   useEffect(() => {
     const query = `query{
         users{

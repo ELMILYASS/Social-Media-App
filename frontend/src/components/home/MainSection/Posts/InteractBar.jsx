@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faThumbsUp,
@@ -21,11 +21,17 @@ import {
 } from "react-icons/bs";
 import { FaRegCommentDots, FaCommentDots } from "react-icons/fa";
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
-function InteractBar({ comments }) {
+import { UserContext } from "../../../../App";
+import { likePost } from "../../../../controllers/PostController";
+function InteractBar({ comments, userId, postId, likes }) {
   const [isOnHover, setIsOnHover] = useState(false);
   const [displayComments, setDisplayComments] = comments;
   const [isLongPressing, setIsLongPressing] = useState(false);
   const [pressTimer, setPressTimer] = useState(null);
+  const [changeAddPost, setChangeAddPost] =
+    useContext(UserContext).changedAddedPost;
+  const [user, setUser] = useContext(UserContext).user;
+  const [socket, setSocket] = useContext(UserContext).socket;
   const handleMouseDown = () => {
     const timer = setTimeout(() => {
       setIsLongPressing(true);
@@ -42,10 +48,17 @@ function InteractBar({ comments }) {
   };
 
   const [chosenIcon, setChosenIcon] = useState("NHeart");
+  useEffect(() => {
+    const isLikedBefore = likes.find((like) => like.userId === user.userId);
+
+    if (isLikedBefore) {
+      setChosenIcon(isLikedBefore.emoji);
+    }
+  }, []);
   const emoji = {
     NHeart: <FcLikePlaceholder type="NHeart" />,
     Heart: <FcLike type="Heart" />,
-    NSmile: <BsEmojiSmile type="NSmile" />,
+
     Smile: (
       <FontAwesomeIcon
         icon={faSmile}
@@ -53,11 +66,11 @@ function InteractBar({ comments }) {
         type="Smile"
       />
     ),
-    NAngry: <BsEmojiAngry type="NAngry" />,
+
     Angry: (
       <FontAwesomeIcon icon={faAngry} style={{ color: "red" }} type="Angry" />
     ),
-    NLike: <AiOutlineLike type="NLike" />,
+
     Like: (
       <FontAwesomeIcon
         icon={faThumbsUp}
@@ -65,7 +78,7 @@ function InteractBar({ comments }) {
         type="Like"
       />
     ),
-    NDislike: <AiOutlineDislike type="NDislike" />,
+
     Dislike: (
       <FontAwesomeIcon
         icon={faThumbsDown}
@@ -85,20 +98,30 @@ function InteractBar({ comments }) {
     opacity: isLongPressing ? "1" : "0",
     zIndex: isLongPressing ? "10" : "-1",
   };
-  const handleLike = () => {
+  const handleLike = async () => {
     if (chosenIcon === "NHeart") {
       setChosenIcon("Heart");
+      setChangeAddPost((prev) => !prev);
+      socket.emit("interaction-added", user.userId, postId, "Heart", "");
+      await likePost(user.userId, postId, "Heart");
     } else {
       setChosenIcon("NHeart");
+      socket.emit("interaction-added", user.userId, postId, "", "");
+      setChangeAddPost((prev) => !prev);
+      await likePost(user.userId, postId, "");
       const newEmojiList = emojiList;
       newEmojiList[emojiList.indexOf("Heart")] = chosenIcon;
       setEmojiList(newEmojiList);
     }
   };
+  console.log("chosen Icon", chosenIcon);
   const [Timer, setTimer] = useState(null);
-  function changeEmoji(e, type) {
-    const timer = setTimeout(() => {
+  async function changeEmoji(e, type) {
+    const timer = setTimeout(async () => {
       setChosenIcon(type);
+      setChangeAddPost((prev) => !prev);
+      socket.emit("interaction-added", user.userId, postId, type, "");
+      await likePost(user.userId, postId, type);
       const newEmojiList = emojiList;
       newEmojiList[emojiList.indexOf(type)] =
         chosenIcon === "NHeart" ? "Heart" : chosenIcon;
@@ -124,7 +147,7 @@ function InteractBar({ comments }) {
   ));
 
   return (
-    <div>
+    <div className="select-none">
       <div className="py-1 relative w-full select-none ">
         <div
           onMouseDown={handleMouseDown}
@@ -136,7 +159,9 @@ function InteractBar({ comments }) {
           {renderedIcons}
         </div>
         <div className="flex justify-between text-sm select-none">
-          <p>55 likes</p>
+          <p className="cursor-pointer">
+            {likes?.length} interaction{likes?.length < 2 ? "" : "s"}
+          </p>
           <p>42 comments . 33 shares</p>
         </div>
       </div>

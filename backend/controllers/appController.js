@@ -98,7 +98,7 @@ const CommentType = new GraphQLObjectType({
   fields: () => ({
     userId: { type: GraphQLID },
     content: { type: GraphQLString },
-    image: { type: GraphQLString },
+    // image: { type: GraphQLString },
     createdAt: { type: GraphQLString },
     user: {
       type: UserType,
@@ -131,7 +131,6 @@ const RootQueryType = new GraphQLObjectType({
       },
       resolve: async (parent, args) => {
         if (args.userId) {
-          console.log(args.userId);
           const res = await Post.find({ userId: args.userId });
 
           return res;
@@ -140,7 +139,25 @@ const RootQueryType = new GraphQLObjectType({
         return await Post.find();
       },
     },
-
+    myFriendsPosts: {
+      description: "user's friends posts",
+      type: new GraphQLList(PostType),
+      args: {
+        userId: { type: GraphQLID },
+      },
+      resolve: async (parent, args) => {
+        const user = await User.findOne({ userId: args.userId }).exec();
+        let friends = user.friends;
+        let Posts = [];
+        friends.push(args.userId);
+        for (const friendId of friends) {
+          const posts = await Post.find({ userId: friendId });
+          Posts.push(...posts);
+        }
+        console.log(Posts);
+        return Posts;
+      },
+    },
     user: {
       type: UserType,
       description: "A Single User",
@@ -274,11 +291,11 @@ const RootMutationType = new GraphQLObjectType({
         let updatedLikes = likes.map((like) => {
           if (like.userId.toString() === args.userId) {
             if (args.emoji) {
-              console.log("here");
               alreadyLiked = true;
               like.emoji = args.emoji;
               return like;
             }
+
             alreadyLiked = true;
           } else {
             return like;

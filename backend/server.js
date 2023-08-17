@@ -18,6 +18,7 @@ const cookieParser = require("cookie-parser");
 const { graphqlHTTP } = require("express-graphql");
 const schema = require("./controllers/appController");
 const path = require("path");
+const { postAdded, interactionAdded } = require("./controllers/postController");
 const app = express();
 const server = http.createServer(app);
 
@@ -131,6 +132,38 @@ mongoose.connection.once("open", () => {
         io.to(receiverSocketId).emit("deletion-friend", sender, receiver);
       }
     );
+
+    //show a post added by a friend
+    socket.on("add-post", async (senderId) => {
+      try {
+        const result = await postAdded(senderId);
+        for (const socketId of result.socketIds) {
+          if (socketId) {
+            socket.to(socketId).emit("post-added", result.sender.username);
+          }
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    });
+    socket.on("interaction-added", async (senderId, postId, emoji, comment) => {
+      try {
+        const result = await interactionAdded(senderId, postId);
+        for (const friendId of result.socketIds) {
+          if (friendId) {
+            socket.to(friendId).emit("interaction-added", {
+              postOwner: result.postOwner,
+              postId: postId,
+              emoji: emoji,
+              comment: comment,
+              senderUsername: result.senderUsername,
+            });
+          }
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    });
     socket.on("disconnect", () => {
       console.log("A user disconnected");
     });
@@ -140,6 +173,7 @@ mongoose.connection.once("open", () => {
 // Event listener for connection error
 mongoose.connection.on("error", (err) => {
   console.error("Error connecting to MongoDB:", err.message);
+
   // If there's an error connecting to MongoDB, stop listening for incoming requests
   // You can also perform any other necessary actions or cleanup here if needed.
   process.exit(1); // This will exit the Node.js process with a non-zero exit code (indicating an error).

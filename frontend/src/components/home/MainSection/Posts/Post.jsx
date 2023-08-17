@@ -7,12 +7,28 @@ import PostBar from "./PostBar";
 import InteractBar from "./InteractBar";
 import Comments from "./Comments";
 import { UserContext } from "../../../../App";
-function Post({ text, imgs, userId }) {
+import { getUserById, getUserProfileImage } from "../../../../controllers/User";
+import { TimePassed } from "../../../../controllers/PostController";
+function Post({ text, imgs, userId, createdAt, postId, likes }) {
   const [isTruncated, setIsTruncated] = useState(false);
   const paragraphRef = useRef(null);
   const [user, setUser] = useContext(UserContext).user;
   const [socket, setSocket] = useContext(UserContext).socket;
   const [displayPostBar, setDisplayPostBar] = useState(false);
+  const [userInfo, setUserInfo] = useState({ username: "", image: "" });
+
+  useEffect(() => {
+    async function getUserInfo(userId) {
+      const image = await getUserProfileImage(userId);
+      const user = await getUserById(userId);
+      setUserInfo((prev) => ({ username: user.username, image: image }));
+    }
+    if (userId) {
+      getUserInfo(userId);
+    } else if (user?.userId) {
+      getUserInfo(user?.userId);
+    }
+  }, [user, userId]);
   function displayBar() {
     setDisplayPostBar(!displayPostBar);
   }
@@ -38,7 +54,7 @@ function Post({ text, imgs, userId }) {
       : len === 3
       ? "grid grid-cols-2 "
       : len === 1
-      ? "grid grid-cols-1 "
+      ? "grid grid-cols-1"
       : len > 4
       ? "flex overflow-x-auto pb-4"
       : "";
@@ -49,7 +65,7 @@ function Post({ text, imgs, userId }) {
         <img
           src={img}
           alt="image"
-          className="col-span-2 max-h-[600px] w-full object-cover rounded-xl"
+          className="col-span-2 max-h-[600px]  max-w-full object-cover rounded-xl"
         />
       );
     }
@@ -58,7 +74,7 @@ function Post({ text, imgs, userId }) {
         <img
           src={img}
           alt="image"
-          className="shrink-0 max-h-[600px] w-full object-cover rounded-xl"
+          className="shrink-0 max-h-[600px] max-w-full object-cover rounded-xl"
         />
       );
     }
@@ -66,7 +82,7 @@ function Post({ text, imgs, userId }) {
       <img
         src={img}
         alt="image"
-        className="max-h-[600px] w-full object-cover rounded-xl"
+        className="max-h-[600px] max-w-full object-cover rounded-xl"
       />
     );
   });
@@ -76,13 +92,13 @@ function Post({ text, imgs, userId }) {
     <div className="relative">
       <div className="flex mb-4 ">
         <img
-          src={img}
+          src={userInfo.image}
           alt="image"
           className="h-[50px] w-[50px] mr-3 rounded-full object-cover "
         />
         <div className="mr-auto">
-          <p className="font-medium">Courtney Herny</p>
-          <p className="text-sm text-grayText">20 min ago</p>
+          <p className="font-medium">{userInfo?.username}</p>
+          <p className="text-sm text-grayText">{TimePassed(createdAt)}</p>
         </div>
         <div className="cursor-pointer" onClick={displayBar}>
           <BsThreeDotsVertical />
@@ -126,7 +142,9 @@ function Post({ text, imgs, userId }) {
             </>
           )}
           {styles && (
-            <div className={` ${styles} mt-4 gap-5 w-full select-none `}>
+            <div
+              className={` ${styles} mt-4 gap-5  mx-auto w-fit justify-items-center select-none `}
+            >
               {images}
             </div>
           )}
@@ -134,7 +152,12 @@ function Post({ text, imgs, userId }) {
       ) : (
         <Comments displayed={displayComments} />
       )}
-      <InteractBar comments={[displayComments, setDisplayComments]} />
+      <InteractBar
+        comments={[displayComments, setDisplayComments]}
+        userId={userId}
+        postId={postId}
+        likes={likes}
+      />
     </div>
   );
 }

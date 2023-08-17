@@ -93,10 +93,9 @@ export async function getUserPosts(userId) {
 
   try {
     const res = await sendRequest(query, { userId, userId });
-    console.log("response is ", res);
+
     return res.data.data.posts;
   } catch (err) {
     console.log(err);
   }
 }
-
