@@ -9,7 +9,8 @@ import Comments from "./Comments";
 import { UserContext } from "../../../../App";
 import { getUserById, getUserProfileImage } from "../../../../controllers/User";
 import { TimePassed } from "../../../../controllers/PostController";
-function Post({ text, imgs, userId, createdAt, postId, likes }) {
+import { AiFillDelete, AiOutlineDelete } from "react-icons/ai";
+function Post({ text, imgs, userId, createdAt, postId, likes, comments }) {
   const [isTruncated, setIsTruncated] = useState(false);
   const paragraphRef = useRef(null);
   const [user, setUser] = useContext(UserContext).user;
@@ -107,18 +108,30 @@ function Post({ text, imgs, userId, createdAt, postId, likes }) {
 
       <div
         style={BarStyles}
-        className="absolute   h-[130px] duration-[0.3s]  px-5 flex flex-col items-center justify-center max-[400px]:w-[70%] rounded-xl gap-6 bg-main top-5 right-3 "
+        className="absolute duration-[0.3s]  px-5 f max-[400px]:w-[70%] rounded-xl  bg-main top-5 right-3 "
       >
-        <PostBar
-          Icon={<RiSaveLine />}
-          onHoverIcon={<RiSaveFill />}
-          content={"Save"}
-        />
-        <PostBar
-          Icon={<BiShare />}
-          onHoverIcon={<BiSolidShare />}
-          content={"Share"}
-        />
+        {user.userId === userId ? (
+          <PostBar
+            Icon={<AiOutlineDelete />}
+            onHoverIcon={<AiFillDelete />}
+            content={"Delete Post"}
+            postId={postId}
+            setDisplayPostBar={setDisplayPostBar}
+          />
+        ) : (
+          <>
+            <PostBar
+              Icon={<RiSaveLine />}
+              onHoverIcon={<RiSaveFill />}
+              content={"Save"}
+            />
+            <PostBar
+              Icon={<BiShare />}
+              onHoverIcon={<BiSolidShare />}
+              content={"Share"}
+            />
+          </>
+        )}
       </div>
 
       {!displayComments ? (
@@ -150,13 +163,18 @@ function Post({ text, imgs, userId, createdAt, postId, likes }) {
           )}
         </div>
       ) : (
-        <Comments displayed={displayComments} />
+        <Comments
+          displayed={[displayComments, setDisplayComments]}
+          comments={comments}
+          postId={postId}
+        />
       )}
       <InteractBar
-        comments={[displayComments, setDisplayComments]}
+        displayingComments={[displayComments, setDisplayComments]}
         userId={userId}
         postId={postId}
         likes={likes}
+        comments={comments}
       />
     </div>
   );

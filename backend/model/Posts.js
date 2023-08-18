@@ -31,10 +31,14 @@ const postSchema = new Schema({
   comments: {
     type: [
       {
-        userId: mongoose.Types.ObjectId, // Référence à l'utilisateur qui a fait le commentaire
-        content: String, // Contenu textuel du commentaire (optional)
+        commentId: {
+          type: mongoose.Types.ObjectId,
+          auto: true,
+        },
+        userId: mongoose.Types.ObjectId,
+        content: String,
         // image: String, // URL de l'image associée au commentaire (optional)
-        createdAt: Date, // Date de création du commentaire
+        createdAt: Date,
       },
     ],
     default: [],

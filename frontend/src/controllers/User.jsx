@@ -84,7 +84,7 @@ export async function getUserPosts(userId) {
       comments {
         userId
         content
-        image
+        commentId
         createdAt
       }
     }

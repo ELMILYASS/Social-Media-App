@@ -18,7 +18,11 @@ const cookieParser = require("cookie-parser");
 const { graphqlHTTP } = require("express-graphql");
 const schema = require("./controllers/appController");
 const path = require("path");
-const { postAdded, interactionAdded } = require("./controllers/postController");
+const {
+  postAdded,
+  interactionAdded,
+  postDeleted,
+} = require("./controllers/postController");
 const app = express();
 const server = http.createServer(app);
 
@@ -164,6 +168,39 @@ mongoose.connection.once("open", () => {
         console.log(err);
       }
     });
+    socket.on("post-deleted", async (postId) => {
+      try {
+        const socketIds = await postDeleted(postId);
+        for (const friendId of socketIds) {
+          if (friendId) {
+            socket.to(friendId).emit("post-deleted");
+          }
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    });
+    socket.on(
+      "comment-changed",
+      async (senderId, postId, commentId, content) => {
+        try {
+          const result = await interactionAdded(senderId, postId);
+          for (const friendId of result.socketIds) {
+            if (friendId) {
+              socket.to(friendId).emit("comment-changed", {
+                postOwner: result.postOwner,
+                postId: postId,
+
+                comment: content,
+                senderUsername: result.senderUsername,
+              });
+            }
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    );
     socket.on("disconnect", () => {
       console.log("A user disconnected");
     });

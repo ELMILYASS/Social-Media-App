@@ -10,7 +10,8 @@ const {
 const bcrypt = require("bcrypt");
 const User = require("../model/User");
 const Post = require("../model/Posts");
-
+const path = require("path");
+const fs = require("fs");
 const UserType = new GraphQLObjectType({
   name: "User",
   description: "This represents a user",
@@ -98,6 +99,7 @@ const CommentType = new GraphQLObjectType({
   fields: () => ({
     userId: { type: GraphQLID },
     content: { type: GraphQLString },
+    commentId: { type: GraphQLID },
     // image: { type: GraphQLString },
     createdAt: { type: GraphQLString },
     user: {
@@ -269,7 +271,16 @@ const RootMutationType = new GraphQLObjectType({
       },
       resolve: (parent, args) => {
         Post.deleteOne({ postId: args.postId }).exec();
-
+        const filepath = path.join(
+          __dirname,
+          "..",
+          "files",
+          "posts",
+          `${args.postId}`
+        );
+        if (fs.existsSync(filepath)) {
+          fs.rmdirSync(filepath, { recursive: true });
+        }
         return "Post deleted successfully";
       },
     },
@@ -313,6 +324,72 @@ const RootMutationType = new GraphQLObjectType({
         const updatedPost = await post.save();
 
         return updatedPost;
+      },
+    },
+    addComment: {
+      description: "add a comment",
+      type: PostType,
+      args: {
+        userId: { type: new GraphQLNonNull(GraphQLID) },
+        postId: { type: new GraphQLNonNull(GraphQLID) },
+        content: { type: GraphQLString },
+      },
+      resolve: async (parent, args) => {
+        const post = await Post.findOne({ postId: args.postId }).exec();
+
+        post.comments.push({
+          userId: args.userId,
+          content: args.content,
+          createdAt: new Date().toString(),
+        });
+        const newPost = post.save();
+        return newPost;
+      },
+    },
+    // deleteComment: {
+    //   description: "delete a comment",
+    //   type: PostType,
+    //   args: {
+    //     commentId: { type: new GraphQLNonNull(GraphQLID) },
+    //     postId: { type: new GraphQLNonNull(GraphQLID) },
+    //   },
+    //   resolve: async (parent, args) => {
+    //     const post = await Post.findOne({ postId: args.postId }).exec();
+
+    //     post.comments = post.comments.filter((comment) => {
+    //       return comment.commentId !== args.commentId;
+    //     });
+    //     console.log("post", post);
+    //     const newPost = post.save();
+    //     return newPost;
+    //   },
+    // },
+    updateComment: {
+      description: "update/delete a comment",
+      type: PostType,
+      args: {
+        commentId: { type: new GraphQLNonNull(GraphQLID) },
+        postId: { type: new GraphQLNonNull(GraphQLID) },
+        content: { type: GraphQLString },
+      },
+      resolve: async (parent, args) => {
+        const post = await Post.findOne({ postId: args.postId }).exec();
+
+        post.comments = post.comments.map((comment) => {
+          if (comment.commentId.toString() === args.commentId) {
+            if (args.content) {
+              comment.content = args.content;
+              return comment;
+            }
+          } else {
+            return comment;
+          }
+        });
+        console.log("post", post);
+        post.comments = post.comments.filter((comment) => comment);
+        console.log("post", post);
+        const newPost = post.save();
+        return newPost;
       },
     },
   }),

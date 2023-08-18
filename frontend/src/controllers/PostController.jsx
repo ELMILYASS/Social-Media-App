@@ -27,7 +27,7 @@ export async function getPostImages(postId) {
 }
 
 export function TimePassed(createdAt) {
-  const formatCreatedAt = Number(new Date(createdAt));
+  const formatCreatedAt = new Date(Number(createdAt));
   const currentTime = new Date();
   const timeDifference = currentTime - formatCreatedAt; //ms
 
@@ -65,9 +65,9 @@ export async function getFriendsPosts(userId) {
       emoji
     }
     comments {
+      commentId
       userId
       content
-     
       createdAt
     }
   }
@@ -100,7 +100,7 @@ export async function likePost(userId, postId, emoji) {
       comments {
         userId
         content
-        
+        commentId
         createdAt
       }
     }
@@ -113,8 +113,71 @@ export async function likePost(userId, postId, emoji) {
       postId: postId,
       emoji: emoji,
     });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function deletePost(postId) {
+  const query = `
+  mutation deletePost($postId: ID!) {
+    deletePost(postId: $postId) 
+  }
+`;
+
+  try {
+    const res = await sendRequest(query, {
+      postId: postId,
+    });
     console.log("result is ", res);
-    // return res.data.data.myFriendsPosts;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function deleteComment(postId, commentId) {
+  const query = `
+  mutation updateComment($postId: ID! , $commentId: ID!) {
+    updateComment(postId: $postId , commentId:$commentId){
+      postId
+      comments{
+      content
+      }
+    
+    } 
+  }
+`;
+
+  try {
+    const res = await sendRequest(query, {
+      postId: postId,
+      commentId: commentId,
+    });
+    console.log("result is ", res);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function updateComment(postId, commentId, content) {
+  const query = `
+  mutation updateComment($postId: ID! , $commentId: ID! , $content: String) {
+    updateComment(postId: $postId , commentId:$commentId , content: $content) {
+    postId
+    comments{
+    content
+    }
+    }
+  }
+`;
+
+  try {
+    const res = await sendRequest(query, {
+      postId: postId,
+      commentId: commentId,
+      content: content,
+    });
+    console.log("result is ", res);
   } catch (err) {
     console.log(err);
   }

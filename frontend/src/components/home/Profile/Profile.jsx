@@ -26,7 +26,8 @@ function Profile({ setDisplayed }) {
   const [interactionsNumber, setInteractionsNumber] = useState();
   const [friends, setFriends] = useState();
   const [posts, setPosts] = useState([]);
-
+  const [changeAddPost, setChangeAddPost] =
+    useContext(UserContext).changedAddedPost;
   const [user, setUser] = useContext(UserContext).user;
   const [imageURL, setImageURL] = useContext(UserContext).image;
 
@@ -47,7 +48,7 @@ function Profile({ setDisplayed }) {
         const images = await getPostImages(res[i].postId);
 
         res[i].images = images || [];
-        res[i].createdAt = new Date(Number(res[i]?.createdAt));
+        res[i].createdAt = res[i]?.createdAt;
       }
 
       //sort posts
@@ -67,7 +68,7 @@ function Profile({ setDisplayed }) {
     if (user?.userId) {
       getPosts();
     }
-  }, [user]);
+  }, [user, changeAddPost]);
   return (
     <div className=" section sm:ml-[90px] min-h-[100vh]   sm:p-6 p-4 flex flex-col gap-5 items-center">
       <AddFriend style={styles} setAddFriend={setAddFriend} />
@@ -114,7 +115,9 @@ function Profile({ setDisplayed }) {
         />
       </div>
       <div className="w-full">
-        <div className="text-center text-xl text-black border-solid border-gray pb-2 border-b-[1px] mb-5"></div>
+        <div className="text-center text-xl text-black border-solid border-gray pb-2 border-b-[1px] mb-5">
+          Posts
+        </div>
         <div className="bg-white rounded-xl p-5 max-sm:mb-16 flex flex-col gap-5 ">
           {posts.length > 0 ? (
             [
@@ -127,6 +130,7 @@ function Profile({ setDisplayed }) {
                     createdAt={post.createdAt}
                     postId={post.postId}
                     likes={post.likes}
+                    comments={post.comments}
                   />
                 );
               }),

@@ -125,7 +125,6 @@ const postAdded = async (senderId) => {
   let socketIds = [];
   for (const friendId of sender.friends) {
     const user = await User.findOne({ userId: friendId }).exec();
-    console.log("friend", user);
     socketIds.push(user.socketIoId);
   }
   console.log(socketIds);
@@ -139,8 +138,6 @@ const interactionAdded = async (senderId, postId) => {
   let socketIds = [];
 
   for (const friendId of sender.friends) {
-    console.log(friendId, postOwner.friends, sender.friends);
-    console.log(postOwner.friends.includes(friendId));
     if (postOwner.friends.includes(friendId)) {
       const user = await User.findOne({ userId: friendId }).exec();
       socketIds.push(user.socketIoId);
@@ -150,6 +147,31 @@ const interactionAdded = async (senderId, postId) => {
     if (postOwner.socketIoId) socketIds.push(postOwner.socketIoId);
   }
   console.log({ socketIds, postOwner: postOwner.username });
-  return { socketIds, postOwner: postOwner.username , senderUsername:sender.username };
+  return {
+    socketIds,
+    postOwner: postOwner.username,
+    senderUsername: sender.username,
+  };
 };
-module.exports = { addPost, getPostImages, postAdded, interactionAdded };
+
+const postDeleted = async (postId) => {
+  const post = await Post.findOne({ postId: postId }).exec();
+
+  const postOwner = await User.findOne({ userId: post.userId }).exec();
+  let socketIds = [];
+
+  for (const friendId of postOwner.friends) {
+    const user = await User.findOne({ userId: friendId }).exec();
+    socketIds.push(user.socketIoId);
+  }
+
+  return socketIds;
+};
+
+module.exports = {
+  addPost,
+  getPostImages,
+  postAdded,
+  interactionAdded,
+  postDeleted,
+};

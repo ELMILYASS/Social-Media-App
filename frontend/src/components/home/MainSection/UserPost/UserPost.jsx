@@ -64,56 +64,65 @@ function UserPost() {
   }
   async function sharePost(e) {
     e.preventDefault();
-    const content = textContent;
+    const content = textContent.trim();
 
     const images = files;
 
     // const videos = e.target.videos.files;
 
-    const formData = new FormData();
-    formData.append("userId", user.userId);
-    formData.append("content", content);
-
-    for (let i = 0; i < images.length; i++) {
-      formData.append("images", images[i]);
-    }
-
-    // for (let i = 0; i < videos.length; i++) {
-    //   formData.append("videos", videos[i]);
-    // }
-
-    try {
-      const res = await sendAxiosRequest("POST", "post", formData);
-      console.log(res);
-      setWarning("");
-      setShared(true);
-      setChangeAddPost((prev) => !prev);
-      setTimeout(() => {
-        setSaved(true);
-      }, 50);
+    if (!content && images.length === 0) {
+      setWarning("Impossible to share an empty post");
 
       setTimeout(() => {
-        setSaved(false);
-        setTimeout(() => {
-          setShared(false);
-        }, 200);
+        setWarning("");
       }, 1500);
-      setTimeout(() => {
-        setTextContent("");
-        setFiles([]);
-        setUploadedFiles([]);
-      }, 1500);
+    } else {
+      console.log("here");
+      const formData = new FormData();
+      formData.append("userId", user.userId);
+      formData.append("content", content);
 
-      socket.emit("add-post", user.userId);
-    } catch (err) {
-      if (err.response.status === 402) {
-        const notAllowedFiles = err.response.data.notAllowedFiles;
-        console.log(notAllowedFiles);
-
-        setNotAllowedFiles(notAllowedFiles);
+      for (let i = 0; i < images.length; i++) {
+        formData.append("images", images[i]);
       }
-      console.log(err);
-      setWarning(err.response.data.message);
+
+      // for (let i = 0; i < videos.length; i++) {
+      //   formData.append("videos", videos[i]);
+      // }
+
+      try {
+        const res = await sendAxiosRequest("POST", "post", formData);
+        console.log(res);
+        setWarning("");
+        setShared(true);
+        setChangeAddPost((prev) => !prev);
+        setTimeout(() => {
+          setSaved(true);
+        }, 50);
+
+        setTimeout(() => {
+          setSaved(false);
+          setTimeout(() => {
+            setShared(false);
+          }, 200);
+        }, 1500);
+        setTimeout(() => {
+          setTextContent("");
+          setFiles([]);
+          setUploadedFiles([]);
+        }, 1500);
+
+        socket.emit("add-post", user.userId);
+      } catch (err) {
+        if (err.response.status === 402) {
+          const notAllowedFiles = err.response.data.notAllowedFiles;
+          console.log(notAllowedFiles);
+
+          setNotAllowedFiles(notAllowedFiles);
+        }
+        console.log(err);
+        setWarning(err.response.data.message);
+      }
     }
   }
 

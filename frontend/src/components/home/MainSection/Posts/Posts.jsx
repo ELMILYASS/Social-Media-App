@@ -17,6 +17,7 @@ function Posts({ posts }) {
                 createdAt={post.createdAt}
                 postId={post.postId}
                 likes={post.likes}
+                comments={post.comments}
               />
             );
           }),

@@ -55,6 +55,15 @@ function App() {
       setChangeAddPost((prev) => !prev);
       console.log(object);
     });
+
+    socket?.on("comment-changed", (object) => {
+      setChangeAddPost((prev) => !prev);
+      console.log("hahah", object);
+    });
+    socket?.on("post-deleted", () => {
+      setChangeAddPost((prev) => !prev);
+      console.log("post deleted");
+    });
   }, [socket]);
   useEffect(() => {
     async function uploadImage(userId) {

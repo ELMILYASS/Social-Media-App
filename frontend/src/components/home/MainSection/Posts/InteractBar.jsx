@@ -23,9 +23,9 @@ import { FaRegCommentDots, FaCommentDots } from "react-icons/fa";
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 import { UserContext } from "../../../../App";
 import { likePost } from "../../../../controllers/PostController";
-function InteractBar({ comments, userId, postId, likes }) {
+function InteractBar({ displayingComments, userId, postId, likes, comments }) {
   const [isOnHover, setIsOnHover] = useState(false);
-  const [displayComments, setDisplayComments] = comments;
+  const [displayComments, setDisplayComments] = displayingComments;
   const [isLongPressing, setIsLongPressing] = useState(false);
   const [pressTimer, setPressTimer] = useState(null);
   const [changeAddPost, setChangeAddPost] =
@@ -114,7 +114,7 @@ function InteractBar({ comments, userId, postId, likes }) {
       setEmojiList(newEmojiList);
     }
   };
-  console.log("chosen Icon", chosenIcon);
+
   const [Timer, setTimer] = useState(null);
   async function changeEmoji(e, type) {
     const timer = setTimeout(async () => {
@@ -162,7 +162,10 @@ function InteractBar({ comments, userId, postId, likes }) {
           <p className="cursor-pointer">
             {likes?.length} interaction{likes?.length < 2 ? "" : "s"}
           </p>
-          <p>42 comments . 33 shares</p>
+          <p>
+            {`${comments?.length} comment${comments?.length < 2 ? "" : "s"}`}.
+            33 shares
+          </p>
         </div>
       </div>
       <div className="flex justify-between items-center h-[35px] flex-wrap">
