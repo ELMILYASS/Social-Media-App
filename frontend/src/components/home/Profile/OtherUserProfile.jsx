@@ -22,6 +22,7 @@ import { MdDownloadDone, MdPersonAddDisabled } from "react-icons/md";
 import MyFriends from "../Friends/MyFriends";
 import UserFriends from "./UserFriends";
 import { GoLocation } from "react-icons/go";
+import { getPostImages } from "../../../controllers/PostController";
 
 function OtherUserProfile() {
   const Navigate = useNavigate();
@@ -29,6 +30,8 @@ function OtherUserProfile() {
   const [user, setUser] = useContext(UserContext).user;
   const [userInfo, setUserInfo] = useState();
   const [imageURL, setImageURL] = useState();
+  const [changeAddPost, setChangeAddPost] =
+    useContext(UserContext).changedAddedPost;
   const [isFriend, setIsFriend] = useState(false);
   const [friendsNumber, setFriendsNumber] = useState();
   const [displayFriends, setDisplayFriends] = useState(false);
@@ -38,13 +41,22 @@ function OtherUserProfile() {
 
   useEffect(() => {
     async function getPosts(userInfo) {
-      const res = await getUserPosts(userInfo?.userId);
+      let res = await getUserPosts(userInfo?.userId);
+
+      for (let i = 0; i < res.length; i++) {
+        const images = await getPostImages(res[i].postId);
+
+        res[i].images = images || [];
+        res[i].createdAt = res[i]?.createdAt;
+      }
+      res = res.sort((postA, postB) => postB.createdAt - postA.createdAt);
 
       setInteractionsNumber(
         res?.reduce((prev, current) => {
           return prev + current.likes.length;
         }, 0)
       );
+
       setPosts(res);
     }
 
@@ -60,7 +72,7 @@ function OtherUserProfile() {
     if (username) {
       fetchUserData(username);
     }
-  }, [user]);
+  }, [user, changeAddPost]);
   const styles = {
     width: displayFriends ? "80%" : "0",
     height: displayFriends ? "80vh" : "0",
@@ -163,9 +175,36 @@ function OtherUserProfile() {
           <AiOutlineCloseCircle className="text-2xl hover:text-3xl duration-[0.3s]" />
         </div>
       </div>
-      <div>
+      <div className="w-full">
         <div className="text-center text-xl text-dark border-solid border-gray pb-2 border-b-[1px] mb-5">
           Posts
+        </div>
+        <div className="bg-white rounded-xl p-5 max-sm:mb-16 flex flex-col gap-5 ">
+          {isFriend ? (
+            posts.length > 0 ? (
+              [
+                ...posts.map((post, index) => {
+                  return (
+                    <Post
+                      text={post?.content}
+                      imgs={post.images}
+                      userId={userInfo.userId}
+                      createdAt={post.createdAt}
+                      postId={post.postId}
+                      likes={post.likes}
+                      comments={post.comments}
+                    />
+                  );
+                }),
+              ]
+            ) : (
+              <div className="text-center">No posts yet</div>
+            )
+          ) : (
+            <div className="text-center">
+              Add him to your friends to see his posts
+            </div>
+          )}
         </div>
         {/* <div className="bg-white rounded-xl p-5 max-sm:mb-16 flex flex-col gap-5">
           <Post

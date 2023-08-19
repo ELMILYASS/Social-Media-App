@@ -342,6 +342,7 @@ const RootMutationType = new GraphQLObjectType({
           content: args.content,
           createdAt: new Date().toString(),
         });
+
         const newPost = post.save();
         return newPost;
       },

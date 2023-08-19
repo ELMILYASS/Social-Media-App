@@ -11,7 +11,10 @@ import { RiLockPasswordFill } from "react-icons/ri";
 import { UserContext } from "../../../App";
 import { sendRequest, sendAxiosRequest } from "../../Request";
 import axios from "axios";
-function EditProfile() {
+function EditProfile({ setDisplayed }) {
+  useEffect(() => {
+    setDisplayed("profile");
+  }, []);
   const [user, setUser] = useContext(UserContext).user;
   const [imageURL, setImageURL] = useContext(UserContext).image;
   console.log("imageurl is : ", imageURL);

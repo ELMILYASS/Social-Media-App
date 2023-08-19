@@ -32,7 +32,7 @@ function Profile({ setDisplayed }) {
   const [imageURL, setImageURL] = useContext(UserContext).image;
 
   const [addFriend, setAddFriend] = useState(false);
-  console.log("posts are", posts);
+
   const styles = {
     width: addFriend ? "80%" : "0",
     height: addFriend ? "80vh" : "0",
@@ -136,7 +136,7 @@ function Profile({ setDisplayed }) {
               }),
             ]
           ) : (
-            <div>No posts yet</div>
+            <div className="text-center">No posts yet</div>
           )}
         </div>
       </div>

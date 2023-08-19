@@ -13,7 +13,10 @@ import {
   getFriendsPosts,
   getPostImages,
 } from "../../../controllers/PostController";
-function MainSection() {
+function MainSection({ setDisplayed }) {
+  useEffect(() => {
+    setDisplayed("home");
+  }, []);
   const [user, setUser] = useContext(UserContext).user;
   const [users, setUsers] = useState();
   const [searchedUsers, setSearchedUsers] = useState([]);

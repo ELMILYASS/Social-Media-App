@@ -20,19 +20,21 @@ function Home() {
       <SideBar click={[displayed, setDisplayed]} />
 
       <Routes>
-        <Route path="/" element={<MainSection />} />
-        {/* <Route
-          path="/h"
-          element={<h1 onClick={sendEvent}>Click to send event</h1>}
-        /> */}
+        <Route path="/" element={<MainSection setDisplayed={setDisplayed} />} />
 
         <Route
           path="/profile"
           element={<Profile setDisplayed={setDisplayed} />}
         />
         <Route path="/profile/:username" element={<OtherUserProfile />} />
-        <Route path="/editprofile" element={<EditProfile />} />
-        <Route path="/notifications" element={<Notifications />} />
+        <Route
+          path="/editprofile"
+          element={<EditProfile setDisplayed={setDisplayed} />}
+        />
+        <Route
+          path="/notifications"
+          element={<Notifications setDisplayed={setDisplayed} />}
+        />
         <Route path="/friends" element={<Friends />} />
       </Routes>
     </div>
