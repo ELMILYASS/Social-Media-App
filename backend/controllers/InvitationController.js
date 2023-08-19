@@ -7,8 +7,16 @@ const sendInvitation = async (senderId, receiverId) => {
 
     sender.sentInvitations.push(receiverId);
     receiver.receivedInvitations.push(senderId);
+    receiver.notifications.push({
+      status: "invitation-received",
+      message: `has sent you an invitation`,
+      createdAt: new Date().toString(),
+      userId: senderId,
+      isSeen: false,
+    });
     await sender.save();
     await receiver.save();
+
     return {
       status: "Invitation sent successfully",
       receiverSocketId: receiver.socketIoId,
@@ -31,6 +39,14 @@ const deleteInvitation = async (senderId, receiverId) => {
     receiver.receivedInvitations = receiver.receivedInvitations.filter(
       (id) => id !== senderId
     );
+
+    receiver.notifications.push({
+      status: "invitation-deleted",
+      message: `has deleted the invitation he sent to you`,
+      createdAt: new Date().toString(),
+      userId: senderId,
+      isSeen: false,
+    });
     await sender.save();
     await receiver.save();
     return {
@@ -51,6 +67,13 @@ const acceptInvitation = async (senderId, receiverId) => {
 
     sender.friends.push(receiverId);
     receiver.friends.push(senderId);
+    sender.notifications.push({
+      status: "invitation-accepted",
+      message: `has accepted your invitation`,
+      createdAt: new Date().toString(),
+      userId: receiverId,
+      isSeen: false,
+    });
     await sender.save();
     await receiver.save();
     return {
@@ -69,6 +92,14 @@ const deleteFriend = async (senderId, receiverId) => {
   const receiver = await User.findOne({ userId: receiverId }).exec();
   sender.friends = sender.friends.filter((id) => id !== receiverId);
   receiver.friends = receiver.friends.filter((id) => id !== senderId);
+  receiver.notifications.push({
+    status: "friend-deletion",
+    message: `has removed you from his friends`,
+    createdAt: new Date().toString(),
+    userId: senderId,
+    isSeen: false,
+  });
+
   await sender.save();
   await receiver.save();
   return {

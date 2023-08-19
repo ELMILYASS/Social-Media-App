@@ -11,6 +11,7 @@ import { UserContext } from "../../App";
 function SideBar({ click }) {
   const Navigate = useNavigate();
   const [socket, setSocket] = useContext(UserContext).socket;
+
   const [displayed, setDisplayed] = click;
   const [connected, setConnected] = useContext(UserContext).connected;
   function navigate(e, content) {

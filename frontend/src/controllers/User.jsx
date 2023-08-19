@@ -12,6 +12,35 @@ export async function getUserByUsername(username) {
           description
           friends
           username
+          notifications{
+            userId
+            postId
+            message
+            createdAt
+            isSeen
+            notificationId
+            status
+            post{
+              postId
+              content
+              images
+              videos
+              createdAt
+              updatedAt
+              userId
+              likes {
+                userId
+                emoji
+              }
+              comments {
+                commentId
+                userId
+                content
+                createdAt
+              }
+            
+            }
+          }
           
         }
       }`;
@@ -37,6 +66,35 @@ export async function getUserById(userId) {
           friends
           username
           socketIoId
+          notifications{
+            userId
+            postId
+            message
+            createdAt
+            isSeen
+            notificationId
+            status
+            post{
+              postId
+              content
+              images
+              videos
+              createdAt
+              updatedAt
+              userId
+              likes {
+                userId
+                emoji
+              }
+              comments {
+                commentId
+                userId
+                content
+                createdAt
+              }
+            
+            }
+          }
         }
       }`;
 

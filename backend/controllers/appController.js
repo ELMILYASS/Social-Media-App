@@ -6,6 +6,7 @@ const {
   GraphQLList,
   GraphQLNonNull,
   GraphQLID,
+  GraphQLBoolean,
 } = require("graphql");
 const bcrypt = require("bcrypt");
 const User = require("../model/User");
@@ -27,6 +28,7 @@ const UserType = new GraphQLObjectType({
     city: { type: GraphQLString },
     description: { type: GraphQLString },
     image: { type: GraphQLString },
+    notifications: { type: new GraphQLList(NotificationType) },
     socketIoId: { type: GraphQLString },
     sentInvitations: { type: new GraphQLList(GraphQLID) },
     receivedInvitations: { type: new GraphQLList(GraphQLID) },
@@ -57,7 +59,25 @@ const UserType = new GraphQLObjectType({
     // },
   }),
 });
-
+const NotificationType = new GraphQLObjectType({
+  name: "Notification",
+  description: "This represents a Notification",
+  fields: () => ({
+    postId: { type: GraphQLID },
+    status: { type: GraphQLString },
+    message: { type: GraphQLString },
+    createdAt: { type: GraphQLString },
+    userId: { type: GraphQLID },
+    isSeen: { type: GraphQLBoolean },
+    notificationId: { type: GraphQLID },
+    post: {
+      type: PostType,
+      resolve: (post) => {
+        return Post.findOne({ postId: post.postId }).exec();
+      },
+    },
+  }),
+});
 const PostType = new GraphQLObjectType({
   name: "Post",
   description: "This represents a Post",
@@ -156,7 +176,7 @@ const RootQueryType = new GraphQLObjectType({
           const posts = await Post.find({ userId: friendId });
           Posts.push(...posts);
         }
-        console.log(Posts);
+        // console.log(Posts);
         return Posts;
       },
     },
@@ -232,6 +252,41 @@ const RootMutationType = new GraphQLObjectType({
         return userUpdated;
       },
     },
+    notificationSeen: {
+      type: UserType,
+      description: "See a notification",
+      args: {
+        userId: { type: new GraphQLNonNull(GraphQLID) },
+        notificationIds: { type: new GraphQLList(GraphQLID) },
+      },
+
+      resolve: async (parent, args) => {
+        let user = await User.findOne({ userId: args.userId });
+
+        user.notifications = user.notifications.map((notification) => {
+          // console.log("notification", notification);
+          notification.isSeen = true;
+
+          return notification;
+        });
+
+        const userUpdated = await user.save();
+        return userUpdated;
+      },
+    },
+    // const NotificationType = new GraphQLObjectType({
+    //   name: "Notification",
+    //   description: "This represents a Notification",
+    //   fields: () => ({
+    //     postId: { type: GraphQLID },
+    //     status: { type: GraphQLString },
+    //     message: { type: GraphQLString },
+    //     createdAt: { type: GraphQLString },
+    //     userId: { type: GraphQLID },
+    //     isSeen: { type: GraphQLBoolean },
+    //     notificationId: { type: GraphQLID },
+    //   }),
+    // });
     // sendInvitation:{
     //   type:GraphQLString ,
     //   description: "Sending an invitation",
@@ -386,9 +441,9 @@ const RootMutationType = new GraphQLObjectType({
             return comment;
           }
         });
-        console.log("post", post);
+        // console.log("post", post);
         post.comments = post.comments.filter((comment) => comment);
-        console.log("post", post);
+        // console.log("post", post);
         const newPost = post.save();
         return newPost;
       },

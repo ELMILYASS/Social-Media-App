@@ -70,7 +70,35 @@ function RequiredAuth() {
         country
         city
         image
-  
+        notifications{
+          notificationId
+          userId
+          postId
+          message
+          createdAt
+          isSeen
+          status
+          post{
+            postId
+            content
+            images
+            videos
+            createdAt
+            updatedAt
+            userId
+            likes {
+              userId
+              emoji
+            }
+            comments {
+              commentId
+              userId
+              content
+              createdAt
+            }
+          
+          }
+        }
         sentInvitations
         receivedInvitations
         description
@@ -105,11 +133,40 @@ function RequiredAuth() {
               socketIoId
               image
               description
-           
+              notifications{
+                notificationId
+                userId
+                postId
+                message
+                createdAt
+                isSeen
+                status
+                post{
+                  postId
+                  content
+                  images
+                  videos
+                  createdAt
+                  updatedAt
+                  userId
+                  likes {
+                    userId
+                    emoji
+                  }
+                  comments {
+                    commentId
+                    userId
+                    content
+                    createdAt
+                  }
+                
+                }
+              }
               sentInvitations
               receivedInvitations
               friends
               username
+        
             }
           }
         `;

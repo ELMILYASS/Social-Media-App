@@ -1,5 +1,6 @@
 const Post = require("../model/Posts");
 const User = require("../model/User");
+
 const path = require("path");
 const fs = require("fs");
 const zip = require("express-zip");
@@ -14,7 +15,7 @@ const addPost = async (req, res) => {
   const files = req.files;
   const userId = info.userId;
   const content = info?.content;
-
+  const user = await User.findOne({ userId: userId }).exec();
   const imagesFiles = files
     ? files?.images?.length
       ? files?.images
@@ -78,6 +79,20 @@ const addPost = async (req, res) => {
   }
   try {
     const savedPost = await post.save();
+
+    for (const friend of user.friends) {
+      const Friend = await User.findOne({ userId: friend }).exec();
+      // console.log("Friend", Friend);
+      Friend.notifications.push({
+        createdAt: new Date().toString(),
+        postId: savedPost.postId,
+        userId: userId,
+        status: "post-added",
+        message: `has added a new post`,
+        isSeen: false,
+      });
+      await Friend.save();
+    }
     res.json({ status: "success", message: "Post added" });
   } catch (error) {
     console.error("Error saving post:", error);
@@ -96,7 +111,7 @@ const getPostImages = async (req, res) => {
       }
 
       const archiveName = `${postId}.zip`;
-      console.log("files", files);
+      // console.log("files", files);
       res.attachment(archiveName);
 
       const archive = archiver("zip", { zlib: { level: 9 } });
@@ -127,7 +142,7 @@ const postAdded = async (senderId) => {
     const user = await User.findOne({ userId: friendId }).exec();
     socketIds.push(user.socketIoId);
   }
-  console.log(socketIds);
+  // console.log(socketIds);
   return { socketIds, sender };
 };
 
@@ -138,15 +153,35 @@ const interactionAdded = async (senderId, postId) => {
   let socketIds = [];
 
   for (const friendId of sender.friends) {
-    if (postOwner.friends.includes(friendId)) {
+    if (
+      postOwner.friends.includes(friendId) ||
+      postOwner.userId.toString() === friendId
+    ) {
       const user = await User.findOne({ userId: friendId }).exec();
+
+      user.notifications.push({
+        createdAt: new Date().toString(),
+        postId: postId,
+        userId: senderId,
+        status: "post-changed",
+        message: `interacted with a post of ${
+          postOwner.userId.toString() !== senderId
+            ? "him"
+            : postOwner.userId.toString() !== friendId
+            ? user.username
+            : "you"
+        }`,
+        isSeen: false,
+      });
+      await user.save();
+
       socketIds.push(user.socketIoId);
     }
   }
   if (postOwner.userId !== senderId) {
     if (postOwner.socketIoId) socketIds.push(postOwner.socketIoId);
   }
-  console.log({ socketIds, postOwner: postOwner.username });
+  // console.log({ socketIds, postOwner: postOwner.username });
   return {
     socketIds,
     postOwner: postOwner.username,

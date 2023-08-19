@@ -46,7 +46,7 @@ const handleUserAuth = async (req, res) => {
         maxAge: 24 * 60 * 60 * 1000,
       });
 
-      res.cookie("a", "abcaib");
+      // res.cookie("a", "abcaib");
 
       //Sending the access token : the front end developer must store the access token on the memory and not in the localStorage or cookies ( accessible with JS (CSRF))
       res.json({ accessToken, existentUser });

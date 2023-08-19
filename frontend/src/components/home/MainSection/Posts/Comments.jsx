@@ -52,7 +52,7 @@ function Comments({ displayed, comments, postId }) {
 
   useEffect(() => {
     // Scroll the div to the bottom when the component mounts
-    if (divRef.current) {
+    if (divRef?.current) {
       divRef.current.scrollTop = divRef.current.scrollHeight;
     }
   }, []);

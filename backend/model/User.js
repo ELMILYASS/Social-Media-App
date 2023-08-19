@@ -41,6 +41,23 @@ const userSchema = new Schema({
     type: String,
     default: "",
   },
+  notifications: {
+    type: [
+      {
+        notificationId: {
+          type: mongoose.Types.ObjectId,
+          auto: true,
+        },
+        createdAt: Date,
+        postId: mongoose.Types.ObjectId, // post concerned
+        userId: mongoose.Types.ObjectId, //user who sent the event
+        message: String,
+        status: String,
+        isSeen: Boolean,
+      },
+    ],
+    default: [],
+  },
   socketIoId: String,
 });
 

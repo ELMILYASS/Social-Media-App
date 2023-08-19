@@ -135,19 +135,19 @@ function OtherUserProfile() {
         />
       </div>
       <div className="flex flex-wrap gap-4 justify-center ">
-        {user?.friends.includes(userInfo?.userId) ? (
+        {user?.friends?.includes(userInfo?.userId) ? (
           <EditAddButton
             Icon={<AiOutlineUserDelete />}
             content={"Friend"}
             userId={userInfo?.userId}
           />
-        ) : user?.sentInvitations.includes(userInfo?.userId) ? (
+        ) : user?.sentInvitations?.includes(userInfo?.userId) ? (
           <EditAddButton
             Icon={<MdPersonAddDisabled />}
             content={"Delete Invitation"}
             userId={userInfo?.userId}
           />
-        ) : user?.receivedInvitations.includes(userInfo?.userId) ? (
+        ) : user?.receivedInvitations?.includes(userInfo?.userId) ? (
           <EditAddButton
             Icon={<MdDownloadDone />}
             content={"Accept Invitation"}

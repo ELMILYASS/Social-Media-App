@@ -3,7 +3,7 @@ const path = require("path");
 
 // upload user image
 const updateImage = async (req, res) => {
-  console.log("server ");
+  // console.log("server ");
   const userId = req.body.userId;
   const file = req.files;
 

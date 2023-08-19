@@ -9,6 +9,7 @@ import { io } from "socket.io-client";
 import { createContext } from "react";
 import defaultImage from "../src/images/default profile image.jpg";
 import { sendAxiosRequest } from "./components/Request";
+import { getUserById } from "./controllers/User";
 export const UserContext = createContext();
 
 function App() {
@@ -17,6 +18,20 @@ function App() {
   const [socket, setSocket] = useState(null);
   const [changeAddPost, setChangeAddPost] = useState(false);
   const [imageURL, setImageURL] = useState("");
+  const [notifications, setNotifications] = useState([]);
+  console.log("notifications", notifications);
+  useEffect(() => {
+    async function getUser() {
+      const User = await getUserById(user.userId);
+      const sortedNotifications = User.notifications.sort(
+        (notA, notB) => notB.createdAt - notA.createdAt
+      );
+      setNotifications(User.notifications);
+    }
+    if (user) {
+      getUser();
+    }
+  }, [user, changeAddPost]);
   console.log("user is ", user);
   // console.log("socket is ", socket);
   useEffect(() => {
@@ -87,6 +102,7 @@ function App() {
         socket: [socket, setSocket],
         connected: [connected, setConnected],
         changedAddedPost: [changeAddPost, setChangeAddPost],
+        notifications: [notifications, setNotifications],
       }}
     >
       <Router>

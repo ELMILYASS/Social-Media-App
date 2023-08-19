@@ -17,7 +17,7 @@ function EditProfile({ setDisplayed }) {
   }, []);
   const [user, setUser] = useContext(UserContext).user;
   const [imageURL, setImageURL] = useContext(UserContext).image;
-  console.log("imageurl is : ", imageURL);
+
   const [saved, setSaved] = useState(false);
   const styles = {
     opacity: saved ? "1" : "0",
@@ -292,7 +292,35 @@ function EditProfile({ setDisplayed }) {
               dateOfBirth
               country
               city
-      
+              notifications{
+                userId
+                postId
+                message
+                createdAt
+                isSeen
+                notificationId
+                status
+                post{
+                  postId
+                  content
+                  images
+                  videos
+                  createdAt
+                  updatedAt
+                  userId
+                  likes {
+                    userId
+                    emoji
+                  }
+                  comments {
+                    commentId
+                    userId
+                    content
+                    createdAt
+                  }
+                
+                }
+              }
               sentInvitations
               receivedInvitations
               description

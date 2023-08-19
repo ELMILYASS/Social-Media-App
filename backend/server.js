@@ -152,7 +152,7 @@ mongoose.connection.once("open", () => {
     });
     socket.on("interaction-added", async (senderId, postId, emoji, comment) => {
       try {
-        const result = await interactionAdded(senderId, postId);
+        const result = await interactionAdded(senderId, postId,emoji,comment);
         for (const friendId of result.socketIds) {
           if (friendId) {
             socket.to(friendId).emit("interaction-added", {
