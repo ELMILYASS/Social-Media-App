@@ -75,10 +75,15 @@ function MainSection({ setDisplayed }) {
     async function getPosts() {
       let Posts = await getFriendsPosts(user.userId);
       for (let i = 0; i < Posts.length; i++) {
-        const images = await getPostImages(Posts[i].postId);
+        try {
+          const Images = await getPostImages(Posts[i].postId);
 
-        Posts[i].images = images || [];
-        Posts[i].createdAt = new Date(Number(Posts[i]?.createdAt));
+          Posts[i].images = Images || [];
+          Posts[i].createdAt = new Date(Number(Posts[i]?.createdAt));
+          
+        } catch (err) {
+          console.error(err);
+        }
       }
 
       //sort posts

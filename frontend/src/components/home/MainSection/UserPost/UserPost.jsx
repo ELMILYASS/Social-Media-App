@@ -77,7 +77,6 @@ function UserPost() {
         setWarning("");
       }, 1500);
     } else {
-      console.log("here");
       const formData = new FormData();
       formData.append("userId", user.userId);
       formData.append("content", content);
@@ -92,7 +91,7 @@ function UserPost() {
 
       try {
         const res = await sendAxiosRequest("POST", "post", formData);
-        console.log(res);
+        console.log("result is ", res);
         setWarning("");
         setShared(true);
         setChangeAddPost((prev) => !prev);

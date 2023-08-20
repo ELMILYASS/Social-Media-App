@@ -17,7 +17,8 @@ function Post({ text, imgs, userId, createdAt, postId, likes, comments }) {
   const [socket, setSocket] = useContext(UserContext).socket;
   const [displayPostBar, setDisplayPostBar] = useState(false);
   const [userInfo, setUserInfo] = useState({ username: "", image: "" });
-
+  console.log("imsgs", imgs, imgs[0]);
+  console.log("lennn", imgs.length);
   useEffect(() => {
     async function getUserInfo(userId) {
       const image = await getUserProfileImage(userId);
@@ -37,18 +38,15 @@ function Post({ text, imgs, userId, createdAt, postId, likes, comments }) {
     opacity: displayPostBar ? "1" : "0",
     zIndex: displayPostBar ? "10" : "-1",
   };
+
   useEffect(() => {
     if (paragraphRef?.current?.clientHeight > 100) {
       setIsTruncated(true);
     }
   }, []);
 
-  const toggleTruncate = () => {
-    setIsTruncated(!isTruncated);
-  };
-
   const len = imgs.length;
-
+  console.log("len", len);
   const styles =
     len === 4 || len === 2
       ? "grid grid-cols-2"
@@ -59,8 +57,8 @@ function Post({ text, imgs, userId, createdAt, postId, likes, comments }) {
       : len > 4
       ? "flex overflow-x-auto pb-4"
       : "";
-
   const images = imgs.map((img, index) => {
+    console.log("here");
     if (len === 3 && index === 2) {
       return (
         <img
@@ -69,8 +67,7 @@ function Post({ text, imgs, userId, createdAt, postId, likes, comments }) {
           className="col-span-2 max-h-[600px]  max-w-full object-cover rounded-xl"
         />
       );
-    }
-    if (len > 4) {
+    } else if (len > 4) {
       return (
         <img
           src={img}
@@ -78,17 +75,22 @@ function Post({ text, imgs, userId, createdAt, postId, likes, comments }) {
           className="shrink-0 max-h-[600px] max-w-full object-cover rounded-xl"
         />
       );
-    }
-    return (
-      <img
-        src={img}
-        alt="image"
-        className="max-h-[600px] max-w-full object-cover rounded-xl"
-      />
-    );
+    } else
+      return (
+        <img
+          src={img}
+          alt="image"
+          className="max-h-[600px] max-w-full object-cover rounded-xl"
+        />
+      );
   });
-  const [displayComments, setDisplayComments] = useState(false);
 
+  const toggleTruncate = () => {
+    setIsTruncated(!isTruncated);
+  };
+
+  const [displayComments, setDisplayComments] = useState(false);
+  console.log("images", images);
   return (
     <div className="relative">
       <div className="flex mb-4 ">
@@ -158,7 +160,7 @@ function Post({ text, imgs, userId, createdAt, postId, likes, comments }) {
             <div
               className={` ${styles} mt-4 gap-5  mx-auto w-fit justify-items-center select-none `}
             >
-              {images}
+              {[...images]}
             </div>
           )}
         </div>

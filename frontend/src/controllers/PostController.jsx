@@ -11,12 +11,21 @@ export async function getPostImages(postId) {
 
       await zip.loadAsync(blob);
       const urls = [];
-      zip.forEach(async (relativePath, file) => {
-        const blob = await file.async("blob");
-        const imageUrl = URL.createObjectURL(blob);
 
-        urls.push(imageUrl);
+      const asyncOperations = [];
+
+      zip.forEach(async (relativePath, file) => {
+        const asyncOperation = (async () => {
+          const blob = await file.async("blob");
+          const imageUrl = URL.createObjectURL(blob);
+          urls.push(imageUrl);
+        })();
+
+        asyncOperations.push(asyncOperation);
       });
+
+      await Promise.all(asyncOperations);
+
       return urls;
     } else {
       return [];

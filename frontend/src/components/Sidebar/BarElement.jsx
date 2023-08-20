@@ -13,7 +13,7 @@ function BarElement({ Icon, content, navigate, currentPage, info }) {
   };
 
   const [numberUnseenNot, setNumberUnseenNot] = useState();
-  console.log("number is ", numberUnseenNot);
+  
   useEffect(() => {
     function countNumberOfNot() {
       let number = 0;
