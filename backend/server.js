@@ -23,6 +23,7 @@ const {
   interactionAdded,
   postDeleted,
 } = require("./controllers/postController");
+const { newMessage } = require("./controllers/chatController");
 const app = express();
 const server = http.createServer(app);
 
@@ -52,6 +53,7 @@ app.use(
 
 app.use("/profileImage", require("./routes/profileImage"));
 app.use("/post", require("./routes/post"));
+
 mongoose.connection.once("open", () => {
   console.log("Connected to MongoDB");
   // Start listening for incoming requests once the connection is established
@@ -152,7 +154,7 @@ mongoose.connection.once("open", () => {
     });
     socket.on("interaction-added", async (senderId, postId, emoji, comment) => {
       try {
-        const result = await interactionAdded(senderId, postId,emoji,comment);
+        const result = await interactionAdded(senderId, postId, emoji, comment);
         for (const friendId of result.socketIds) {
           if (friendId) {
             socket.to(friendId).emit("interaction-added", {
@@ -201,6 +203,17 @@ mongoose.connection.once("open", () => {
         }
       }
     );
+    socket.on("new-message", async (senderId, receiverId) => {
+      try {
+        const socketId = await newMessage(senderId, receiverId);
+
+        if (socketId) {
+          socket.to(socketId).emit("new-message");
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    });
     socket.on("disconnect", () => {
       console.log("A user disconnected");
     });

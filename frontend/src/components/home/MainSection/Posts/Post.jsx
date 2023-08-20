@@ -17,8 +17,7 @@ function Post({ text, imgs, userId, createdAt, postId, likes, comments }) {
   const [socket, setSocket] = useContext(UserContext).socket;
   const [displayPostBar, setDisplayPostBar] = useState(false);
   const [userInfo, setUserInfo] = useState({ username: "", image: "" });
-  console.log("imsgs", imgs, imgs[0]);
-  console.log("lennn", imgs.length);
+
   useEffect(() => {
     async function getUserInfo(userId) {
       const image = await getUserProfileImage(userId);
@@ -45,8 +44,8 @@ function Post({ text, imgs, userId, createdAt, postId, likes, comments }) {
     }
   }, []);
 
-  const len = imgs.length;
-  console.log("len", len);
+  const len = imgs?.length;
+ 
   const styles =
     len === 4 || len === 2
       ? "grid grid-cols-2"
@@ -57,7 +56,7 @@ function Post({ text, imgs, userId, createdAt, postId, likes, comments }) {
       : len > 4
       ? "flex overflow-x-auto pb-4"
       : "";
-  const images = imgs.map((img, index) => {
+  const images = imgs?.map((img, index) => {
     console.log("here");
     if (len === 3 && index === 2) {
       return (
@@ -138,7 +137,7 @@ function Post({ text, imgs, userId, createdAt, postId, likes, comments }) {
 
       {!displayComments ? (
         <div className="relative">
-          {text.trim().length > 0 && (
+          {text?.trim()?.length > 0 && (
             <>
               <p
                 ref={paragraphRef}

@@ -58,6 +58,7 @@ const userSchema = new Schema({
     ],
     default: [],
   },
+  
   socketIoId: String,
 });
 

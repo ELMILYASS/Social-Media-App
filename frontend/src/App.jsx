@@ -17,6 +17,7 @@ function App() {
   const [connected, setConnected] = useState(false);
   const [socket, setSocket] = useState(null);
   const [changeAddPost, setChangeAddPost] = useState(false);
+  const [newMessage, setNewMessage] = useState(false);
   const [imageURL, setImageURL] = useState("");
   const [notifications, setNotifications] = useState([]);
   console.log("notifications", notifications);
@@ -31,7 +32,7 @@ function App() {
     if (user) {
       getUser();
     }
-  }, [user, changeAddPost]);
+  }, [user, changeAddPost, newMessage]);
   console.log("user is ", user);
   // console.log("socket is ", socket);
   useEffect(() => {
@@ -79,6 +80,9 @@ function App() {
       setChangeAddPost((prev) => !prev);
       console.log("post deleted");
     });
+    socket?.on("new-message", () => {
+      setNewMessage((prev) => !prev);
+    });
   }, [socket]);
   useEffect(() => {
     async function uploadImage(userId) {
@@ -103,6 +107,7 @@ function App() {
         connected: [connected, setConnected],
         changedAddedPost: [changeAddPost, setChangeAddPost],
         notifications: [notifications, setNotifications],
+        newMessage: [newMessage, setNewMessage],
       }}
     >
       <Router>

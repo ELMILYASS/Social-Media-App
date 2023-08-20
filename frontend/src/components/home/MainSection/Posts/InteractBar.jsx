@@ -49,7 +49,7 @@ function InteractBar({ displayingComments, userId, postId, likes, comments }) {
 
   const [chosenIcon, setChosenIcon] = useState("NHeart");
   useEffect(() => {
-    const isLikedBefore = likes.find((like) => like.userId === user.userId);
+    const isLikedBefore = likes?.find((like) => like.userId === user.userId);
 
     if (isLikedBefore) {
       setChosenIcon(isLikedBefore.emoji);

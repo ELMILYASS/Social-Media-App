@@ -12,6 +12,8 @@ export async function getUserByUsername(username) {
           description
           friends
           username
+          socketIoId
+
           notifications{
             userId
             postId
@@ -135,6 +137,8 @@ export async function getUserPosts(userId) {
       createdAt
       updatedAt
       userId
+    
+
       likes {
         userId
         emoji

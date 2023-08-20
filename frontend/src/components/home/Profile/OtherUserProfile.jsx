@@ -8,6 +8,7 @@ import {
   AiOutlineCloseCircle,
   AiOutlineEdit,
   AiOutlineLeft,
+  AiOutlineMessage,
   AiOutlineUserAdd,
   AiOutlineUserDelete,
 } from "react-icons/ai";
@@ -87,14 +88,19 @@ function OtherUserProfile() {
         </div>
       </div>
 
-      <div className=" flex flex-col items-center gap-1">
-        <div className="h-[140px] rounded-full bg-white border-solid border-main border-[1px]  p-[2px] w-[140px] overflow-hidden max-[400px]:w-[120px] max-[400px]:h-[120px]">
+      <div className=" flex flex-col relative  items-center gap-1">
+        <div className="h-[140px] rounded-full bg-white border-solid border-main border-[1px]  p-[2px] w-[140px] overflow-hidden   max-[400px]:w-[120px] max-[400px]:h-[120px]">
           <img
             src={imageURL}
             alt="Profile Image"
             className="object-cover w-full h-full rounded-full duration-[0.3s]  hover:scale-110"
           />
         </div>
+        {userInfo?.socketIoId && (
+          <>
+            <div className="absolute w-4 h-4 bg-green-500 rounded-full right-[10%] top-[65%] z-10 border-[2px] border-white"></div>
+          </>
+        )}
         <div className="text-center">
           <div className="text-xl text-main">
             {userInfo?.username || "Username"}
@@ -136,11 +142,19 @@ function OtherUserProfile() {
       </div>
       <div className="flex flex-wrap gap-4 justify-center ">
         {user?.friends?.includes(userInfo?.userId) ? (
-          <EditAddButton
-            Icon={<AiOutlineUserDelete />}
-            content={"Friend"}
-            userId={userInfo?.userId}
-          />
+          <div className="flex gap-3">
+            {" "}
+            <EditAddButton
+              Icon={<AiOutlineUserDelete />}
+              content={"Friend"}
+              userId={userInfo?.userId}
+            />
+            <EditAddButton
+              Icon={<AiOutlineMessage />}
+              content={"Message"}
+              userId={userInfo?.userId}
+            />
+          </div>
         ) : user?.sentInvitations?.includes(userInfo?.userId) ? (
           <EditAddButton
             Icon={<MdPersonAddDisabled />}

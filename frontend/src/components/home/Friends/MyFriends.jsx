@@ -45,7 +45,6 @@ function MyFriends() {
     setUsers(array);
   }
   useEffect(() => {
-    console.log("rendering");
 
     getFriends(user);
   }, [user]);

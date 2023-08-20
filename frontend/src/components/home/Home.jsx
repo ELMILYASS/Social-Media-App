@@ -11,6 +11,8 @@ import OtherUserProfile from "./Profile/OtherUserProfile";
 import { io } from "socket.io-client";
 import { UserContext } from "../../App";
 import Friends from "./Friends/Friends";
+import Chat from "./Chat/Chat";
+import Messages from "./Chat/Messages";
 function Home() {
   const [displayed, setDisplayed] = useState("home");
   const [socket] = useContext(UserContext).socket;
@@ -35,7 +37,15 @@ function Home() {
           path="/notifications"
           element={<Notifications setDisplayed={setDisplayed} />}
         />
-        <Route path="/friends" element={<Friends />} />
+        <Route
+          path="/friends"
+          element={<Friends setDisplayed={setDisplayed} />}
+        />
+        <Route path="/chat" element={<Chat setDisplayed={setDisplayed} />} />
+        <Route
+          path="/chat/:username"
+          element={<Messages setDisplayed={setDisplayed} />}
+        />
       </Routes>
     </div>
   );

@@ -32,12 +32,15 @@ function EditAddButton({ Icon, content, setAddFriend, userId }) {
     if (content === "Friend") {
       deleteFriend(socket, setUser, user.userId, userId);
     }
+    if (content === "Message") {
+      // deleteFriend(socket, setUser, user.userId, userId);
+    }
   }
 
   return (
     <div
       onClick={handleClick}
-      className="flex  border-[1px] border-gray text-main gap-1 p-3 hover:bg-main hover:text-white duration-[0.3s] cursor-pointer  rounded-xl items-center"
+      className="flex  border-[1px] border-gray text-main gap-1 p-2 min-w-[130px] justify-center hover:bg-main hover:text-white duration-[0.3s] cursor-pointer  rounded-xl items-center"
     >
       <div className="text-xl">{Icon}</div>
       <div className="">{content}</div>

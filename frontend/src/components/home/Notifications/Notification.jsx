@@ -38,8 +38,10 @@ function Notification({ status, message, createdAt, userId, postId, post }) {
     getUserImage();
   }, []);
   function handleClick() {
-    if (!postId) {
-      Navigate(`/home/profile/${userInfo.username}`);
+    if (!postId && status !== "new-message") {
+      Navigate(`/home/profile/${userInfo?.username}`);
+    } else if (status === "new-message") {
+      Navigate(`/home/chat/${userInfo?.username}`);
     } else {
       setDisplayPost(true);
     }
@@ -66,13 +68,13 @@ function Notification({ status, message, createdAt, userId, postId, post }) {
 
         {postId && (
           <UserPost
-            text={post.content}
-            imgs={post.images}
+            text={post?.content}
+            imgs={post?.images}
             userId={userId}
-            createdAt={post.createdAt}
+            createdAt={post?.createdAt}
             postId={postId}
-            likes={post.likes}
-            comments={post.comments}
+            likes={post?.likes}
+            comments={post?.comments}
           />
         )}
       </div>

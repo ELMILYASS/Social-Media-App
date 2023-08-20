@@ -11,6 +11,7 @@ const {
 const bcrypt = require("bcrypt");
 const User = require("../model/User");
 const Post = require("../model/Posts");
+const Chat = require("../model/Chat");
 const path = require("path");
 const fs = require("fs");
 const UserType = new GraphQLObjectType({
@@ -32,31 +33,6 @@ const UserType = new GraphQLObjectType({
     socketIoId: { type: GraphQLString },
     sentInvitations: { type: new GraphQLList(GraphQLID) },
     receivedInvitations: { type: new GraphQLList(GraphQLID) },
-
-    // invitedUsers: {
-    //   type: new GraphQLList(UserType),
-    //   resolve: async (user) => {
-    //     let users = [];
-    //     for (id of user.sentInvitations) {
-    //       const u = await User.findOne({ userId: id }).exec();
-    //       users.push(u);
-    //     }
-
-    //     return users;
-    //   },
-    // },
-    // ReceivedInvitationsUsers: {
-    //   type: new GraphQLList(UserType),
-    //   resolve: async (user) => {
-    //     let users = [];
-    //     for (id of user.receivedInvitations) {
-    //       const u = await User.findOne({ userId: id }).exec();
-    //       users.push(u);
-    //     }
-
-    //     return users;
-    //   },
-    // },
   }),
 });
 const NotificationType = new GraphQLObjectType({
@@ -120,7 +96,6 @@ const CommentType = new GraphQLObjectType({
     userId: { type: GraphQLID },
     content: { type: GraphQLString },
     commentId: { type: GraphQLID },
-    // image: { type: GraphQLString },
     createdAt: { type: GraphQLString },
     user: {
       type: UserType,
@@ -131,11 +106,63 @@ const CommentType = new GraphQLObjectType({
   }),
 });
 
+const MessageType = new GraphQLObjectType({
+  name: "Message",
+  description: "This represents one single message",
+  fields: () => ({
+    messageId: { type: new GraphQLNonNull(GraphQLID) },
+    senderId: { type: new GraphQLNonNull(GraphQLID) },
+    receiverId: { type: new GraphQLNonNull(GraphQLID) },
+    content: { type: GraphQLString },
+    createdAt: { type: GraphQLString },
+    isSeen: { type: GraphQLBoolean },
+  }),
+});
+
 const RootQueryType = new GraphQLObjectType({
   name: "Query",
   description: "Root Query",
 
   fields: () => ({
+    getUserMessages: {
+      type: new GraphQLList(MessageType),
+      description: "List of All user messages",
+      args: {
+        userId: { type: GraphQLID },
+      },
+      resolve: async (parent, args) => {
+        const sentMessages = await Chat.find({ senderId: args.userId });
+        const receivedMessages = await Chat.find({
+          receiverId: args.userId,
+        });
+        console.log(sentMessages);
+        return [...sentMessages, ...receivedMessages];
+      },
+    },
+    getLastMessage: {
+      type: MessageType,
+      description: "Last message between two users",
+      args: {
+        userOneId: { type: GraphQLID },
+        userTwoId: { type: GraphQLID },
+      },
+      resolve: async (parent, args) => {
+        const messages1 = await Chat.find({
+          senderId: args.userOneId,
+          receiverId: args.userTwoId,
+        });
+        const messages2 = await Chat.find({
+          senderId: args.userTwoId,
+          receiverId: args.userOneId,
+        });
+        const messages = [...messages1, ...messages2];
+        const sortedMessages = messages.sort(
+          (msgA, msgB) => msgB.createdAt - msgA.createdAt
+        );
+        console.log(sortedMessages[0]);
+        return sortedMessages[0];
+      },
+    },
     users: {
       type: new GraphQLList(UserType),
       description: "List of All users",
@@ -206,6 +233,32 @@ const RootMutationType = new GraphQLObjectType({
   name: "Mutation",
   description: "Root Mutation",
   fields: () => ({
+    sendMessage: {
+      type: new GraphQLList(MessageType),
+      description: "List of All user messages",
+      args: {
+        senderId: { type: GraphQLID },
+        receiverId: { type: GraphQLID },
+        content: { type: GraphQLString },
+      },
+      resolve: async (parent, args) => {
+        const newMessage = new Chat({
+          senderId: args.senderId,
+          receiverId: args.receiverId,
+          content: args.content,
+          createdAt: new Date().toString(),
+        });
+        await newMessage.save();
+
+        const sentMessages = await Chat.find({
+          senderId: args.senderId,
+        });
+        const receivedMessages = await Chat.find({
+          receiverId: args.senderId,
+        });
+        return [...sentMessages, ...receivedMessages];
+      },
+    },
     addUser: {
       type: UserType,
       description: "Add a user",

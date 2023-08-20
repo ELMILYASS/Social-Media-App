@@ -8,13 +8,15 @@ import Invitations from "./Invitations";
 import MyFriends from "./MyFriends";
 import ReceivedInvitations from "./ReceivedInvitations";
 
-function Friends() {
+function Friends({ setDisplayed }) {
   const Navigate = useNavigate();
   const [friends, setFriends] = useState([]);
   const [invitations, setInvitations] = useState([]);
   const [receivedInvitations, setReceivedInvitations] = useState([]);
   const [user, setUser] = useContext(UserContext).user;
-
+  useEffect(() => {
+    setDisplayed("profile");
+  }, []);
   useEffect(() => {
     async function getFriends() {
       let array = [];
