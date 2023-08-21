@@ -138,7 +138,7 @@ export async function deletePost(postId) {
     const res = await sendRequest(query, {
       postId: postId,
     });
-    console.log("result is ", res);
+    // console.log("result is ", res);
   } catch (err) {
     console.log(err);
   }
@@ -162,7 +162,7 @@ export async function deleteComment(postId, commentId) {
       postId: postId,
       commentId: commentId,
     });
-    console.log("result is ", res);
+    // console.log("result is ", res);
   } catch (err) {
     console.log(err);
   }
@@ -186,7 +186,7 @@ export async function updateComment(postId, commentId, content) {
       commentId: commentId,
       content: content,
     });
-    console.log("result is ", res);
+    // console.log("result is ", res);
   } catch (err) {
     console.log(err);
   }

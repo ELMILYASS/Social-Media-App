@@ -15,8 +15,12 @@ import Chat from "./Chat/Chat";
 import Messages from "./Chat/Messages";
 function Home() {
   const [displayed, setDisplayed] = useState("home");
-  const [socket] = useContext(UserContext).socket;
-
+  const [socket, setSocket] = useContext(UserContext).socket;
+  useEffect(() => {
+    if (socket) {
+      socket.emit("user-connected", localStorage.getItem("email"));
+    }
+  }, [socket]);
   return (
     <div className="min-h-[100vh] ">
       <SideBar click={[displayed, setDisplayed]} />

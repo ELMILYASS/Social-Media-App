@@ -46,7 +46,7 @@ export function acceptInvitation(socket, setUser, senderId, receiverId) {
 export function deleteFriend(socket, setUser, senderId, receiverId) {
   socket.emit("deleteFriend", senderId, receiverId);
   socket.on("server-response", (response) => {
-    console.log("responsejajajajj is ", response);
+   
     setUser(response.senderUser);
     if (response.receiverSocketId) {
       socket.emit(

@@ -8,7 +8,7 @@ import {
   deleteFriend,
 } from "../../../controllers/Invitation";
 
-function EditAddButton({ Icon, content, setAddFriend, userId }) {
+function EditAddButton({ Icon, content, setAddFriend, userId, username }) {
   const navigate = useNavigate();
   const [user, setUser] = useContext(UserContext).user;
   const [socket, setSocket] = useContext(UserContext).socket;
@@ -33,6 +33,7 @@ function EditAddButton({ Icon, content, setAddFriend, userId }) {
       deleteFriend(socket, setUser, user.userId, userId);
     }
     if (content === "Message") {
+      navigate("/home/chat/" + username);
       // deleteFriend(socket, setUser, user.userId, userId);
     }
   }

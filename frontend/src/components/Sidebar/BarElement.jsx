@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../App";
+import { getMessages } from "../../controllers/ChatController";
 
 function BarElement({ Icon, content, navigate, currentPage, info }) {
   const [displayed, setDisplayed] = currentPage;
@@ -13,7 +14,10 @@ function BarElement({ Icon, content, navigate, currentPage, info }) {
   };
 
   const [numberUnseenNot, setNumberUnseenNot] = useState();
-  
+  const [newMessage, setNewMessage] = useContext(UserContext).newMessage;
+  const [numberUnseenMessages, setNumberUnseenMessages] =
+    useContext(UserContext).numberUnseenMessages;
+
   useEffect(() => {
     function countNumberOfNot() {
       let number = 0;
@@ -28,9 +32,27 @@ function BarElement({ Icon, content, navigate, currentPage, info }) {
       countNumberOfNot();
     }
   }, [user, notifications]);
+
+  useEffect(() => {
+    async function countNumberOfMessages() {
+      const messages = await getMessages(user.userId);
+
+      const number = messages.reduce((prev, curr) => {
+        if (curr.receiverId === user.userId && curr.isSeen === false) {
+          return prev + 1;
+        } else return prev;
+      }, 0);
+
+      setNumberUnseenMessages(number);
+    }
+    if (user) {
+      countNumberOfMessages();
+    }
+  }, [user, newMessage]);
   return (
     <div
       style={styles}
+      s
       onClick={(e) => navigate(e, content)}
       className={`flex w-[40px] max-[450px]:w-1/6  ${info} hover:w-[35%] px-2    sm:ml-5 barElement cursor-pointer   h-[40px]  sm:hover:w-full justify-center items-center rounded-full duration-[0.3s]   `}
     >
@@ -40,6 +62,11 @@ function BarElement({ Icon, content, navigate, currentPage, info }) {
         {content === "notifications" && numberUnseenNot > 0 && (
           <div className="absolute text-sm  top-[-20%] right-[-45%]  text-white bg-main rounded-full w-5 h-5 flex justify-center items-center">
             {numberUnseenNot}
+          </div>
+        )}
+        {content === "chat" && numberUnseenMessages > 0 && (
+          <div className="absolute text-sm  top-[-20%] right-[-45%]  text-white bg-main rounded-full w-5 h-5 flex justify-center items-center">
+            {numberUnseenMessages}
           </div>
         )}
       </div>

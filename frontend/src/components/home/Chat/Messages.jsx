@@ -8,13 +8,19 @@ import {
 import { BsArrowLeft } from "react-icons/bs";
 import { UserContext } from "../../../App";
 import { BiImageAdd } from "react-icons/bi";
-import { getMessages, sendMessage } from "../../../controllers/ChatController";
+import {
+  getMessages,
+  getMessagesWith,
+  seenMessages,
+  sendMessage,
+} from "../../../controllers/ChatController";
 import Message from "./Message";
 function Messages({ setDisplayed }) {
   const Navigate = useNavigate();
   const { username } = useParams();
   const [newMessage, setNewMessage] = useContext(UserContext).newMessage;
   const [userInfo, setUserInfo] = useState();
+  
   const [socket, setSocket] = useContext(UserContext).socket;
   const [user, setUser] = useContext(UserContext).user;
   const divRef = useRef();
@@ -32,8 +38,9 @@ function Messages({ setDisplayed }) {
       User.image = Image;
       setUserInfo(User);
     }
+
     getUserInfo();
-  }, []);
+  }, [newMessage]);
 
   const inputRef = useRef();
   const [warning, setWarning] = useState("");
@@ -41,12 +48,29 @@ function Messages({ setDisplayed }) {
 
   useEffect(() => {
     async function getUserMessages() {
-      const messages = await getMessages(user.userId);
+      const messages = await getMessagesWith(user.userId, userInfo.userId);
       setMessages(messages);
     }
-    getUserMessages();
-  }, [newMessage, user]);
+    if (userInfo) {
+      getUserMessages();
+    }
+  }, [newMessage, user, userInfo]);
+  async function seeMessages() {
+    const newMessages = await seenMessages(user.userId, userInfo.userId);
+    setMessages(newMessages);
+  }
 
+  useEffect(() => {
+    if (userInfo) {
+      seeMessages();
+    }
+  }, [userInfo]);
+  // useEffect(() => {
+  //   console.log("mlmmmmm", messages);
+  //   setNewMessage((prev) => {
+  //     return !prev;
+  //   });
+  // }, [messages]);
   async function send() {
     if (!inputRef.current.value.trim()) {
       setWarning("Impossible to send an empty message");

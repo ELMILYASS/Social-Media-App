@@ -20,7 +20,8 @@ function App() {
   const [newMessage, setNewMessage] = useState(false);
   const [imageURL, setImageURL] = useState("");
   const [notifications, setNotifications] = useState([]);
-  console.log("notifications", notifications);
+  const [numberUnseenMessages, setNumberUnseenMessages] = useState(0);
+  const [newUserConnected, setNewUserConnected] = useState(false);
   useEffect(() => {
     async function getUser() {
       const User = await getUserById(user.userId);
@@ -74,7 +75,6 @@ function App() {
 
     socket?.on("comment-changed", (object) => {
       setChangeAddPost((prev) => !prev);
-      console.log("hahah", object);
     });
     socket?.on("post-deleted", () => {
       setChangeAddPost((prev) => !prev);
@@ -82,6 +82,9 @@ function App() {
     });
     socket?.on("new-message", () => {
       setNewMessage((prev) => !prev);
+    });
+    socket?.on("user-connected", (userId) => {
+      setNewUserConnected((prev) => !prev);
     });
   }, [socket]);
   useEffect(() => {
@@ -108,6 +111,8 @@ function App() {
         changedAddedPost: [changeAddPost, setChangeAddPost],
         notifications: [notifications, setNotifications],
         newMessage: [newMessage, setNewMessage],
+        newUserConnected: [newUserConnected, setNewUserConnected],
+        numberUnseenMessages: [numberUnseenMessages, setNumberUnseenMessages],
       }}
     >
       <Router>

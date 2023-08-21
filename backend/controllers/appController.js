@@ -135,7 +135,7 @@ const RootQueryType = new GraphQLObjectType({
         const receivedMessages = await Chat.find({
           receiverId: args.userId,
         });
-        console.log(sentMessages);
+        // console.log(sentMessages);
         return [...sentMessages, ...receivedMessages];
       },
     },
@@ -159,10 +159,32 @@ const RootQueryType = new GraphQLObjectType({
         const sortedMessages = messages.sort(
           (msgA, msgB) => msgB.createdAt - msgA.createdAt
         );
-        console.log(sortedMessages[0]);
+        // console.log(sortedMessages[0]);
         return sortedMessages[0];
       },
     },
+    getMessagesWith: {
+      type: new GraphQLList(MessageType),
+      description: "Last message between two users",
+      args: {
+        userOneId: { type: GraphQLID },
+        userTwoId: { type: GraphQLID },
+      },
+      resolve: async (parent, args) => {
+        const messages1 = await Chat.find({
+          senderId: args.userOneId,
+          receiverId: args.userTwoId,
+        });
+        const messages2 = await Chat.find({
+          senderId: args.userTwoId,
+          receiverId: args.userOneId,
+        });
+        const messages = [...messages1, ...messages2];
+
+        return messages;
+      },
+    },
+    
     users: {
       type: new GraphQLList(UserType),
       description: "List of All users",
@@ -247,6 +269,7 @@ const RootMutationType = new GraphQLObjectType({
           receiverId: args.receiverId,
           content: args.content,
           createdAt: new Date().toString(),
+          isSeen: false,
         });
         await newMessage.save();
 
@@ -256,6 +279,34 @@ const RootMutationType = new GraphQLObjectType({
         const receivedMessages = await Chat.find({
           receiverId: args.senderId,
         });
+        return [...sentMessages, ...receivedMessages];
+      },
+    },
+    seenMessages: {
+      type: new GraphQLList(MessageType),
+      description: "Marks messages as seen between user and friend",
+      args: {
+        userId: { type: GraphQLID },
+        friendId: { type: GraphQLID },
+      },
+      resolve: async (parent, args) => {
+        let friendMessages = await Chat.find({
+          senderId: args.friendId,
+          receiverId: args.userId,
+        });
+        for (const message of friendMessages) {
+          message.isSeen = true;
+          await message.save();
+        }
+        const sentMessages = await Chat.find({
+          senderId: args.userId,
+          receiverId: args.friendId,
+        });
+        const receivedMessages = await Chat.find({
+          senderId: args.friendId,
+          receiverId: args.userId,
+        });
+
         return [...sentMessages, ...receivedMessages];
       },
     },

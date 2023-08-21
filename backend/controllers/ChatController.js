@@ -10,11 +10,24 @@ const newMessage = async (senderId, receiverId) => {
     message: `has sent you a message `,
     isSeen: false,
   });
-  console.log("new receiver", receiver);
+
   await receiver.save();
   return receiver.socketIoId;
 };
 
+const userConnected = async (userEmail) => {
+  const user = await User.findOne({ email: userEmail }).exec();
+  let socketIds = [];
+
+  for (const friendId of user.friends) {
+    const user = await User.findOne({ userId: friendId }).exec();
+    socketIds.push(user.socketIoId);
+  }
+
+  return { socketIds, userId: user.userId };
+};
+
 module.exports = {
   newMessage,
+  userConnected,
 };

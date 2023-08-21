@@ -28,7 +28,11 @@ import { getPostImages } from "../../../controllers/PostController";
 function OtherUserProfile() {
   const Navigate = useNavigate();
   const { username } = useParams();
+
   const [user, setUser] = useContext(UserContext).user;
+  if (username === user.username) {
+    Navigate("/home/profile");
+  }
   const [userInfo, setUserInfo] = useState();
   const [imageURL, setImageURL] = useState();
   const [changeAddPost, setChangeAddPost] =
@@ -37,7 +41,8 @@ function OtherUserProfile() {
   const [friendsNumber, setFriendsNumber] = useState();
   const [displayFriends, setDisplayFriends] = useState(false);
   const [interactionsNumber, setInteractionsNumber] = useState();
-
+  const [newUserConnected, setNewUserConnected] =
+    useContext(UserContext).newUserConnected;
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -73,7 +78,7 @@ function OtherUserProfile() {
     if (username) {
       fetchUserData(username);
     }
-  }, [user, changeAddPost]);
+  }, [user, changeAddPost, newUserConnected]);
   const styles = {
     width: displayFriends ? "80%" : "0",
     height: displayFriends ? "80vh" : "0",
@@ -152,7 +157,7 @@ function OtherUserProfile() {
             <EditAddButton
               Icon={<AiOutlineMessage />}
               content={"Message"}
-              userId={userInfo?.userId}
+              username={userInfo?.username}
             />
           </div>
         ) : user?.sentInvitations?.includes(userInfo?.userId) ? (

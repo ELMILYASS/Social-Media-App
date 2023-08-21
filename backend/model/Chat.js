@@ -15,7 +15,7 @@ const chatSchema = new Schema({
   },
   content: String,
   createdAt: Date,
-  isSeen: Boolean,
+  isSeen: Boolean, //by receiver
 });
 
 module.exports = mongoose.model("Chat", chatSchema);

@@ -23,7 +23,7 @@ const {
   interactionAdded,
   postDeleted,
 } = require("./controllers/postController");
-const { newMessage } = require("./controllers/chatController");
+const { newMessage, userConnected } = require("./controllers/chatController");
 const app = express();
 const server = http.createServer(app);
 
@@ -209,6 +209,20 @@ mongoose.connection.once("open", () => {
 
         if (socketId) {
           socket.to(socketId).emit("new-message");
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    });
+
+    socket.on("user-connected", async (userEmail) => {
+      try {
+        const result = await userConnected(userEmail);
+
+        for (const friendId of result.socketIds) {
+          if (friendId) {
+            socket.to(friendId).emit("user-connected", result.userId);
+          }
         }
       } catch (err) {
         console.log(err);

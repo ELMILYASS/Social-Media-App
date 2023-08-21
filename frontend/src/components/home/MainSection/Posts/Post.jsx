@@ -10,6 +10,7 @@ import { UserContext } from "../../../../App";
 import { getUserById, getUserProfileImage } from "../../../../controllers/User";
 import { TimePassed } from "../../../../controllers/PostController";
 import { AiFillDelete, AiOutlineDelete } from "react-icons/ai";
+import { useNavigate } from "react-router";
 function Post({ text, imgs, userId, createdAt, postId, likes, comments }) {
   const [isTruncated, setIsTruncated] = useState(false);
   const paragraphRef = useRef(null);
@@ -17,7 +18,7 @@ function Post({ text, imgs, userId, createdAt, postId, likes, comments }) {
   const [socket, setSocket] = useContext(UserContext).socket;
   const [displayPostBar, setDisplayPostBar] = useState(false);
   const [userInfo, setUserInfo] = useState({ username: "", image: "" });
-
+  const navigate = useNavigate();
   useEffect(() => {
     async function getUserInfo(userId) {
       const image = await getUserProfileImage(userId);
@@ -45,7 +46,7 @@ function Post({ text, imgs, userId, createdAt, postId, likes, comments }) {
   }, []);
 
   const len = imgs?.length;
- 
+
   const styles =
     len === 4 || len === 2
       ? "grid grid-cols-2"
@@ -57,7 +58,6 @@ function Post({ text, imgs, userId, createdAt, postId, likes, comments }) {
       ? "flex overflow-x-auto pb-4"
       : "";
   const images = imgs?.map((img, index) => {
-    console.log("here");
     if (len === 3 && index === 2) {
       return (
         <img
@@ -94,11 +94,27 @@ function Post({ text, imgs, userId, createdAt, postId, likes, comments }) {
     <div className="relative">
       <div className="flex mb-4 ">
         <img
+          onClick={() => {
+            if (userInfo.username === user.username) {
+              navigate("/home/profile/");
+            } else {
+              navigate("/home/profile/" + userInfo.username);
+            }
+          }}
           src={userInfo.image}
           alt="image"
-          className="h-[50px] w-[50px] mr-3 rounded-full object-cover "
+          className="h-[50px] w-[50px] cursor-pointer mr-3 rounded-full object-cover "
         />
-        <div className="mr-auto">
+        <div
+          className="mr-auto cursor-pointer"
+          onClick={() => {
+            if (userInfo.username === user.username) {
+              navigate("/home/profile/");
+            } else {
+              navigate("/home/profile/" + userInfo.username);
+            }
+          }}
+        >
           <p className="font-medium">{userInfo?.username}</p>
           <p className="text-sm text-grayText">{TimePassed(createdAt)}</p>
         </div>

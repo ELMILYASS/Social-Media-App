@@ -194,13 +194,6 @@ function RequiredAuth() {
         setSocket(newSocket);
         updateSocketIoId(newSocket.id);
       });
-
-      // return () => {
-      //   console.log("here");
-      //   // Disconnect and clean up socket when the component unmounts
-      //   newSocket.disconnect();
-      //   setSocket(null);
-      // };
     } else {
       updateSocketIoId("");
       setSocket(null);

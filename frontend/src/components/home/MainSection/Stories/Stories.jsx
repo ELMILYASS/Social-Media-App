@@ -1,18 +1,46 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Story from "./Story";
 import img from "../../../Images/pexels-pixabay-220453.jpg";
+import { getUserById, getUserProfileImage } from "../../../../controllers/User";
+import { UserContext } from "../../../../App";
+import Friend from "../../Chat/Friend";
+import { AiOutlineUserDelete } from "react-icons/ai";
 function Stories() {
   const [displayStory, setDisplayStory] = useState(false);
   const style = {
     opacity: displayStory ? "1" : "0",
     zIndex: displayStory ? "80" : "-1",
   };
+  const [users, setUsers] = useState([]);
+  const [user, setUser] = useContext(UserContext).user;
+  async function getFriends(user) {
+    let array = [];
+    let friends = [];
+    for (const i of user?.friends) {
+      const User = await getUserById(i);
+      const image = await getUserProfileImage(User.userId);
+      friends.push(
+        <Story
+          username={User.username}
+          userId={User.userId}
+          image={image}
+          socketIoId={User.socketIoId}
+          displayStory={setDisplayStory}
+        />
+      );
+    }
+    setUsers(friends);
+  }
+  useEffect(() => {
+    getFriends(user);
+  }, [user]);
+
   return (
     <div
-      className="w-full pb-3 stories overflow-auto flex  item-center gap-4
+      className="w-full py-2 stories overflow-auto flex  item-center gap-4
     "
     >
-      <div
+      {/* <div
         style={style}
         className="absolute h-[80vh] top-36 z-30 rounded-xl flex shadow-[0_10px_30px_rgb(0,0,0,0.2)] items-center justify-center sm:w-[50%] bg-main  left-1/2 translate-x-[-50%] w-[90%] p-5 "
       >
@@ -25,13 +53,16 @@ function Stories() {
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam libero,
           lore est voluptas quidem, fugiat impedit nisi autem cupiditate fugit
         </p>
-      </div>
-      <Story addPost={true} />
+      </div> */}
+      {/* <Story addPost={true} /> */}
+      {[...users]}
+
+      {/* 
       <Story displayStory={setDisplayStory} />
       <Story displayStory={setDisplayStory} />
       <Story displayStory={setDisplayStory} />
       <Story displayStory={setDisplayStory} />
-      <Story displayStory={setDisplayStory} />
+      <Story displayStory={setDisplayStory} /> */}
     </div>
   );
 }
