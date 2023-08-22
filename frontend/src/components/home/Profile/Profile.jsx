@@ -69,6 +69,8 @@ function Profile({ setDisplayed }) {
       getPosts();
     }
   }, [user, changeAddPost]);
+  const [isDark, setIsDark] = useContext(UserContext).isDark;
+
   return (
     <div className=" section sm:ml-[90px] min-h-[100vh]   sm:p-6 p-4 flex flex-col gap-5 items-center">
       <AddFriend style={styles} setAddFriend={setAddFriend} />
@@ -115,10 +117,21 @@ function Profile({ setDisplayed }) {
         />
       </div>
       <div className="w-full">
-        <div className="text-center text-xl text-black border-solid border-gray pb-2 border-b-[1px] mb-5">
+        <div
+          style={{
+            color: isDark ? "white" : "",
+          }}
+          className="text-center text-xl text-black border-solid border-gray pb-2 border-b-[1px] mb-5"
+        >
           Posts
         </div>
-        <div className="bg-white rounded-xl p-5 max-sm:mb-16 flex flex-col gap-5 ">
+        <div
+          style={{
+            backgroundColor: isDark ? "#111" : "",
+            color: isDark ? "white" : "",
+          }}
+          className="bg-white rounded-xl p-5 max-sm:mb-16 flex flex-col gap-5 "
+        >
           {posts.length > 0 ? (
             [
               ...posts.map((post, index) => {
@@ -136,7 +149,14 @@ function Profile({ setDisplayed }) {
               }),
             ]
           ) : (
-            <div className="text-center">No posts yet</div>
+            <div
+              style={{
+                color: isDark ? "white" : "",
+              }}
+              className="text-center"
+            >
+              No posts yet
+            </div>
           )}
         </div>
       </div>

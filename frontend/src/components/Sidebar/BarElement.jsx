@@ -52,7 +52,6 @@ function BarElement({ Icon, content, navigate, currentPage, info }) {
   return (
     <div
       style={styles}
-      s
       onClick={(e) => navigate(e, content)}
       className={`flex w-[40px] max-[450px]:w-1/6  ${info} hover:w-[35%] px-2    sm:ml-5 barElement cursor-pointer   h-[40px]  sm:hover:w-full justify-center items-center rounded-full duration-[0.3s]   `}
     >

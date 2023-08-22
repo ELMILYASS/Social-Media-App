@@ -11,6 +11,8 @@ function Stories() {
     opacity: displayStory ? "1" : "0",
     zIndex: displayStory ? "80" : "-1",
   };
+  const [newUserConnected, setNewUserConnected] =
+    useContext(UserContext).newUserConnected;
   const [users, setUsers] = useState([]);
   const [user, setUser] = useContext(UserContext).user;
   async function getFriends(user) {
@@ -33,10 +35,16 @@ function Stories() {
   }
   useEffect(() => {
     getFriends(user);
-  }, [user]);
-
+  }, [user, newUserConnected]);
+  const [isDark, setIsDark] = useContext(UserContext).isDark;
+  // style={{
+  //   color: isDark ? "white" : "",
+  // }}
   return (
     <div
+      style={{
+        color: isDark ? "white" : "",
+      }}
       className="w-full py-2 stories overflow-auto flex  item-center gap-4
     "
     >

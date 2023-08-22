@@ -90,3 +90,5 @@
 // ];
 
 // console.log(a.find((item) => item.id === 7));
+console.log("2023-08-22T00:00:00.000+00:00".slice(0, 10))
+

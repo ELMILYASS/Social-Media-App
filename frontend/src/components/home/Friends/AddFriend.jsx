@@ -98,10 +98,11 @@ function AddFriend({ style, setAddFriend }) {
       setFoundUsers([]);
     }
   }
+  const [isDark, setIsDark] = useContext(UserContext).isDark;
   return (
     <div
       style={style}
-      className="w-[80%] h-[90vh] duration-[0.3s]  bg-white  border-solid rounded-xl border-main border-[1px] fixed top-1/2 sm:ml-[45px]  left-1/2 translate-y-[-50%] translate-x-[-50%] p-3 flex flex-col gap-3"
+      className="w-[80%] h-[90vh] duration-[0.3s]    border-solid rounded-xl bg-white border-main border-[1px] fixed top-1/2 sm:ml-[45px]  left-1/2 translate-y-[-50%] translate-x-[-50%] p-3 flex flex-col gap-3"
     >
       <div
         className="flex justify-end  cursor-pointer"
@@ -111,15 +112,25 @@ function AddFriend({ style, setAddFriend }) {
       </div>
       <div className="w-full relative ">
         <input
+          style={{
+            borderColor: isDark ? "rgb(38,38,38)" : "var(--gray)",
+            backgroundColor: isDark ? "var(--darkSecond)" : "white",
+            color: isDark ? "white" : "",
+          }}
           type="text"
           // onFocus={() => setSearching(true)}
           value={inputValue}
           //  onBlur={() => setSearching(false)}
-          className="outline-none w-full border-b-gray border-b-[1px] h-[36px]   pl-2  pr-9  shadow"
+          className="outline-none rounded-xl w-full border-b-gray border-b-[1px] h-[36px]   pl-2  pr-9  shadow"
           placeholder="Search for a user ..."
           onChange={handleSearch}
         />
-        <BsSearch className="absolute right-3 cursor-pointer top-1/2 translate-y-[-50%] " />
+        <BsSearch
+          style={{
+            color: isDark ? "white" : "",
+          }}
+          className="absolute right-3 cursor-pointer top-1/2 translate-y-[-50%] "
+        />
       </div>
 
       {inputValue && (

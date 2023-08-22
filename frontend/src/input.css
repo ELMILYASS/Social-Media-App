@@ -10,7 +10,9 @@
   --second: #9b7ce6;
   /* --second: white; */
   --gray: #dadce0;
+  --grayDark: rgb(38, 38, 38);
   --green: rgb(34 197 94);
+  --darkSecond: #181717;
 }
 body {
   font-family: "Poppins", sans-serif;
@@ -109,3 +111,11 @@ body {
     height: 100vh;
   }
 }
+
+/* .border {
+
+}
+
+@media (min-width: 640px) {
+
+} */

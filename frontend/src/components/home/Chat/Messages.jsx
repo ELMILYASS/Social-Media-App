@@ -20,7 +20,7 @@ function Messages({ setDisplayed }) {
   const { username } = useParams();
   const [newMessage, setNewMessage] = useContext(UserContext).newMessage;
   const [userInfo, setUserInfo] = useState();
-  
+
   const [socket, setSocket] = useContext(UserContext).socket;
   const [user, setUser] = useContext(UserContext).user;
   const divRef = useRef();
@@ -91,12 +91,18 @@ function Messages({ setDisplayed }) {
       inputRef.current.value = "";
     }
   }
+  const [isDark, setIsDark] = useContext(UserContext).isDark;
 
   return (
     <div className="section sm:ml-[90px] flex flex-col gap-4 sectionHeight  sm:p-6 p-4">
       <div className="relative gap-2 text-xl h-[7%] px-2 flex items-center mb-2">
         <div className=" z-50 cursor-pointer " onClick={() => Navigate(-1)}>
-          <BsArrowLeft className="hover:scale-125 duration-[0.3s]" />
+          <BsArrowLeft
+            style={{
+              color: isDark ? "white" : "",
+            }}
+            className="hover:scale-125 duration-[0.3s]"
+          />
         </div>
 
         <div
@@ -121,13 +127,20 @@ function Messages({ setDisplayed }) {
           >
             {username}
           </div>
-          <div className="text-[16px]">
+          <div
+            style={{
+              backgroundColor: isDark ? "#111" : "",
+              color: isDark ? "white" : "",
+            }}
+            className="text-[16px]"
+          >
             {userInfo?.socketIoId ? "Online" : "Offline"}
           </div>
         </div>
       </div>
       <div
         ref={divRef}
+        style={{ borderColor: isDark ? "rgb(38,38,38)" : "var(--gray)" }}
         className="h-[83%] flex flex-col gap-2 p-3 border-second overflow-auto border-[1px] rounded-xl"
       >
         {messages &&
@@ -148,8 +161,18 @@ function Messages({ setDisplayed }) {
       {warning && (
         <div className="text-sm text-red-700 w-full text-center">{warning}</div>
       )}
-      <div className=" h-[45px]    flex justify-between px-4 gap-5 items-center  rounded-xl border-solid border-gray border-[1px]">
+      <div
+        style={{
+          backgroundColor: isDark ? "var(--darkSecond)" : "",
+          borderColor: isDark ? "rgb(38,38,38)" : "var(--gray)",
+        }}
+        className=" h-[45px]    flex justify-between px-4 gap-5 items-center  rounded-xl border-solid border-gray border-[1px]"
+      >
         <input
+          style={{
+            color: isDark ? "white" : "",
+            backgroundColor: isDark ? "var(--darkSecond)" : "",
+          }}
           type="text"
           placeholder="Send a message ..."
           className="h-full outline-none w-full "

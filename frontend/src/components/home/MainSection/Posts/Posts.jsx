@@ -4,9 +4,17 @@ import img from "../../../Images/pexels-pixabay-220453.jpg";
 import { UserContext } from "../../../../App";
 function Posts({ posts }) {
   const [user, setUser] = useContext(UserContext).user;
-  console.log("posts", posts);
+  const [isDark, setIsDark] = useContext(UserContext).isDark;
+
   return (
-    <div className="= bg-white border-[1px] border-gray hover:shadow-[0_10px_30px_rgb(0,0,0,0.2)] duration-[0.3s] p-5 rounded-xl flex flex-col gap-8 max-sm:mb-[70px]">
+    <div
+      style={{
+        backgroundColor: isDark ? "var(--darkSecond)" : "",
+        color: isDark ? "white" : "",
+        borderColor: isDark ? "rgb(38,38,38)" : "var(--gray)",
+      }}
+      className="= bg-white border-[1px] border-gray hover:shadow-[0_10px_30px_rgb(0,0,0,0.2)] duration-[0.3s] p-5 rounded-xl flex flex-col gap-8 max-sm:mb-[70px]"
+    >
       {posts.length > 0 ? (
         [
           ...posts.map((post, index) => {

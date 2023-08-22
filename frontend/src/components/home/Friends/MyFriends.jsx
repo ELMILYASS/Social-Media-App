@@ -45,7 +45,6 @@ function MyFriends() {
     setUsers(array);
   }
   useEffect(() => {
-
     getFriends(user);
   }, [user]);
 
@@ -93,12 +92,25 @@ function MyFriends() {
       setFoundUsers([]);
     }
   }
+  const [isDark, setIsDark] = useContext(UserContext).isDark;
+
   return (
     <div className=" p-5 h-full overflow-hidden">
       <div className="h-[15%]">
-        <div className="text-center text-xl text-dark">My Friends</div>
+        <div
+          style={{
+            color: isDark ? "white" : "",
+          }}
+          className="text-center text-xl text-dark"
+        >
+          My Friends
+        </div>
         <div className=" relative border-b-[1px] border-b-solid border-b-dark">
           <input
+            style={{
+              color: isDark ? "white" : "",
+              backgroundColor: isDark ? "var(--darkSecond)" : "",
+            }}
             type="text"
             onChange={handleSearch}
             onFocus={() => setSearching(true)}
@@ -107,19 +119,34 @@ function MyFriends() {
             className="outline-none w-full border-none h-[40px]  pl-2  pr-9   "
             placeholder="Search for a user ..."
           />
-          <BsSearch className="absolute right-3 cursor-pointer top-1/2 translate-y-[-50%] " />
+          <BsSearch
+            style={{
+              color: isDark ? "white" : "",
+            }}
+            className="absolute right-3 cursor-pointer top-1/2 translate-y-[-50%] "
+          />
         </div>
       </div>
 
       {inputValue && (
-        <div className="p-3 flex flex-col gap-5 overflow-auto h-[85%] w-full">
+        <div
+          style={{
+            color: isDark ? "white" : "",
+          }}
+          className="p-3 flex flex-col gap-5 overflow-auto h-[85%] w-full"
+        >
           {searchedUsers.length === 0
             ? "No user with that username"
             : [...foundUsers]}
         </div>
       )}
       {!inputValue && (
-        <div className="flex flex-col gap-3 py-3  h-[85%] overflow-auto">
+        <div
+          style={{
+            color: isDark ? "white" : "",
+          }}
+          className="flex flex-col gap-3 py-3  h-[85%] overflow-auto"
+        >
           {[...users]}
         </div>
       )}

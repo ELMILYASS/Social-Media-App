@@ -5,7 +5,7 @@ export async function getUserByUsername(username) {
         user(username: $username){
           userId
           email
-          dateOfBirth
+         
           country
           city
           image
@@ -60,7 +60,7 @@ export async function getUserById(userId) {
         user(userId: $userId){
           userId
           email
-          dateOfBirth
+         
           country
           city
           image

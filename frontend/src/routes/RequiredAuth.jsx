@@ -66,7 +66,7 @@ function RequiredAuth() {
       user(email: $email){
         userId
         email
-        dateOfBirth
+    
         country
         city
         image
@@ -127,7 +127,7 @@ function RequiredAuth() {
             ) {
               userId
               email
-              dateOfBirth
+          
               country
               city
               socketIoId

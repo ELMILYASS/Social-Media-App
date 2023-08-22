@@ -44,6 +44,7 @@ function Comment({ userId, content, createdAt, commentId, postId }) {
   function handleChangingComment(e) {
     setCommentContent(e.target.value);
   }
+  const [isDark, setIsDark] = useContext(UserContext).isDark;
 
   return (
     <div className="relative flex ">
@@ -117,6 +118,10 @@ function Comment({ userId, content, createdAt, commentId, postId }) {
       />
       <div className="flex flex-col w-[100%] outline-none">
         <input
+          style={{
+            backgroundColor: isDark ? "#111" : "",
+            color: isDark ? "white" : "",
+          }}
           className="mb-2 outline-none border-none"
           type="text"
           value={commentContent}

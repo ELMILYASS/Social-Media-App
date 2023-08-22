@@ -24,10 +24,17 @@ function Notifications({ setDisplayed }) {
 
     setDisplayed("notifications");
   }, []);
+  const [isDark, setIsDark] = useContext(UserContext).isDark;
 
   const Navigate = useNavigate();
   return (
-    <div className="section sm:ml-[90px]  sm:p-6 p-4 ">
+    <div
+      style={{
+        color: isDark ? "white" : "",
+       
+      }}
+      className="section sm:ml-[90px]  sm:p-6 p-4 "
+    >
       <div className="relative  text-xl h-[7%] px-2 flex items-center mb-8">
         <div className="  cursor-pointer" onClick={() => Navigate(-1)}>
           <AiOutlineLeft />

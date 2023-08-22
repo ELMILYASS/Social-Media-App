@@ -30,7 +30,7 @@ function OtherUserProfile() {
   const { username } = useParams();
 
   const [user, setUser] = useContext(UserContext).user;
-  if (username === user.username) {
+  if (username === user?.username) {
     Navigate("/home/profile");
   }
   const [userInfo, setUserInfo] = useState();
@@ -79,12 +79,14 @@ function OtherUserProfile() {
       fetchUserData(username);
     }
   }, [user, changeAddPost, newUserConnected]);
+  const [isDark, setIsDark] = useContext(UserContext).isDark;
   const styles = {
     width: displayFriends ? "80%" : "0",
     height: displayFriends ? "80vh" : "0",
     zIndex: displayFriends ? "30" : "-2",
     opacity: displayFriends ? "1" : "0",
   };
+
   return (
     <div className=" section sm:ml-[90px] min-h-[100vh]   sm:p-6 p-4 flex flex-col gap-5 items-center">
       <div className="  text-xl w-full ">
@@ -111,16 +113,39 @@ function OtherUserProfile() {
             {userInfo?.username || "Username"}
           </div>
           {userInfo?.description && (
-            <div className="text-dark">{user?.description}</div>
+            <div
+              style={{
+                color: isDark ? "white" : "",
+              }}
+              className="text-white"
+            >
+              {user?.description}
+            </div>
           )}
 
           {userInfo?.country !== "Select Country" &&
             userInfo?.country &&
             userInfo?.city && (
-              <div className="flex gap-1 justify-center">
-                <GoLocation className="text-xl" />
+              <div
+                style={{
+                  color: isDark ? "white" : "",
+                }}
+                className="flex gap-1 justify-center"
+              >
+                <GoLocation
+                  className="text-xl"
+                  style={{
+                    color: isDark ? "white" : "",
+                  }}
+                />
 
-                <div> {`${userInfo.country} ${userInfo.city}`}</div>
+                <div
+                  style={{
+                    color: isDark ? "white" : "",
+                  }}
+                >
+                  {`${userInfo.country} ${userInfo.city}`}
+                </div>
               </div>
             )}
           <div className="flex justify-center items-center text-dark gap-1"></div>
@@ -195,10 +220,22 @@ function OtherUserProfile() {
         </div>
       </div>
       <div className="w-full">
-        <div className="text-center text-xl text-dark border-solid border-gray pb-2 border-b-[1px] mb-5">
+        <div
+          style={{
+            borderBottomColor: isDark ? "rgb(38,38,38)" : "var(--gray)",
+            color: isDark ? "white" : "",
+          }}
+          className="text-center text-xl text-dark border-solid  pb-2 border-b-[1px] mb-5"
+        >
           Posts
         </div>
-        <div className="bg-white rounded-xl p-5 max-sm:mb-16 flex flex-col gap-5 ">
+        <div
+          style={{
+            color: isDark ? "white" : "",
+            backgroundColor: isDark ? "var(--darkSecond)" : "white",
+          }}
+          className=" rounded-xl p-5 max-sm:mb-16 flex flex-col gap-5 "
+        >
           {isFriend ? (
             posts.length > 0 ? (
               [
@@ -217,10 +254,22 @@ function OtherUserProfile() {
                 }),
               ]
             ) : (
-              <div className="text-center">No posts yet</div>
+              <div
+                style={{
+                  color: isDark ? "white" : "",
+                }}
+                className="text-center"
+              >
+                No posts yet
+              </div>
             )
           ) : (
-            <div className="text-center">
+            <div
+              style={{
+                color: isDark ? "white" : "",
+              }}
+              className="text-center"
+            >
               Add him to your friends to see his posts
             </div>
           )}

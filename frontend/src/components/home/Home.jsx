@@ -16,13 +16,22 @@ import Messages from "./Chat/Messages";
 function Home() {
   const [displayed, setDisplayed] = useState("home");
   const [socket, setSocket] = useContext(UserContext).socket;
+  const [isDark, setIdDark] = useContext(UserContext).isDark;
+  // const [isDark, setIsDark] = useState(false);
+  // useEffect(() => {
+  //   setIsDark(localStorage.getItem("dark"));
+  // }, []);
+
+  const style = {
+    backgroundColor: isDark ? "#111" : "white",
+  };
   useEffect(() => {
     if (socket) {
       socket.emit("user-connected", localStorage.getItem("email"));
     }
   }, [socket]);
   return (
-    <div className="min-h-[100vh] ">
+    <div style={style} className="min-h-[100vh] ">
       <SideBar click={[displayed, setDisplayed]} />
 
       <Routes>

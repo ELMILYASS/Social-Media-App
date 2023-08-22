@@ -5,6 +5,8 @@ import { TimePassed, getPostImages } from "../../../controllers/PostController";
 import { useNavigate } from "react-router";
 import { AiOutlineArrowRight, AiOutlineCloseCircle } from "react-icons/ai";
 import UserPost from "../MainSection/Posts/Post";
+import { useContext } from "react";
+import { UserContext } from "../../../App";
 
 function Notification({ status, message, createdAt, userId, postId, post }) {
   const [userInfo, setUserInfo] = useState();
@@ -46,8 +48,13 @@ function Notification({ status, message, createdAt, userId, postId, post }) {
       setDisplayPost(true);
     }
   }
+  const [isDark, setIsDark] = useContext(UserContext).isDark;
+
   return (
-    <div className="flex gap-3  border-b-[1px] duration-[0.3s] hover:pl-2 hover:border-b-main">
+    <div
+      style={{ borderBottomColor: isDark ? "rgb(38,38,38)" : "var(--gray)" }}
+      className="flex gap-3  border-b-[1px] duration-[0.3s] hover:pl-2 hover:border-b-main"
+    >
       <img
         src={userInfo?.image}
         alt="image"

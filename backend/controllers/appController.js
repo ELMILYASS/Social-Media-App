@@ -184,7 +184,7 @@ const RootQueryType = new GraphQLObjectType({
         return messages;
       },
     },
-    
+
     users: {
       type: new GraphQLList(UserType),
       description: "List of All users",

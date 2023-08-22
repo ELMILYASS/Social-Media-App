@@ -45,23 +45,49 @@ function Friends({ setDisplayed }) {
     }
     // <SearchedUser username={u.username} userId={u.userId} image={image} />
   }, [user]);
+  const [isDark, setIsDark] = useContext(UserContext).isDark;
+
   return (
     <div className="section sm:ml-[90px] sm:px-10 px-4 py-4 Height flex flex-col gap-6 ">
       <div className="relative  text-xl h-[7%] px-2 flex items-center">
         <div className="  cursor-pointer" onClick={() => Navigate(-1)}>
-          <AiOutlineLeft />
+          <AiOutlineLeft
+            style={{
+              color: isDark ? "white" : "",
+            }}
+          />
         </div>
         <div className="text-main font-medium mx-auto">Friends</div>
       </div>
       <div className="flex overflow-x-auto gap-5 h-full snap-x justify-between pb-3">
-        <div className=" w-full min-[720px]:w-[450px] bg-white shadow rounded-xl border-[1px] border-gray overflow-y-auto shrink-0 h-full snap-center">
+        <div
+          style={{
+            borderColor: isDark ? "rgb(38,38,38)" : "var(--gray)",
+            backgroundColor: isDark ? "var(--darkSecond)" : "",
+          }}
+          className=" w-full min-[720px]:w-[450px] bg-white shadow rounded-xl border-[1px] border-gray overflow-y-auto shrink-0 h-full snap-center"
+        >
           <MyFriends />
         </div>
 
-        <div className=" w-full min-[720px]:w-[450px] bg-white shadow rounded-xl overflow-y-auto border-[1px] border-gray shrink-0 h-full snap-center">
+        <div
+          style={{
+            borderColor: isDark ? "rgb(38,38,38)" : "var(--gray)",
+
+            backgroundColor: isDark ? "var(--darkSecond)" : "",
+          }}
+          className=" w-full min-[720px]:w-[450px] bg-white shadow rounded-xl overflow-y-auto border-[1px] border-gray shrink-0 h-full snap-center"
+        >
           <Invitations />
         </div>
-        <div className=" w-full min-[720px]:w-[450px] bg-white shadow rounded-xl overflow-y-auto shrink-0 border-[1px] border-gray h-full snap-center">
+        <div
+          style={{
+            borderColor: isDark ? "rgb(38,38,38)" : "var(--gray)",
+
+            backgroundColor: isDark ? "var(--darkSecond)" : "",
+          }}
+          className=" w-full min-[720px]:w-[450px] bg-white shadow rounded-xl overflow-y-auto shrink-0 border-[1px] border-gray h-full snap-center"
+        >
           <ReceivedInvitations />
         </div>
       </div>

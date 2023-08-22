@@ -374,11 +374,19 @@ function EditProfile({ setDisplayed }) {
       setImageWarning(err.response.data.message);
     }
   }
+  const [isDark, setIsDark] = useContext(UserContext).isDark;
+  // style={{
+  //   backgroundColor: isDark ? "#111" : "",
+  //   color: isDark ? "white" : "",
+  // }}
   return (
     <div className="section sm:ml-[90px]  sectionHeight flex flex-col justify-evenly  sm:px-10 px-4 py-1 overflow-auto">
       <div className="flex flex-col gap-3">
         <div className="relative text-center text-xl ">
           <div
+            style={{
+              color: isDark ? "white" : "",
+            }}
             className="absolute z-50 cursor-pointer top-1/2 translate-y-[-50%]"
             onClick={() => navigate("/home/profile")}
           >

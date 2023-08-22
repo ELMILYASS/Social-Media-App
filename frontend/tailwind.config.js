@@ -11,6 +11,7 @@ module.exports = {
         dark: "#31344f",
         backgroundGray: "#f4f5f7",
         gray: "#dadce0",
+        grayDark: "rgb(38,38,38)",
         grayText: "#5d5d5d",
       },
       shadow: "shadow-[0_10px_30px_rgb(0,0,0,0.2)]",

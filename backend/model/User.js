@@ -58,7 +58,7 @@ const userSchema = new Schema({
     ],
     default: [],
   },
-  
+  dateOfBirth: Date,
   socketIoId: String,
 });
 

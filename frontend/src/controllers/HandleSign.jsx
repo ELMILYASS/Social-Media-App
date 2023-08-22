@@ -6,11 +6,8 @@ async function handleSign(
   e,
   [userInfo, setUserInfo],
   [warning, setWarning],
-  Navigate,
-
+  Navigate
 ) {
-
-
   e.preventDefault();
   let sign = true;
 
@@ -127,7 +124,7 @@ async function handleSign(
         });
 
         // store access token locally to send it with next requests and redirect user to home page
-      
+
         localStorage.setItem("accessToken", res.data.accessToken);
         localStorage.setItem("email", info.email);
         Navigate("/home");
@@ -150,6 +147,7 @@ async function handleSign(
 
         localStorage.setItem("accessToken", res2.data.accessToken);
         localStorage.setItem("email", info.email);
+        localStorage.setItem("dark", false);
         Navigate("/home");
       } catch (err) {
         setWarning(err.response.data.message);

@@ -56,9 +56,21 @@ function Comments({ displayed, comments, postId }) {
       divRef.current.scrollTop = divRef.current.scrollHeight;
     }
   }, []);
+  const [isDark, setIsDark] = useContext(UserContext).isDark;
+
   return (
-    <div className="p-4 relative bg-white shadow-[0_10px_30px_rgb(0,0,0,0.2)]  flex flex-col  ">
-      <div className="   rounded-xl border-[1px] border-gray p-3  mb-5">
+    <div
+      style={{
+        backgroundColor: isDark ? "#111" : "",
+
+        color: isDark ? "white" : "",
+      }}
+      className="p-4 relative rounded-xl bg-white shadow-[0_10px_30px_rgb(0,0,0,0.2)]  flex flex-col  "
+    >
+      <div
+        style={{ borderColor: isDark ? "rgb(38,38,38)" : "var(--gray)" }}
+        className="   rounded-xl border-[1px] border-gray p-3  mb-5"
+      >
         <div
           className="h-[30px] flex items-center justify-end z-20 cursor-pointer"
           onClick={() => setDisplayComments(false)}
@@ -90,6 +102,11 @@ function Comments({ displayed, comments, postId }) {
       </div>
       <div className=" w-full h-[50px]    flex justify-between px-4 gap-5 items-center  rounded-xl border-solid border-[1px] border-main">
         <input
+          style={{
+            backgroundColor: isDark ? "#111" : "",
+
+            color: isDark ? "white" : "",
+          }}
           type="text"
           ref={input}
           placeholder="Your Comment ..."
@@ -101,7 +118,11 @@ function Comments({ displayed, comments, postId }) {
             onClick={shareComment}
             className="h-8  cursor-pointer rounded-full text-xl w-8  bg-second p-1 flex items-center justify-center "
           >
-            <FaShare />
+            <FaShare
+              style={{
+                color: isDark ? "rgb(38,38,38)" : "white",
+              }}
+            />
           </div>
           {/* <PostIcon Icon={<AiOutlineVideoCamera />} /> */}
         </div>

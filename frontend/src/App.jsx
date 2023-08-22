@@ -19,6 +19,7 @@ function App() {
   const [changeAddPost, setChangeAddPost] = useState(false);
   const [newMessage, setNewMessage] = useState(false);
   const [imageURL, setImageURL] = useState("");
+  const [isDark, setIsDark] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [numberUnseenMessages, setNumberUnseenMessages] = useState(0);
   const [newUserConnected, setNewUserConnected] = useState(false);
@@ -88,6 +89,9 @@ function App() {
     });
   }, [socket]);
   useEffect(() => {
+    setIsDark(localStorage.getItem("dark") === "false" ? false : true);
+  }, []);
+  useEffect(() => {
     async function uploadImage(userId) {
       const file = await sendAxiosRequest("GET", `profileimage/${userId}`);
       return file;
@@ -100,7 +104,7 @@ function App() {
       setImageURL(defaultImage);
     }
   }, [user]);
-
+  console.log("dark", isDark);
   return (
     <UserContext.Provider
       value={{
@@ -113,6 +117,7 @@ function App() {
         newMessage: [newMessage, setNewMessage],
         newUserConnected: [newUserConnected, setNewUserConnected],
         numberUnseenMessages: [numberUnseenMessages, setNumberUnseenMessages],
+        isDark: [isDark, setIsDark],
       }}
     >
       <Router>

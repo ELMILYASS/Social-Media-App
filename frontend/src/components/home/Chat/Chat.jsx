@@ -178,28 +178,46 @@ function Chat({ setDisplayed }) {
       setFoundUsers([]);
     }
   }
+  const [isDark, setIsDark] = useContext(UserContext).isDark;
+
   return (
     <div className="section sectionHeight sm:ml-[90px]  flex flex-col  gap-2 sm:p-6 p-4 ">
       <div className="relative  text-xl h-[7%]   px-2 flex items-center mb-2">
-        <div className="  cursor-pointer" onClick={() => Navigate(-1)}>
+        <div
+          style={{
+            color: isDark ? "white" : "",
+          }}
+          className="  cursor-pointer"
+          onClick={() => Navigate(-1)}
+        >
           <AiOutlineLeft />
         </div>
         <div className="text-main font-medium mx-auto">Chat</div>
       </div>
       <div className="h-[7%] bg-blue-500">
-        <div className=" relative border-b-[1px] h-full border-b-solid border-b-gray">
+        <div className=" relative  h-full  ">
           <input
+            style={{
+              backgroundColor: isDark ? "#111" : "",
+              color: isDark ? "white" : "",
+              borderBottomColor: isDark ? "rgb(38,38,38)" : "var(--gray)",
+            }}
             type="text"
             onChange={handleSearch}
             value={inputValue}
-            className="outline-none w-full border-none h-full  pl-2  pr-9   "
+            className=" border-b-[1px] border-b-solid outline-none w-full  h-full  pl-2  pr-9   "
             placeholder="Search for a friend ..."
           />
           <BsSearch className="absolute right-3 cursor-pointer top-1/2 translate-y-[-50%] " />
         </div>
       </div>
       {inputValue && (
-        <div className="max-h-[20%] ">
+        <div
+          style={{
+            color: isDark ? "white" : "",
+          }}
+          className="max-h-[20%] "
+        >
           {" "}
           <div className="flex  gap-4 py-3   overflow-auto">
             {searchedUsers.length === 0
@@ -212,14 +230,31 @@ function Chat({ setDisplayed }) {
       {!inputValue && (
         <div className="h-[20%] ">
           <div className="text-main">Connected Friends</div>
-          <div className="flex  gap-4 pb-3  overflow-auto">
+          <div
+            style={{
+              color: isDark ? "white" : "",
+            }}
+            className="flex  gap-4 pb-3  overflow-auto"
+          >
             {[...connectedUsers]}
           </div>
         </div>
       )}
-      <div className="border-b-[1px]    border-gray text-main">Messages</div>
+      <div
+        style={{
+          borderBottomColor: isDark ? "rgb(38,38,38)" : "var(--gray)",
+        }}
+        className="border-b-[1px]   text-main"
+      >
+        Messages
+      </div>
       <div className="h-[66%] pr-5 overflow-auto">
-        <div className="  ">
+        <div
+          style={{
+            color: isDark ? "white" : "",
+          }}
+          className="  "
+        >
           <div>{[...lastMessages]}</div>
         </div>
       </div>
