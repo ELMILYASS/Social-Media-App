@@ -106,7 +106,7 @@ mongoose.connection.once("open", () => {
       // console.log(senderId);
       // console.log(receiverId);
       try {
-        await deleteInvitation(senderId, receiverId);
+        
         const res = await acceptInvitation(senderId, receiverId);
         socket.emit("server-response", res);
       } catch (err) {

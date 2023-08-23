@@ -1,7 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "./input.css";
 import Sign from "./components/sign/Sign";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import RequireAuth from "./routes/RequiredAuth";
 import axios from "axios";
 import Home from "./components/home/Home";
@@ -10,6 +15,7 @@ import { createContext } from "react";
 import defaultImage from "../src/images/default profile image.jpg";
 import { sendAxiosRequest } from "./components/Request";
 import { getUserById } from "./controllers/User";
+import Error from "./components/Error";
 export const UserContext = createContext();
 
 function App() {
@@ -56,6 +62,7 @@ function App() {
     });
 
     socket?.on("new-invitation", (sender, receiver) => {
+      console.log("receiverrrr", receiver);
       setUser(receiver);
       console.log("You have received a new Invitation from ", sender.username);
     });
@@ -89,8 +96,15 @@ function App() {
     });
   }, [socket]);
   useEffect(() => {
-    setIsDark(localStorage.getItem("dark") === "false" ? false : true);
+    setIsDark(
+      localStorage.getItem("dark")
+        ? localStorage.getItem("dark") === "false"
+          ? false
+          : true
+        : false
+    );
   }, []);
+
   useEffect(() => {
     async function uploadImage(userId) {
       const file = await sendAxiosRequest("GET", `profileimage/${userId}`);
@@ -104,7 +118,7 @@ function App() {
       setImageURL(defaultImage);
     }
   }, [user]);
-  console.log("dark", isDark);
+
   return (
     <UserContext.Provider
       value={{
@@ -125,6 +139,8 @@ function App() {
           <Route element={<RequireAuth />}>
             <Route path="/" element={<Sign />} />
             <Route path="/home/*" element={<Home />} />
+            <Route path="/error" element={<Error />} />
+            <Route path="*" element={<Navigate to="/error" />} />
           </Route>
         </Routes>
       </Router>

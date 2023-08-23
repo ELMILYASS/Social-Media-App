@@ -165,7 +165,7 @@ const interactionAdded = async (senderId, postId) => {
         userId: senderId,
         status: "post-changed",
         message: `interacted with a post of ${
-          postOwner.userId.toString() !== senderId
+          postOwner.userId.toString() === senderId
             ? "him"
             : postOwner.userId.toString() !== friendId
             ? user.username

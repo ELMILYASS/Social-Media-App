@@ -25,7 +25,8 @@ function NavBar(props) {
   return (
     <div className="h-[10%]    p-5 w-full  z-10 flex flex-wrap justify-center items-center ">
       <h1 className="mr-auto text-xl mb-1">
-        <span className="text-main font-bold  ">B</span>logging
+        <span className="text-main   ">I</span>lyass
+        <span className="text-main   ">N</span>et
       </h1>
       <div className="z-10">
         {haveAnAccount ? "Already have an account? " : "New User?"}

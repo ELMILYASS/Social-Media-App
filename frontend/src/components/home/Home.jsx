@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import SideBar from "../Sidebar/SideBar";
 import MainSection from "./MainSection/MainSection";
-import { Routes, Route } from "react-router";
+import { Routes, Route, useLocation, Navigate } from "react-router";
 import Profile from "./Profile/Profile";
 import EditProfile from "./Profile/EditProfile";
 import sendRequest from "../Request";
@@ -13,14 +13,11 @@ import { UserContext } from "../../App";
 import Friends from "./Friends/Friends";
 import Chat from "./Chat/Chat";
 import Messages from "./Chat/Messages";
+import Error from "../Error";
 function Home() {
   const [displayed, setDisplayed] = useState("home");
   const [socket, setSocket] = useContext(UserContext).socket;
   const [isDark, setIdDark] = useContext(UserContext).isDark;
-  // const [isDark, setIsDark] = useState(false);
-  // useEffect(() => {
-  //   setIsDark(localStorage.getItem("dark"));
-  // }, []);
 
   const style = {
     backgroundColor: isDark ? "#111" : "white",
@@ -30,10 +27,11 @@ function Home() {
       socket.emit("user-connected", localStorage.getItem("email"));
     }
   }, [socket]);
+  const location = useLocation();
+  const shouldDisplaySidebar = !location.pathname.includes("/error");
   return (
     <div style={style} className="min-h-[100vh] ">
-      <SideBar click={[displayed, setDisplayed]} />
-
+      {shouldDisplaySidebar && <SideBar click={[displayed, setDisplayed]} />}
       <Routes>
         <Route path="/" element={<MainSection setDisplayed={setDisplayed} />} />
 
@@ -59,6 +57,8 @@ function Home() {
           path="/chat/:username"
           element={<Messages setDisplayed={setDisplayed} />}
         />
+        <Route path="/error" element={<Error />} />
+        <Route path="*" element={<Navigate to="/error" />} />
       </Routes>
     </div>
   );

@@ -13,6 +13,8 @@ export const NotificationSeen = async (userId, notificationIds) => {
         description
         friends
         username
+        sentInvitations
+        receivedInvitations
         notifications{
           userId
           postId

@@ -52,31 +52,25 @@ function Invitations() {
     const usersList = [];
 
     for (let i = 0; i < users.length; i++) {
-      const u = users[i];
+      const u = users[i].props.children[0].props;
 
-      if (u.props?.image) {
-        const image = await getUserProfileImage(u.props.userId);
-        usersList.push(
-          <div className="relative ">
-            <SearchedUser
-              username={u.props.username}
-              userId={u.props.userId}
-              image={image}
-            />
+      const image = await getUserProfileImage(users.userId);
+      usersList.push(
+        <div className="relative ">
+          <SearchedUser
+            username={users.username}
+            userId={users.userId}
+            image={image}
+          />
 
-            <div
-              className="cursor-pointer"
-              onClick={() => deleteInvitation(socket, setUser, user.userId, i)}
-            >
-              <AiOutlineUserDelete className="absolute right-4 top-1/2 translate-y-[-50%] text-2xl text-main" />
-            </div>
+          <div
+            className="cursor-pointer"
+            onClick={() => deleteInvitation(socket, setUser, user.userId, i)}
+          >
+            <AiOutlineUserDelete className="absolute right-4 top-1/2 translate-y-[-50%] text-2xl text-main" />
           </div>
-        );
-      } else {
-        usersList.push(
-          <SearchedUser username={u.username} userId={u.userId} />
-        );
-      }
+        </div>
+      );
     }
 
     setFoundUsers(usersList);
@@ -85,7 +79,9 @@ function Invitations() {
   async function handleSearch(e) {
     setInputValue(e.target.value);
     const displayedUsers = users.filter((u) => {
-      return u.props.username.startsWith(e.target.value || " ");
+      return u.props.children[0].props.username.startsWith(
+        e.target.value || " "
+      );
     });
 
     setSearchedUsers(displayedUsers);

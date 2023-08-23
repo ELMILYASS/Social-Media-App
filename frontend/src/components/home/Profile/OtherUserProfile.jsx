@@ -44,7 +44,7 @@ function OtherUserProfile() {
   const [newUserConnected, setNewUserConnected] =
     useContext(UserContext).newUserConnected;
   const [posts, setPosts] = useState([]);
-
+  console.log("userfrom here ", user);
   useEffect(() => {
     async function getPosts(userInfo) {
       let res = await getUserPosts(userInfo?.userId);
@@ -68,6 +68,7 @@ function OtherUserProfile() {
 
     const fetchUserData = async (username) => {
       const userData = await getUserByUsername(username);
+
       setFriendsNumber(userData?.friends.length);
       getPosts(userData);
       setIsFriend(user.friends.includes(userData.userId));
@@ -88,26 +89,26 @@ function OtherUserProfile() {
   };
 
   return (
-    <div className=" section sm:ml-[90px] min-h-[100vh]   sm:p-6 p-4 flex flex-col gap-5 items-center">
+    <div className=" section  sm:ml-[90px] min-h-[100vh]   sm:p-6 p-4 flex flex-col gap-5 items-center">
       <div className="  text-xl w-full ">
         <div className=" z-50 cursor-pointer " onClick={() => Navigate(-1)}>
           <AiOutlineLeft />
         </div>
       </div>
 
-      <div className=" flex flex-col relative  items-center gap-1">
-        <div className="h-[140px] rounded-full bg-white border-solid border-main border-[1px]  p-[2px] w-[140px] overflow-hidden   max-[400px]:w-[120px] max-[400px]:h-[120px]">
-          <img
-            src={imageURL}
-            alt="Profile Image"
-            className="object-cover w-full h-full rounded-full duration-[0.3s]  hover:scale-110"
-          />
+      <div className=" flex flex-col   items-center gap-1">
+        <div className="relative">
+          <div className=" rounded-full bg-white border-solid border-main border-[1px]   overflow-hidden   ">
+            <img
+              src={imageURL}
+              alt="Profile Image"
+              className="object-cover w-[140px] max-[400px]:w-[120px] max-[400px]:h-[120px] h-[140px] rounded-full duration-[0.3s]  hover:scale-110"
+            />
+          </div>
+          {userInfo?.socketIoId && (
+            <div className="absolute w-4 h-4 bg-green-500 rounded-full right-[10%] top-[79%]  border-[2px] border-white"></div>
+          )}
         </div>
-        {userInfo?.socketIoId && (
-          <>
-            <div className="absolute w-4 h-4 bg-green-500 rounded-full right-[10%] top-[65%] z-10 border-[2px] border-white"></div>
-          </>
-        )}
         <div className="text-center">
           <div className="text-xl text-main">
             {userInfo?.username || "Username"}

@@ -91,7 +91,7 @@ function UserPost() {
 
       try {
         const res = await sendAxiosRequest("POST", "post", formData);
-        console.log("result is ", res);
+
         setWarning("");
         setShared(true);
         setChangeAddPost((prev) => !prev);

@@ -37,6 +37,7 @@ function BarElement({ Icon, content, navigate, currentPage, info }) {
     async function countNumberOfMessages() {
       const messages = await getMessages(user.userId);
 
+      console.log("messages", messages);
       const number = messages.reduce((prev, curr) => {
         if (curr.receiverId === user.userId && curr.isSeen === false) {
           return prev + 1;
@@ -49,6 +50,7 @@ function BarElement({ Icon, content, navigate, currentPage, info }) {
       countNumberOfMessages();
     }
   }, [user, newMessage]);
+  console.log("unseen", numberUnseenMessages);
   return (
     <div
       style={styles}

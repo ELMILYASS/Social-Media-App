@@ -20,7 +20,8 @@ function Messages({ setDisplayed }) {
   const { username } = useParams();
   const [newMessage, setNewMessage] = useContext(UserContext).newMessage;
   const [userInfo, setUserInfo] = useState();
-
+  const [numberUnseenMessages, setNumberUnseenMessages] =
+    useContext(UserContext).numberUnseenMessages;
   const [socket, setSocket] = useContext(UserContext).socket;
   const [user, setUser] = useContext(UserContext).user;
   const divRef = useRef();
@@ -49,6 +50,7 @@ function Messages({ setDisplayed }) {
   useEffect(() => {
     async function getUserMessages() {
       const messages = await getMessagesWith(user.userId, userInfo.userId);
+      setNumberUnseenMessages(0);
       setMessages(messages);
     }
     if (userInfo) {

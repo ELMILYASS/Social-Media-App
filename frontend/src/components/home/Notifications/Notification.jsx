@@ -39,6 +39,7 @@ function Notification({ status, message, createdAt, userId, postId, post }) {
     }
     getUserImage();
   }, []);
+  console.log("post", post);
   function handleClick() {
     if (!postId && status !== "new-message") {
       Navigate(`/home/profile/${userInfo?.username}`);

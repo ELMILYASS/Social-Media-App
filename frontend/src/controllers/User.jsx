@@ -13,7 +13,8 @@ export async function getUserByUsername(username) {
           friends
           username
           socketIoId
-
+          sentInvitations
+          receivedInvitations
           notifications{
             userId
             postId
@@ -60,7 +61,8 @@ export async function getUserById(userId) {
         user(userId: $userId){
           userId
           email
-         
+          sentInvitations
+           receivedInvitations
           country
           city
           image

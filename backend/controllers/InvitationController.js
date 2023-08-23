@@ -64,7 +64,12 @@ const acceptInvitation = async (senderId, receiverId) => {
   try {
     const sender = await User.findOne({ userId: senderId }).exec();
     const receiver = await User.findOne({ userId: receiverId }).exec();
-
+    sender.sentInvitations = sender.sentInvitations.filter(
+      (id) => id !== receiverId
+    );
+    receiver.receivedInvitations = receiver.receivedInvitations.filter(
+      (id) => id !== senderId
+    );
     sender.friends.push(receiverId);
     receiver.friends.push(senderId);
     sender.notifications.push({

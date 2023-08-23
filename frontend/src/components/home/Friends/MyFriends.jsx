@@ -54,16 +54,12 @@ function MyFriends() {
     const usersList = [];
 
     for (let i = 0; i < users.length; i++) {
-      const u = users[i];
+      const u = users[i].props.children[0].props;
 
-      const image = await getUserProfileImage(u.props.userId);
+      const image = await getUserProfileImage(u.userId);
       usersList.push(
         <div className="relative ">
-          <SearchedUser
-            username={u.props.username}
-            userId={u.props.userId}
-            image={image}
-          />
+          <SearchedUser username={u.username} userId={u.userId} image={image} />
 
           <div
             className="cursor-pointer"
@@ -81,7 +77,9 @@ function MyFriends() {
   async function handleSearch(e) {
     setInputValue(e.target.value);
     const displayedUsers = users.filter((u) => {
-      return u.props.username.startsWith(e.target.value || " ");
+      return u.props.children[0].props.username.startsWith(
+        e.target.value || " "
+      );
     });
 
     setSearchedUsers(displayedUsers);

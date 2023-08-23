@@ -40,22 +40,24 @@ function Post({ text, imgs, userId, createdAt, postId, likes, comments }) {
   };
 
   useEffect(() => {
-    if (paragraphRef?.current?.clientHeight > 100) {
+    if (paragraphRef.current?.clientHeight > 100) {
       setIsTruncated(true);
+    } else {
+      setIsTruncated(false);
     }
-  }, []);
+  }, [text]);
 
   const len = imgs?.length;
 
   const styles =
     len === 4 || len === 2
-      ? "grid grid-cols-2"
+      ? "grid grid-cols-2 items-center"
       : len === 3
       ? "grid grid-cols-2 "
       : len === 1
       ? "grid grid-cols-1"
       : len > 4
-      ? "flex overflow-x-auto pb-4"
+      ? "flex overflow-x-auto pb-4 gap-2"
       : "";
   const images = imgs?.map((img, index) => {
     if (len === 3 && index === 2) {
@@ -71,7 +73,7 @@ function Post({ text, imgs, userId, createdAt, postId, likes, comments }) {
         <img
           src={img}
           alt="image"
-          className="shrink-0 max-h-[600px] max-w-full object-cover rounded-xl"
+          className="shrink-0 max-h-[600px] max-w-full  rounded-xl"
         />
       );
     } else
@@ -89,7 +91,7 @@ function Post({ text, imgs, userId, createdAt, postId, likes, comments }) {
   };
 
   const [displayComments, setDisplayComments] = useState(false);
-  console.log("images", images);
+
   return (
     <div className="relative">
       <div className="flex mb-4 ">
@@ -165,7 +167,7 @@ function Post({ text, imgs, userId, createdAt, postId, likes, comments }) {
                 {text}
               </p>
               <p className="text-blue-500 ">
-                {isTruncated && (
+                {text?.trim()?.length > 0 && isTruncated && (
                   <button onClick={toggleTruncate}>Lire la suite</button>
                 )}
               </p>

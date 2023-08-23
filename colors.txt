@@ -1,5 +1,0 @@
-main color : #6534d9
-
-secondary color : #9b7ce6
-
-dark color : #31344f

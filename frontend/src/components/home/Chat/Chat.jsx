@@ -107,6 +107,7 @@ function Chat({ setDisplayed }) {
     async function getUserMessages() {
       const messages = await getMessages(user.userId);
       setMessages(messages);
+     
       getLastMessages(messages);
     }
     getUserMessages();
