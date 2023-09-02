@@ -6,7 +6,7 @@ import { RiLockPasswordFill } from "react-icons/ri";
 import { FaTwitter, FaFacebookF } from "react-icons/fa";
 
 import { FcGoogle } from "react-icons/fc";
-import handleSign from "../../controllers/HandleSign";
+import handleSign from "../../services/HandleSign";
 import { useNavigate } from "react-router";
 import { Socket } from "socket.io-client";
 import { UserContext } from "../../App";

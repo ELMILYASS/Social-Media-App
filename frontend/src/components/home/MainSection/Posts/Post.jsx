@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import img from "../../../Images/pexels-pixabay-220453.jpg";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { RiSaveLine, RiSaveFill } from "react-icons/ri";
 import { BiShare, BiSolidShare } from "react-icons/bi";
@@ -7,8 +6,11 @@ import PostBar from "./PostBar";
 import InteractBar from "./InteractBar";
 import Comments from "./Comments";
 import { UserContext } from "../../../../App";
-import { getUserById, getUserProfileImage } from "../../../../controllers/User";
-import { TimePassed } from "../../../../controllers/PostController";
+import {
+  getUserById,
+  getUserProfileImage,
+} from "../../../../services/UserController";
+import { TimePassed } from "../../../../services/PostController";
 import { AiFillDelete, AiOutlineDelete } from "react-icons/ai";
 import { useNavigate } from "react-router";
 function Post({ text, imgs, userId, createdAt, postId, likes, comments }) {

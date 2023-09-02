@@ -6,7 +6,7 @@ import {
   deleteInvitation,
   sendInvitation,
   deleteFriend,
-} from "../../../controllers/Invitation";
+} from "../../../services/InvitationController";
 
 function EditAddButton({ Icon, content, setAddFriend, userId, username }) {
   const navigate = useNavigate();

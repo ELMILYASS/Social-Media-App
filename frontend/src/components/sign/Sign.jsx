@@ -4,8 +4,8 @@ import SignUp from "./SignUp";
 import Image from "./Image";
 import Background from "./Background";
 import NavBar from "./NavBar";
-import image2 from "../../images/istockphoto-1266468568-612x612.jpg";
-import image1 from "../../images/man-using-mobile-phone-2839467-2371260.png";
+import image2 from "../../assets/istockphoto-1266468568-612x612.jpg";
+import image1 from "../../assets/man-using-mobile-phone-2839467-2371260.png";
 import { UserContext } from "../../App";
 function Sign() {
   const [positions, setPositions] = useState({

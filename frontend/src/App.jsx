@@ -12,9 +12,9 @@ import axios from "axios";
 import Home from "./components/home/Home";
 import { io } from "socket.io-client";
 import { createContext } from "react";
-import defaultImage from "../src/images/default profile image.jpg";
-import { sendAxiosRequest } from "./components/Request";
-import { getUserById } from "./controllers/User";
+import defaultImage from "../src/assets/default profile image.jpg";
+import { sendAxiosRequest } from "./routes/Request";
+import { getUserById } from "./services/UserController";
 import Error from "./components/Error";
 export const UserContext = createContext();
 

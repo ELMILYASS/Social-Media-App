@@ -2,7 +2,10 @@ import React, { useContext, useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import SearchedUser from "../MainSection/SearchedUser";
 import { UserContext } from "../../../App";
-import { getUserById, getUserProfileImage } from "../../../controllers/User";
+import {
+  getUserById,
+  getUserProfileImage,
+} from "../../../services/UserController";
 
 function UserFriends({ userData }) {
   const [user, setUser] = useContext(UserContext).user;

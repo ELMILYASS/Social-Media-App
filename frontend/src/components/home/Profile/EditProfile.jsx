@@ -9,7 +9,7 @@ import { LiaCitySolid } from "react-icons/lia";
 import { BiSolidUser } from "react-icons/bi";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { UserContext } from "../../../App";
-import { sendRequest, sendAxiosRequest } from "../../Request";
+import { sendRequest, sendAxiosRequest } from "../../../routes/Request";
 import axios from "axios";
 function EditProfile({ setDisplayed }) {
   useEffect(() => {
@@ -380,7 +380,7 @@ function EditProfile({ setDisplayed }) {
   //   color: isDark ? "white" : "",
   // }}
   return (
-    <div className="section sm:ml-[90px]  sectionHeight flex flex-col justify-evenly  sm:px-10 px-4 py-1 overflow-auto">
+    <div className="section sm:ml-[90px]  sectionHeight flex flex-col   sm:px-10 px-4 py-1 overflow-auto">
       <div className="flex flex-col gap-3">
         <div className="relative text-center text-xl ">
           <div

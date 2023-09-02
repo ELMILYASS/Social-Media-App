@@ -1,5 +1,5 @@
-import { sendRequest, sendAxiosRequest } from "../components/Request";
-import defaultImage from "../images/default profile image.jpg";
+import { sendRequest, sendAxiosRequest } from "../routes/Request";
+import defaultImage from "../assets/default profile image.jpg";
 export async function getUserByUsername(username) {
   const query = `query getUser($username : String){
         user(username: $username){

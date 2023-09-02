@@ -4,9 +4,9 @@ import { CgProfile } from "react-icons/cg";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { AiOutlineHome, AiOutlineMessage } from "react-icons/ai";
 import { FiSettings, FiLogOut } from "react-icons/fi";
-import handleLogout from "../../controllers/HandleLogout";
+import handleLogout from "../../../services/HandleLogout";
 import { useNavigate } from "react-router";
-import { UserContext } from "../../App";
+import { UserContext } from "../../../App";
 import {
   MdDarkMode,
   MdOutlineHighlight,

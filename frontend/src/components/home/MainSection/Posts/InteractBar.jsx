@@ -22,7 +22,7 @@ import {
 import { FaRegCommentDots, FaCommentDots } from "react-icons/fa";
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 import { UserContext } from "../../../../App";
-import { likePost } from "../../../../controllers/PostController";
+import { likePost } from "../../../../services/PostController";
 function InteractBar({ displayingComments, userId, postId, likes, comments }) {
   const [isOnHover, setIsOnHover] = useState(false);
   const [displayComments, setDisplayComments] = displayingComments;

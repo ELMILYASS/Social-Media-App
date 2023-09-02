@@ -1,4 +1,4 @@
-import { sendRequest } from "../components/Request";
+import { sendRequest } from "../routes/Request";
 
 export const addComment = async (postId, userId, content) => {
   const query = `

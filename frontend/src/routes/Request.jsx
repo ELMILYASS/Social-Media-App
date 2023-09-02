@@ -1,5 +1,5 @@
 const url = "http://localhost:3006/graphql";
-import endPoint from "../backendEndPoint";
+import endPoint from "../services/backendEndPoint";
 import axios from "axios";
 async function sendRequest(query, variables) {
   try {

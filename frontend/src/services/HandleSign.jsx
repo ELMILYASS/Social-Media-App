@@ -1,5 +1,5 @@
 import axios from "axios";
-import endPoint from "../backendEndPoint";
+import endPoint from "./backendEndPoint";
 
 export let access_token = "vava";
 async function handleSign(

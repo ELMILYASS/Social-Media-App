@@ -2,9 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import SearchedUser from "../MainSection/SearchedUser";
 import { UserContext } from "../../../App";
-import { getUserById, getUserProfileImage } from "../../../controllers/User";
+import {
+  getUserById,
+  getUserProfileImage,
+} from "../../../services/UserController";
 import { MdDownloadDone } from "react-icons/md";
-import { acceptInvitation } from "../../../controllers/Invitation";
+import { acceptInvitation } from "../../../services/InvitationController";
 
 function ReceivedInvitations() {
   const [user, setUser] = useContext(UserContext).user;

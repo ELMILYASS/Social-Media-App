@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router";
 import {
   getUserByUsername,
   getUserProfileImage,
-} from "../../../controllers/User";
+} from "../../../services/UserController";
 import { BsArrowLeft } from "react-icons/bs";
 import { UserContext } from "../../../App";
 import { BiImageAdd } from "react-icons/bi";
@@ -13,7 +13,7 @@ import {
   getMessagesWith,
   seenMessages,
   sendMessage,
-} from "../../../controllers/ChatController";
+} from "../../../services/ChatController";
 import Message from "./Message";
 function Messages({ setDisplayed }) {
   const Navigate = useNavigate();

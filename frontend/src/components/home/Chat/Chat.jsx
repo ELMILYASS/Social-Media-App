@@ -4,14 +4,17 @@ import { useNavigate } from "react-router";
 import { UserContext } from "../../../App";
 import SearchedUser from "../MainSection/SearchedUser";
 import { BsSearch } from "react-icons/bs";
-import { getUserById, getUserProfileImage } from "../../../controllers/User";
+import {
+  getUserById,
+  getUserProfileImage,
+} from "../../../services/UserController";
 import Friend from "./Friend";
 import {
   getLastMessage,
   getMessages,
   getMessagesWith,
-} from "../../../controllers/ChatController";
-import { TimePassed } from "../../../controllers/PostController";
+} from "../../../services/ChatController";
+import { TimePassed } from "../../../services/PostController";
 
 function Chat({ setDisplayed }) {
   const Navigate = useNavigate();
@@ -107,7 +110,7 @@ function Chat({ setDisplayed }) {
     async function getUserMessages() {
       const messages = await getMessages(user.userId);
       setMessages(messages);
-     
+
       getLastMessages(messages);
     }
     getUserMessages();

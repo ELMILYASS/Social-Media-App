@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import defaultImage from "../../../../src/images/default profile image.jpg";
+import defaultImage from "../../../assets/default profile image.jpg";
 import { useNavigate } from "react-router";
 import { UserContext } from "../../../App";
 function SearchedUser({ username, userId, image }) {

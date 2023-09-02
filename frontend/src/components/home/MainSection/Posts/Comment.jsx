@@ -1,7 +1,9 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import img from "../../../Images/pexels-pixabay-220453.jpg";
-import { getUserById, getUserProfileImage } from "../../../../controllers/User";
-import { TimePassed } from "../../../../controllers/PostController";
+import {
+  getUserById,
+  getUserProfileImage,
+} from "../../../../services/UserController";
+import { TimePassed } from "../../../../services/PostController";
 import { UserContext } from "../../../../App";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import PostBar from "./PostBar";

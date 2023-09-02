@@ -3,7 +3,7 @@ import { AiOutlineLeft } from "react-icons/ai";
 import { Routes, useNavigate } from "react-router";
 import { UserContext } from "../../../App";
 
-import { getUserById } from "../../../controllers/User";
+import { getUserById } from "../../../services/UserController";
 import Invitations from "./Invitations";
 import MyFriends from "./MyFriends";
 import ReceivedInvitations from "./ReceivedInvitations";

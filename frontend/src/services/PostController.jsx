@@ -1,5 +1,5 @@
 import JSZip from "jszip";
-import { sendAxiosRequest, sendRequest } from "../components/Request";
+import { sendAxiosRequest, sendRequest } from "../routes/Request";
 
 export async function getPostImages(postId) {
   try {

@@ -5,14 +5,14 @@ import Posts from "./Posts/Posts";
 import { BsSearch } from "react-icons/bs";
 import SearchedUser from "./SearchedUser";
 
-import { sendRequest, sendAxiosRequest } from "../../Request";
-import { noProfileImage } from "../../../images/default profile image.jpg";
+import { sendRequest, sendAxiosRequest } from "../../../routes/Request";
+import { noProfileImage } from "../../../assets/default profile image.jpg";
 import { UserContext } from "../../../App";
-import { getUserProfileImage } from "../../../controllers/User";
+import { getUserProfileImage } from "../../../services/UserController";
 import {
   getFriendsPosts,
   getPostImages,
-} from "../../../controllers/PostController";
+} from "../../../services/PostController";
 import { MdDarkMode, MdOutlineLightMode } from "react-icons/md";
 function MainSection({ setDisplayed }) {
   useEffect(() => {

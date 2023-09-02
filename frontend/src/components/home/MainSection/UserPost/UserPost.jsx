@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import img from "../../../Images/pexels-pixabay-220453.jpg";
+
 import {
   AiOutlineCamera,
   AiOutlineVideoCamera,
@@ -8,7 +8,7 @@ import {
 import { GrFormAdd } from "react-icons/gr";
 import PostIcon from "./PostIcon";
 import { UserContext } from "../../../../App";
-import { sendAxiosRequest } from "../../../Request";
+import { sendAxiosRequest } from "../../../../routes/Request";
 import File from "./File";
 
 function UserPost() {

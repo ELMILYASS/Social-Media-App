@@ -3,7 +3,7 @@ import { AiOutlineLeft } from "react-icons/ai";
 import { useNavigate } from "react-router";
 import Notification from "./Notification";
 import { UserContext } from "../../../App";
-import { NotificationSeen } from "../../../controllers/Notification";
+import { NotificationSeen } from "../../../services/NotificationController";
 function Notifications({ setDisplayed }) {
   const [notifications, setNotifications] =
     useContext(UserContext).notifications;
@@ -31,7 +31,6 @@ function Notifications({ setDisplayed }) {
     <div
       style={{
         color: isDark ? "white" : "",
-       
       }}
       className="section sm:ml-[90px]  sm:p-6 p-4 "
     >

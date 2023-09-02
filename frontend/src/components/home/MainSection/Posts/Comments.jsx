@@ -8,9 +8,9 @@ import {
 } from "react-icons/ai";
 import Comment from "./Comment";
 import { FaShare } from "react-icons/fa";
-import { addComment } from "../../../../controllers/Comment";
+import { addComment } from "../../../../services/CommentController";
 import { UserContext } from "../../../../App";
-import { TimePassed } from "../../../../controllers/PostController";
+import { TimePassed } from "../../../../services/PostController";
 function Comments({ displayed, comments, postId }) {
   const [displayComments, setDisplayComments] = displayed;
   const input = useRef();

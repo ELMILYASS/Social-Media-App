@@ -1,7 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import Story from "./Story";
-import img from "../../../Images/pexels-pixabay-220453.jpg";
-import { getUserById, getUserProfileImage } from "../../../../controllers/User";
+
+import {
+  getUserById,
+  getUserProfileImage,
+} from "../../../../services/UserController";
 import { UserContext } from "../../../../App";
 import Friend from "../../Chat/Friend";
 import { AiOutlineUserDelete } from "react-icons/ai";

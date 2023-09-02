@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { getUserById, getUserProfileImage } from "../../../controllers/User";
+import {
+  getUserById,
+  getUserProfileImage,
+} from "../../../services/UserController";
 
-import { TimePassed, getPostImages } from "../../../controllers/PostController";
+import { TimePassed, getPostImages } from "../../../services/PostController";
 import { useNavigate } from "react-router";
 import { AiOutlineArrowRight, AiOutlineCloseCircle } from "react-icons/ai";
 import UserPost from "../MainSection/Posts/Post";

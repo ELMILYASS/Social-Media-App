@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import endPoint from "../backendEndPoint";
+import endPoint from "../services/backendEndPoint";
 import axios from "axios";
 import Sign from "../components/sign/Sign";
-import { sendRequest } from "../components/Request";
+import { sendRequest } from "./Request";
 import { UserContext } from "../App";
 import { io } from "socket.io-client";
 

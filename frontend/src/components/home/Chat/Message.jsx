@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { UserContext } from "../../../App";
-import { TimePassed } from "../../../controllers/PostController";
+import { TimePassed } from "../../../services/PostController";
 import { useState } from "react";
 
 function Message({ senderId, receiverId, content, createdAt, userInfo }) {

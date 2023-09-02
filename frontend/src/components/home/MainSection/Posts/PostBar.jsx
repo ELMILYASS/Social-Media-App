@@ -3,7 +3,7 @@ import {
   deleteComment,
   deletePost,
   updateComment,
-} from "../../../../controllers/PostController";
+} from "../../../../services/PostController";
 import { UserContext } from "../../../../App";
 
 function PostBar({

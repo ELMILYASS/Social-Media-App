@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
-import { UserContext } from "../../App";
-import { getMessages } from "../../controllers/ChatController";
+import { UserContext } from "../../../App";
+import { getMessages } from "../../../services/ChatController";
 
 function BarElement({ Icon, content, navigate, currentPage, info }) {
   const [displayed, setDisplayed] = currentPage;

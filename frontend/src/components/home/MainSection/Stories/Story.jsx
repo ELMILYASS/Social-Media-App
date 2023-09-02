@@ -1,6 +1,6 @@
 import React from "react";
-import img from "../../../Images/pexels-pixabay-220453.jpg";
-import addpost from "../../../Images/plus-icon-plus-math-icon-download-icons-9.png";
+
+import addpost from "../../../../assets/plus-icon-plus-math-icon-download-icons-9.png";
 import { useNavigate } from "react-router";
 function Story({ addPost, displayStory, username, userId, image, socketIoId }) {
   function story() {

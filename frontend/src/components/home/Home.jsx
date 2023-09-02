@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
-import SideBar from "../Sidebar/SideBar";
+import SideBar from "./Sidebar/SideBar";
 import MainSection from "./MainSection/MainSection";
 import { Routes, Route, useLocation, Navigate } from "react-router";
 import Profile from "./Profile/Profile";
 import EditProfile from "./Profile/EditProfile";
-import sendRequest from "../Request";
+import sendRequest from "../../routes/Request";
 import Notification from "./Notifications/Notifications";
 import Notifications from "./Notifications/Notifications";
 import OtherUserProfile from "./Profile/OtherUserProfile";

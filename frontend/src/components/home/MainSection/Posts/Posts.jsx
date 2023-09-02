@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import Post from "./Post";
-import img from "../../../Images/pexels-pixabay-220453.jpg";
 import { UserContext } from "../../../../App";
 function Posts({ posts }) {
   const [user, setUser] = useContext(UserContext).user;

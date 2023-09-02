@@ -1,4 +1,4 @@
-import { sendRequest } from "../components/Request";
+import { sendRequest } from "../routes/Request";
 
 export const NotificationSeen = async (userId, notificationIds) => {
   const query = `

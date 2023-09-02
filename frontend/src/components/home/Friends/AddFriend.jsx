@@ -3,13 +3,13 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import SearchedUser from "../MainSection/SearchedUser";
 import { BsPersonAdd, BsSearch } from "react-icons/bs";
 import { UserContext } from "../../../App";
-import { sendRequest } from "../../Request";
-import { getUserProfileImage } from "../../../controllers/User";
+import { sendRequest } from "../../../routes/Request";
+import { getUserProfileImage } from "../../../services/UserController";
 import { GrValidate } from "react-icons/gr";
 import {
   acceptInvitation,
   sendInvitation,
-} from "../../../controllers/Invitation";
+} from "../../../services/InvitationController";
 
 function AddFriend({ style, setAddFriend }) {
   const [user, setUser] = useContext(UserContext).user;

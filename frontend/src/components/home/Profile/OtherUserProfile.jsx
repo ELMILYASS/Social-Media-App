@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import img from "../../Images/pexels-pixabay-220453.jpg";
 
 import ProfileInfo from "./ProfileInfo";
 import EditAddButton from "./EditAddButton";
@@ -17,13 +16,13 @@ import {
   getUserByUsername,
   getUserPosts,
   getUserProfileImage,
-} from "../../../controllers/User";
+} from "../../../services/UserController";
 import { UserContext } from "../../../App";
 import { MdDownloadDone, MdPersonAddDisabled } from "react-icons/md";
 import MyFriends from "../Friends/MyFriends";
 import UserFriends from "./UserFriends";
 import { GoLocation } from "react-icons/go";
-import { getPostImages } from "../../../controllers/PostController";
+import { getPostImages } from "../../../services/PostController";
 
 function OtherUserProfile() {
   const Navigate = useNavigate();
